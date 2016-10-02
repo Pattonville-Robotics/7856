@@ -1,9 +1,15 @@
 package pattonvillerobotics.robotclasses;
 
+import android.graphics.Bitmap;
+
 import com.vuforia.HINT;
+import com.vuforia.Image;
+import com.vuforia.Matrix34F;
+import com.vuforia.Tool;
+import com.vuforia.Vec2F;
+import com.vuforia.Vec3F;
 import com.vuforia.Vuforia;
 
-import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
@@ -12,6 +18,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefau
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 import org.firstinspires.ftc.teamcode.R;
 
+import java.util.Arrays;
+
 /**
  * Created by greg on 10/1/2016.
  */
@@ -19,7 +27,7 @@ import org.firstinspires.ftc.teamcode.R;
 public class VuforiaNav {
 
     private VuforiaLocalizer.Parameters parameters;
-    private VuforiaLocalizer vuforia;
+    private VuforiaLocalizerImplHack vuforia;
     private VuforiaTrackables beacons;
     private boolean isActivated;
 
@@ -29,7 +37,7 @@ public class VuforiaNav {
         parameters.vuforiaLicenseKey = "AclLpHb/////AAAAGa41kVT84EtWtYJZW0bIHf9DHg5EHVYWCqExQMx6bbuBtjFeYdvzZLExJiXnT31qDi3WI3QQnOXH8pLZ4cmb39d1w0Oi7aCwy35ODjMvG5qX+e2+3v0l3r1hPpM8P7KPTkRPIl+CGYEBvoNkVbGGjalCW7N9eFDV/T5CN/RQvZjonX/uBPKkEd8ciqK8vWgfy9aPEipAoyr997DDagnMQJ0ajpwKn/SAfaVPA4osBZ5euFf07/3IUnpLEMdMKfoIH6QYLVgwbPuVtUiJWM6flzWaAw5IIhy0XXWwI0nGXrzVjPwZlN3El4Su73ADK36qqOax/pNxD4oYBrlpfYiaFaX0Q+BNro09weXQEoz/Mfgm";
         parameters.cameraMonitorFeedback = VuforiaLocalizer.Parameters.CameraMonitorFeedback.AXES;
 
-        vuforia = ClassFactory.createVuforiaLocalizer(parameters);
+        vuforia = new VuforiaLocalizerImplHack(parameters);
         Vuforia.setHint(HINT.HINT_MAX_SIMULTANEOUS_IMAGE_TARGETS, 4); // tracking multiple images at once
 
         beacons = vuforia.loadTrackablesFromAsset("FTC_2016-17");
@@ -57,13 +65,49 @@ public class VuforiaNav {
         return beacons;
     }
 
-    public VectorF getTranslation(VuforiaTrackable beacon) {
+    public VectorF getBeaconTranslation(VuforiaTrackable beacon) {
         OpenGLMatrix lastLoc = ((VuforiaTrackableDefaultListener) beacon.getListener()).getPose();
         if(lastLoc != null) {
             return lastLoc.getTranslation();
         } else {
             return null;
         }
-
     }
+
+    public Bitmap getImage() {
+        Image vimg = vuforia.getImage();
+        if(vimg != null) {
+            Bitmap bm = Bitmap.createBitmap(vimg.getWidth(), vimg.getHeight(), Bitmap.Config.RGB_565);
+            bm.copyPixelsFromBuffer(vimg.getPixels());
+            return bm;
+        } else {
+            return null;
+        }
+    }
+
+    /** Returns an array of Vec2F's that can be used to find the coordinates of the beacon picture
+     *  in the image. NOTE: This probably doesn't work. */
+    public Vec2F[] getBeaconImageCoords(VuforiaTrackable beacon) {
+        OpenGLMatrix lastLoc = ((VuforiaTrackableDefaultListener) beacon.getListener()).getRawPose();
+        if(lastLoc != null) {
+            Matrix34F lastLocRaw = new Matrix34F();
+            float[] locData = Arrays.copyOfRange(lastLoc.transposed().getData(), 0, 12);
+            lastLocRaw.setData(locData);
+
+            Vec2F upperLeft = Tool.projectPoint(vuforia.getCameraCalibration(), lastLocRaw, new Vec3F(-127,92,0));
+            Vec2F upperRight = Tool.projectPoint(vuforia.getCameraCalibration(), lastLocRaw, new Vec3F(127,92,0));
+            Vec2F lowerRight = Tool.projectPoint(vuforia.getCameraCalibration(), lastLocRaw, new Vec3F(127,-92,0));
+            Vec2F lowerLeft = Tool.projectPoint(vuforia.getCameraCalibration(), lastLocRaw, new Vec3F(-127,-92,0));
+
+            return new Vec2F[]{upperLeft, upperRight, lowerRight, lowerLeft};
+
+        } else {
+            return null;
+        }
+    }
+
+    public boolean isActivated() {
+        return isActivated;
+    }
+
 }
