@@ -20,6 +20,7 @@ import org.firstinspires.ftc.robotcore.internal.VuforiaLocalizerImpl;
 public class VuforiaLocalizerImplHack extends VuforiaLocalizerImpl {
 
     private Image rgb;
+    private Image gray;
 
     class CloseableFrame extends Frame {
         public CloseableFrame(Frame other) { // clone the frame so we can be useful beyond callback
@@ -49,6 +50,8 @@ public class VuforiaLocalizerImplHack extends VuforiaLocalizerImpl {
             for(int i = 0; i<imgnum; i++) {
                 if(frame.getImage(i).getFormat() == PIXEL_FORMAT.RGB565) {
                     rgb = frame.getImage(i);
+                } else if(frame.getImage(i).getFormat() == PIXEL_FORMAT.GRAYSCALE) {
+                    gray = frame.getImage(i);
                 }
             }
             frame.close();
@@ -79,5 +82,6 @@ public class VuforiaLocalizerImplHack extends VuforiaLocalizerImpl {
         }
     }
 
-    public Image getImage() { return rgb; }
+    public Image getRGBImage() { return rgb; }
+    public Image getGrayImage() { return gray; }
  }

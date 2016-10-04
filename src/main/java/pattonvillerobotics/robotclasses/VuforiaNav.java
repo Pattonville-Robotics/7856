@@ -2,23 +2,19 @@ package pattonvillerobotics.robotclasses;
 
 import android.graphics.Bitmap;
 
-import com.vuforia.HINT;
 import com.vuforia.Image;
-import com.vuforia.Matrix34F;
-import com.vuforia.Tool;
-import com.vuforia.Vec2F;
-import com.vuforia.Vec3F;
-import com.vuforia.Vuforia;
 
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 import org.firstinspires.ftc.teamcode.R;
-
-import java.util.Arrays;
 
 /**
  * Created by greg on 10/1/2016.
@@ -38,7 +34,6 @@ public class VuforiaNav {
         parameters.cameraMonitorFeedback = VuforiaLocalizer.Parameters.CameraMonitorFeedback.AXES;
 
         vuforia = new VuforiaLocalizerImplHack(parameters);
-        Vuforia.setHint(HINT.HINT_MAX_SIMULTANEOUS_IMAGE_TARGETS, 4); // tracking multiple images at once
 
         beacons = vuforia.loadTrackablesFromAsset("FTC_2016-17");
 
@@ -46,6 +41,9 @@ public class VuforiaNav {
         beacons.get(1).setName("Tools");
         beacons.get(2).setName("Lego");
         beacons.get(3).setName("Gears");
+
+        setBeaconLocation();
+        setPhoneInformation();
 
         isActivated = false;
 
@@ -65,17 +63,23 @@ public class VuforiaNav {
         return beacons;
     }
 
-    public VectorF getBeaconTranslation(VuforiaTrackable beacon) {
-        OpenGLMatrix lastLoc = ((VuforiaTrackableDefaultListener) beacon.getListener()).getPose();
+    public VectorF getTranslation(VuforiaTrackable beacon) {
+        OpenGLMatrix lastLoc = null;
+        OpenGLMatrix robotLocationTransform = ((VuforiaTrackableDefaultListener)beacon.getListener()).getUpdatedRobotLocation();
+        if(robotLocationTransform != null) {
+            lastLoc = robotLocationTransform;
+        }
         if(lastLoc != null) {
             return lastLoc.getTranslation();
         } else {
             return null;
         }
+
+
     }
 
-    public Bitmap getImage() {
-        Image vimg = vuforia.getImage();
+    public Bitmap getRGBAImage() {
+        Image vimg = vuforia.getRGBImage();
         if(vimg != null) {
             Bitmap bm = Bitmap.createBitmap(vimg.getWidth(), vimg.getHeight(), Bitmap.Config.RGB_565);
             bm.copyPixelsFromBuffer(vimg.getPixels());
@@ -85,24 +89,28 @@ public class VuforiaNav {
         }
     }
 
-    /** Returns an array of Vec2F's that can be used to find the coordinates of the beacon picture
-     *  in the image. NOTE: This probably doesn't work. */
-    public Vec2F[] getBeaconImageCoords(VuforiaTrackable beacon) {
-        OpenGLMatrix lastLoc = ((VuforiaTrackableDefaultListener) beacon.getListener()).getRawPose();
-        if(lastLoc != null) {
-            Matrix34F lastLocRaw = new Matrix34F();
-            float[] locData = Arrays.copyOfRange(lastLoc.transposed().getData(), 0, 12);
-            lastLocRaw.setData(locData);
-
-            Vec2F upperLeft = Tool.projectPoint(vuforia.getCameraCalibration(), lastLocRaw, new Vec3F(-127,92,0));
-            Vec2F upperRight = Tool.projectPoint(vuforia.getCameraCalibration(), lastLocRaw, new Vec3F(127,92,0));
-            Vec2F lowerRight = Tool.projectPoint(vuforia.getCameraCalibration(), lastLocRaw, new Vec3F(127,-92,0));
-            Vec2F lowerLeft = Tool.projectPoint(vuforia.getCameraCalibration(), lastLocRaw, new Vec3F(-127,-92,0));
-
-            return new Vec2F[]{upperLeft, upperRight, lowerRight, lowerLeft};
-
+    public Bitmap getGrayImage() {
+        Image vimg = vuforia.getGrayImage();
+        if(vimg != null) {
+            Bitmap bm = Bitmap.createBitmap(vimg.getWidth(), vimg.getHeight(), Bitmap.Config.RGB_565);
+            bm.copyPixelsFromBuffer(vimg.getPixels());
+            return bm;
         } else {
             return null;
+        }
+    }
+
+    private void setBeaconLocation() {
+        OpenGLMatrix loc = OpenGLMatrix.translation(0,0,0).multiplied(Orientation.getRotationMatrix(AxesReference.EXTRINSIC, AxesOrder.XZX, AngleUnit.DEGREES, 90, 90, 0));
+        for(VuforiaTrackable beacon : beacons) {
+            beacon.setLocation(loc);
+        }
+    }
+
+    private void setPhoneInformation() {
+        OpenGLMatrix phoneLoc = OpenGLMatrix.translation(0,0,0).multiplied(Orientation.getRotationMatrix(AxesReference.EXTRINSIC, AxesOrder.YZY, AngleUnit.DEGREES, 0, 0, 0));
+        for(VuforiaTrackable beacon : beacons) {
+            ((VuforiaTrackableDefaultListener)beacon.getListener()).setPhoneInformation(phoneLoc, parameters.cameraDirection);
         }
     }
 
