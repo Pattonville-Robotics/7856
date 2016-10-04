@@ -1,4 +1,4 @@
-package pattonvillerobotics.opmodes.Autonomous;
+package org.pattonvillerobotics.opmodes.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;

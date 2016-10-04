@@ -1,4 +1,4 @@
-package pattonvillerobotics.opmodes;
+package org.pattonvillerobotics.opmodes;
 
 import org.pattonvillerobotics.commoncode.robotclasses.drive.RobotParameters;
 
