@@ -26,6 +26,7 @@ public class VuforiaNav {
     private VuforiaLocalizerImplHack vuforia;
     private VuforiaTrackables beacons;
     private boolean isActivated;
+    private final float mmPerInch = 25.4f;
 
     public VuforiaNav() {
         parameters = new VuforiaLocalizer.Parameters(R.id.cameraMonitorViewId);
@@ -74,8 +75,17 @@ public class VuforiaNav {
         } else {
             return null;
         }
+    }
 
 
+    /** Returns the distance from the beacon in inches. */
+    public float getDistance(VuforiaTrackable beacon) {
+        return getTranslation(beacon).getData()[0]/mmPerInch;
+    }
+
+    /** Returns how far right from the beacon in inches. Negative value means to the left. */
+    public float getRightDistance(VuforiaTrackable beacon) {
+        return getTranslation(beacon).getData()[1]/mmPerInch;
     }
 
     public Bitmap getRGBAImage() {
