@@ -3,6 +3,7 @@ package org.pattonvillerobotics.opmodes.testautonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.pattonvillerobotics.commoncode.opmodes.OpModeGroups;
 
 import org.pattonvillerobotics.robotclasses.VuforiaNav;
@@ -19,11 +20,15 @@ public class VuforiaTesting extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         initialize();
         waitForStart();
-        int count = 0;
         vuforia.activate();
 
         while (opModeIsActive()) {
+            for(VuforiaTrackable beacon : vuforia.getBeacons()) {
+                telemetry.addData("Loc:", vuforia.getTranslation(beacon));
+            }
 
+            telemetry.update();
+            idle();
         }
     }
 

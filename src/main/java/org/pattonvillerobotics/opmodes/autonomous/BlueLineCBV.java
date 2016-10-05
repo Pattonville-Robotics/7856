@@ -10,6 +10,7 @@ import org.pattonvillerobotics.opmodes.CustomizedRobotParameters;
  * Created by bahrg on 10/1/16.
  */
 
+
 public class BlueLineCBV extends LinearOpMode {
 
     private EncoderDrive drive;
@@ -18,15 +19,9 @@ public class BlueLineCBV extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         initialize();
         waitForStart();
-
-
     }
 
     public void initialize() {
-        drive = new EncoderDrive(hardwareMap, this, CustomizedRobotParameters.TESTROBOT_PARAMETERS);
+        drive = new EncoderDrive(hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS);
     }
-
-
-
-
 }

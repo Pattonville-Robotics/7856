@@ -110,15 +110,22 @@ public class VuforiaNav {
         }
     }
 
+    private OpenGLMatrix createMatrix(float x, float y, float z, AxesOrder o, float a, float b, float c) {
+        return OpenGLMatrix
+                .translation(x, y, z)
+                .multiplied(Orientation.getRotationMatrix(AxesReference.EXTRINSIC, o, AngleUnit.DEGREES, a, b, c));
+    }
+
     private void setBeaconLocation() {
-        OpenGLMatrix loc = OpenGLMatrix.translation(0,0,0).multiplied(Orientation.getRotationMatrix(AxesReference.EXTRINSIC, AxesOrder.XZX, AngleUnit.DEGREES, 90, 90, 0));
+        OpenGLMatrix loc = createMatrix(0,0,0,AxesOrder.XYZ,0,0,0);
         for(VuforiaTrackable beacon : beacons) {
             beacon.setLocation(loc);
         }
     }
 
     private void setPhoneInformation() {
-        OpenGLMatrix phoneLoc = OpenGLMatrix.translation(0,0,0).multiplied(Orientation.getRotationMatrix(AxesReference.EXTRINSIC, AxesOrder.YZY, AngleUnit.DEGREES, 0, 0, 0));
+        //0,0,0 is the center of the robot
+        OpenGLMatrix phoneLoc = createMatrix(0,0,0, AxesOrder.XYZ, -90, 0, 0);
         for(VuforiaTrackable beacon : beacons) {
             ((VuforiaTrackableDefaultListener)beacon.getListener()).setPhoneInformation(phoneLoc, parameters.cameraDirection);
         }

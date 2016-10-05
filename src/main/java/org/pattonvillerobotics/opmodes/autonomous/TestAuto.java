@@ -3,6 +3,7 @@ package org.pattonvillerobotics.opmodes.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
+import org.pattonvillerobotics.commoncode.opmodes.OpModeGroups;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.AbstractDrive;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.SimpleDrive;
 
@@ -10,8 +11,7 @@ import org.pattonvillerobotics.commoncode.robotclasses.drive.SimpleDrive;
  * Created by skaggsw on 9/29/16.
  */
 
-@Autonomous(name = "TestAuto", group = "Test")
-
+@Autonomous(name = "TestAuto", group = OpModeGroups.TESTING)
 public class TestAuto extends LinearOpMode {
 
     private AbstractDrive drive;
