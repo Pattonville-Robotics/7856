@@ -1,5 +1,7 @@
 package org.pattonvillerobotics.opmodes.teleop;
 
+import static org.pattonvillerobotics.opmodes.teleop.ButtonFSM.ButtonState.JUST_PRESSED;
+
 /**
  * Created by skaggsw on 10/4/16.
  */
@@ -15,7 +17,11 @@ public class ButtonFSM extends TeleOp {
             case NOT_BEEN_PRESSED:
                 if (buttonValue) {
 
-                    button = ButtonState.JUST_PRESSED;
+                    button = JUST_PRESSED;
+
+                } else {
+
+
 
                 }
             case JUST_PRESSED:
@@ -38,9 +44,13 @@ public class ButtonFSM extends TeleOp {
                 }
             case JUST_BEEN_RELEASED:
                 if (buttonValue) {
-                    button = ButtonState.JUST_PRESSED;
+
+                    button = JUST_PRESSED;
+
                 } else {
+
                     button = ButtonState.NOT_BEEN_PRESSED;
+
                 }
         }
 
