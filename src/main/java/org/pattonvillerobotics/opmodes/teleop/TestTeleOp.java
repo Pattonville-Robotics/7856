@@ -1,8 +1,9 @@
-package pattonvillerobotics.opmodes.TeleOp;
+package org.pattonvillerobotics.opmodes.teleop;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.pattonvillerobotics.commoncode.opmodes.OpModeGroups;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.AbstractDrive;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.SimpleDrive;
 
@@ -10,7 +11,7 @@ import org.pattonvillerobotics.commoncode.robotclasses.drive.SimpleDrive;
  * Created by bahrg on 9/27/16.
  */
 
-@TeleOp(name="candyBot", group="Test")
+@TeleOp(name="candyBot", group= OpModeGroups.TESTING)
 public class TestTeleOp extends LinearOpMode {
 
     private AbstractDrive drive;

@@ -1,14 +1,12 @@
-package pattonvillerobotics.opmodes.TestAutonomous;
+package org.pattonvillerobotics.opmodes.testautonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.apache.commons.math3.util.FastMath;
-import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.pattonvillerobotics.commoncode.opmodes.OpModeGroups;
 
-import pattonvillerobotics.robotclasses.VuforiaNav;
+import org.pattonvillerobotics.robotclasses.VuforiaNav;
 
 /**
  * Created by greg on 10/2/2016.
@@ -22,22 +20,15 @@ public class VuforiaTesting extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         initialize();
         waitForStart();
-
         vuforia.activate();
 
-        while(opModeIsActive()) {
+        while (opModeIsActive()) {
             for(VuforiaTrackable beacon : vuforia.getBeacons()) {
-
-                VectorF translation = vuforia.getBeaconTranslation(beacon);
-
-                if(translation != null) {
-                    telemetry.addData(beacon.getName() + "-Translation: ", translation);
-
-                    double degreesToTurn = FastMath.toDegrees(FastMath.atan2(translation.get(1), translation.get(2)));
-                    telemetry.addData(beacon.getName() + "-Degrees to Turn: ", degreesToTurn);
-                }
+                telemetry.addData("Loc:", vuforia.getTranslation(beacon));
             }
+
             telemetry.update();
+            idle();
         }
     }
 
