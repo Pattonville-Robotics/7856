@@ -1,4 +1,4 @@
-package pattonvillerobotics.opmodes.TeleOp;
+package org.pattonvillerobotics.opmodes.teleop;
 
 /**
  * Created by skaggsw on 10/4/16.

@@ -1,10 +1,9 @@
-package pattonvillerobotics.opmodes.TeleOp;
+package org.pattonvillerobotics.opmodes.teleop;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.pattonvillerobotics.commoncode.robotclasses.drive.EncoderDrive;
-
-import pattonvillerobotics.opmodes.CustomizedRobotParameters;
+import org.pattonvillerobotics.opmodes.CustomizedRobotParameters;
 
 /**
  * Created by skaggsw on 10/4/16.
