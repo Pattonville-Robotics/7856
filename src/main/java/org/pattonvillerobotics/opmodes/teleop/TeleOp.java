@@ -12,7 +12,6 @@ import org.pattonvillerobotics.opmodes.CustomizedRobotParameters;
 public class TeleOp extends LinearOpMode {
 
     private EncoderDrive drive;
-    private ButtonFSM abutton;
 
     public void runOpMode() throws InterruptedException {
         initialize();
@@ -27,11 +26,9 @@ public class TeleOp extends LinearOpMode {
     public void initialize() {
         drive = new EncoderDrive(hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS);
         telemetry.addData("Init", "Initialized.");
-        abutton = new ButtonFSM();
     }
 
     public void doLoop() {
         drive.moveFreely(gamepad1.left_stick_y, -gamepad1.right_stick_y);
-        abutton.CheckButton(gamepad1.a);
     }
 }
