@@ -35,6 +35,7 @@ public class WilliamTeleOp extends LinearOpMode {
     public void initialize() {
         drive = new EncoderDrive(hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS);
         telemetry.addData("Init", "Initialized.");
+        gamepad = new ListenableGamepad();
         this.servo = hardwareMap.servo.get("arm");
         gamepad.getButton(GamepadData.Button.A).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
             @Override
