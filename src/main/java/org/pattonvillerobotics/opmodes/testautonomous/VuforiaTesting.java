@@ -3,9 +3,8 @@ package org.pattonvillerobotics.opmodes.testautonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
+import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.pattonvillerobotics.commoncode.opmodes.OpModeGroups;
-
 import org.pattonvillerobotics.robotclasses.VuforiaNav;
 
 /**
@@ -15,6 +14,7 @@ import org.pattonvillerobotics.robotclasses.VuforiaNav;
 public class VuforiaTesting extends LinearOpMode {
 
     private VuforiaNav vuforia;
+    private OpenGLMatrix lastUpdatedLocation = null;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -23,12 +23,17 @@ public class VuforiaTesting extends LinearOpMode {
         vuforia.activate();
 
         while (opModeIsActive()) {
-            for(VuforiaTrackable beacon : vuforia.getBeacons()) {
-                telemetry.addData("Loc:", vuforia.getTranslation(beacon));
+            lastUpdatedLocation = vuforia.getNearestBeaconLocation();
+            if(lastUpdatedLocation!=null) {
+                telemetry.addData("Distance", vuforia.getDistance(lastUpdatedLocation));
+                telemetry.addData("x Position", vuforia.getxPos(lastUpdatedLocation));
             }
+
+
 
             telemetry.update();
             idle();
+            sleep(100);
         }
     }
 
