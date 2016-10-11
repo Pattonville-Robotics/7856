@@ -1,12 +1,12 @@
-package pattonvillerobotics.opmodes.Autonomous;
+package org.pattonvillerobotics.opmodes.autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.pattonvillerobotics.commoncode.enums.Direction;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.EncoderDrive;
+import org.pattonvillerobotics.opmodes.CustomizedRobotParameters;
 
-import pattonvillerobotics.opmodes.CustomizedRobotParameters;
 
 /**
  * Created by skaggsw on 9/29/16.
@@ -30,7 +30,7 @@ public class TestAuto extends LinearOpMode {
     }
 
     public void initialize() {
-        drive = new EncoderDrive(hardwareMap, this, CustomizedRobotParameters.TESTROBOT_PARAMETERS);
+        drive = new EncoderDrive(hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS);
         telemetry.addData("Init", "Initialized.");
     }
 }
