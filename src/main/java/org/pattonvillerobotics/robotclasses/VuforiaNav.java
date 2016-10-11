@@ -26,7 +26,7 @@ public class VuforiaNav {
     private VuforiaLocalizerImplHack vuforia;
     private VuforiaTrackables beacons;
     private boolean isActivated;
-    private final float mmPerInch = 25.4f;
+    private final double mmPerInch = 25.4;
 
     public VuforiaNav() {
         parameters = new VuforiaLocalizer.Parameters(R.id.cameraMonitorViewId);
@@ -64,28 +64,24 @@ public class VuforiaNav {
         return beacons;
     }
 
-    public VectorF getTranslation(VuforiaTrackable beacon) {
-        OpenGLMatrix lastLoc = null;
-        OpenGLMatrix robotLocationTransform = ((VuforiaTrackableDefaultListener)beacon.getListener()).getUpdatedRobotLocation();
-        if(robotLocationTransform != null) {
-            lastLoc = robotLocationTransform;
+    public OpenGLMatrix getNearestBeaconLocation() {
+        for(VuforiaTrackable beacon : beacons) {
+            OpenGLMatrix robotLocationTransform = ((VuforiaTrackableDefaultListener)beacon.getListener()).getUpdatedRobotLocation();
+            if (robotLocationTransform != null) {
+                return robotLocationTransform;
+            }
         }
-        if(lastLoc != null) {
-            return lastLoc.getTranslation();
-        } else {
-            return null;
-        }
+        return null;
     }
 
-
-    /** Returns the distance from the beacon in inches. */
-    public float getDistance(VuforiaTrackable beacon) {
-        return getTranslation(beacon).getData()[0]/mmPerInch;
+    public double getDistance(OpenGLMatrix lastLocation) {
+        VectorF translation = lastLocation.getTranslation();
+        return translation.getData()[0]/mmPerInch;
     }
 
-    /** Returns how far right from the beacon in inches. Negative value means to the left. */
-    public float getRightDistance(VuforiaTrackable beacon) {
-        return getTranslation(beacon).getData()[1]/mmPerInch;
+    public double getxPos(OpenGLMatrix lastLocation) {
+        VectorF translation = lastLocation.getTranslation();
+        return translation.getData()[1]/mmPerInch;
     }
 
     public Bitmap getRGBAImage() {
@@ -117,7 +113,7 @@ public class VuforiaNav {
     }
 
     private void setBeaconLocation() {
-        OpenGLMatrix loc = createMatrix(0,0,0,AxesOrder.XYZ,0,0,0);
+        OpenGLMatrix loc = createMatrix(0,0,0,AxesOrder.XZX,90,90,0);
         for(VuforiaTrackable beacon : beacons) {
             beacon.setLocation(loc);
         }
