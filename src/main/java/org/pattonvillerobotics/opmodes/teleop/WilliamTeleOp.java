@@ -40,21 +40,19 @@ public class WilliamTeleOp extends LinearOpMode {
         gamepad.getButton(GamepadData.Button.A).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
             @Override
             public void run() {
-                servo.setDirection(Servo.Direction.FORWARD);
-                servo.setPosition(0.5);
+                servo.setPosition(1);
             }
         });
         gamepad.getButton(GamepadData.Button.A).addListener(ListenableButton.ButtonState.JUST_RELEASED, new ListenableButton.ButtonListener() {
             @Override
             public void run() {
-                servo.setDirection(Servo.Direction.REVERSE);
-                servo.setPosition(0.5);
+                servo.setPosition(0);
             }
         });
     }
 
     public void doLoop() {
-        drive.moveFreely(gamepad1.left_stick_y, -gamepad1.right_stick_y);
+        drive.moveFreely(gamepad1.left_stick_y, gamepad1.right_stick_y);
         gamepad.update(new GamepadData(gamepad1));
     }
 }
