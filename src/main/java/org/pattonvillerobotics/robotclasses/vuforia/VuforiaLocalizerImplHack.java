@@ -1,4 +1,4 @@
-package org.pattonvillerobotics.robotclasses;
+package org.pattonvillerobotics.robotclasses.vuforia;
 
 import com.qualcomm.robotcore.util.RobotLog;
 import com.vuforia.Frame;
