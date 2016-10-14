@@ -3,6 +3,7 @@ package org.pattonvillerobotics.robotclasses.vuforia;
 import android.graphics.Bitmap;
 
 import com.vuforia.Image;
+import com.vuforia.PIXEL_FORMAT;
 
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
@@ -27,6 +28,7 @@ public class VuforiaNav {
 
     public static void initializeVuforia(VuforiaParameters config) {
         vuforiaParameters = config;
+        vuforiaParameters.getVuforia().setFrameQueueCapacity(1);
         beacons = config.getVuforia().loadTrackablesFromAsset("FTC_2016-17");
 
         beacons.get(0).setName("Wheels");
@@ -92,22 +94,18 @@ public class VuforiaNav {
         return translation.getData()[1]/mmPerInch;
     }
 
-    public static Bitmap getRGBAImage() {
-        Image vimg = vuforiaParameters.getVuforia().getRGBImage();
-        if(vimg != null) {
-            Bitmap bm = Bitmap.createBitmap(vimg.getWidth(), vimg.getHeight(), Bitmap.Config.RGB_565);
-            bm.copyPixelsFromBuffer(vimg.getPixels());
-            return bm;
-        } else {
-            return null;
-        }
-    }
+    public static Bitmap getImage() {
+        Image img = null;
 
-    public static Bitmap getGrayImage() {
-        Image vimg = vuforiaParameters.getVuforia().getGrayImage();
-        if(vimg != null) {
-            Bitmap bm = Bitmap.createBitmap(vimg.getWidth(), vimg.getHeight(), Bitmap.Config.RGB_565);
-            bm.copyPixelsFromBuffer(vimg.getPixels());
+        for(int i = 0; i<vuforiaParameters.getVuforia().getFrameQueueCapacity(); i++) {
+            if(vuforiaParameters.getVuforia().getFrameQueue().poll().getImage(i).getFormat() == PIXEL_FORMAT.RGB565) {
+                img = vuforiaParameters.getVuforia().getFrameQueue().poll().getImage(i);
+            }
+        }
+
+        if(img != null) {
+            Bitmap bm = Bitmap.createBitmap(img.getWidth(), img.getHeight(), Bitmap.Config.RGB_565);
+            bm.copyPixelsFromBuffer(img.getPixels());
             return bm;
         } else {
             return null;

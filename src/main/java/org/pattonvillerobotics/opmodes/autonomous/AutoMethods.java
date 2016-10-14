@@ -2,7 +2,6 @@ package org.pattonvillerobotics.opmodes.autonomous;
 
 import org.pattonvillerobotics.commoncode.enums.Direction;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.EncoderDrive;
-import org.pattonvillerobotics.opmodes.autonomous.Globals;
 
 /**
  * Created by murphyk01 on 10/1/16.

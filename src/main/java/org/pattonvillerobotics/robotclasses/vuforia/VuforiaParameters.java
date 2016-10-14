@@ -1,5 +1,6 @@
 package org.pattonvillerobotics.robotclasses.vuforia;
 
+import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
@@ -17,20 +18,20 @@ public class VuforiaParameters {
     private OpenGLMatrix phoneLocation;
     private OpenGLMatrix beaconLocation;
     private VuforiaLocalizer.CameraDirection cameraDirection;
-    private VuforiaLocalizerImplHack vuforia;
+    private VuforiaLocalizer vuforia;
 
     private VuforiaParameters(String licenseKey, VuforiaLocalizer.CameraDirection cameraDirection, OpenGLMatrix phoneLocation, OpenGLMatrix beaconLocation) {
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(R.id.cameraMonitorViewId);
         parameters.cameraDirection = cameraDirection;
         parameters.vuforiaLicenseKey = licenseKey;
         parameters.cameraMonitorFeedback = VuforiaLocalizer.Parameters.CameraMonitorFeedback.AXES;
-        vuforia = new VuforiaLocalizerImplHack(parameters);
+        vuforia = ClassFactory.createVuforiaLocalizer(parameters);
         this.phoneLocation = phoneLocation;
         this.cameraDirection = cameraDirection;
         this.beaconLocation = beaconLocation;
     }
 
-    public VuforiaLocalizerImplHack getVuforia() { return vuforia; }
+    public VuforiaLocalizer getVuforia() { return vuforia; }
 
     public OpenGLMatrix getPhoneLocation() {
         return phoneLocation;

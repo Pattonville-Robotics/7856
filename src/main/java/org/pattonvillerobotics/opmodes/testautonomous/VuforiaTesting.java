@@ -1,16 +1,16 @@
 package org.pattonvillerobotics.opmodes.testautonomous;
 
+import android.graphics.Bitmap;
+
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
+import org.lasarobotics.vision.ftc.resq.Beacon;
 import org.pattonvillerobotics.commoncode.opmodes.OpModeGroups;
 import org.pattonvillerobotics.opmodes.CustomizedRobotParameters;
 import org.pattonvillerobotics.robotclasses.vuforia.VuforiaNav;
 
-/**
- * Created by greg on 10/2/2016.
- */
 @Autonomous(name="VuforiaTest", group= OpModeGroups.TESTING)
 public class VuforiaTesting extends LinearOpMode {
 
@@ -18,6 +18,8 @@ public class VuforiaTesting extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
 
         OpenGLMatrix lastUpdatedLocation;
+        Beacon colorSensor = new Beacon();
+        Bitmap img;
 
         initialize();
         waitForStart();
@@ -28,9 +30,11 @@ public class VuforiaTesting extends LinearOpMode {
             if(lastUpdatedLocation!=null) {
                 telemetry.addData("Distance", VuforiaNav.getDistance(lastUpdatedLocation));
                 telemetry.addData("x Position", VuforiaNav.getxPos(lastUpdatedLocation));
+            } else {
+                telemetry.addData("Position", "Unknown");
             }
 
-
+            // do color stuff PLEASE
 
             telemetry.update();
             idle();
