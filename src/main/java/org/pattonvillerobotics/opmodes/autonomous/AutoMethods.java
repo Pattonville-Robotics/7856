@@ -1,8 +1,12 @@
 package org.pattonvillerobotics.opmodes.autonomous;
 
+import android.util.Log;
+
+import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
+import org.pattonvillerobotics.commoncode.enums.AllianceColor;
 import org.pattonvillerobotics.commoncode.enums.Direction;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.EncoderDrive;
-import org.pattonvillerobotics.opmodes.autonomous.Globals;
+import org.pattonvillerobotics.robotclasses.vuforia.VuforiaNav;
 
 /**
  * Created by murphyk01 on 10/1/16.
@@ -10,97 +14,139 @@ import org.pattonvillerobotics.opmodes.autonomous.Globals;
 
 public class AutoMethods {
 
-    private EncoderDrive drive;
+    private static EncoderDrive drive;
+    private static AllianceColor allianceColor;
+    private static final String TAG = "AutoMethods";
+    private static final String ERROR_MESSAGE = "Alliance color must either be red or blue.";
 
     AutoMethods(EncoderDrive drive) {
         this.drive = drive;
     }
 
-    //~~~~~~~~~~~~~~ BLUE SIDE ~~~~~~~~~~~~~~//
 
-    //Pushes Big Ball from Vortex Position - Blue Side
-    public void BlueVortexC(){
-        drive.moveInches(Direction.FORWARD, 15, Globals.HALF_MOTOR_POWER);
-        drive.rotateDegrees(Direction.RIGHT, 45, Globals.HALF_MOTOR_POWER);
+    public static void setAllianceColor(AllianceColor newAllianceColor) {
+        allianceColor = newAllianceColor;
     }
 
-    //Pushes Big Ball from Corner Position - Blue Side
-    public void BlueCornerC() {
-        drive.moveInches(Direction.BACKWARD, 24, Globals.HALF_MOTOR_POWER);
+    public static void driveToCapball() {
+
+        drive.moveInches(Direction.FORWARD, Globals.DISTANCE1_TO_CAPBALL, Globals.MAX_MOTOR_POWER);
+
+        if(allianceColor.equals(AllianceColor.BLUE)) {
+            drive.rotateDegrees(Direction.FORWARD, Globals.HALF_TURN, Globals.HALF_MOTOR_POWER);
+        }
+        else if(allianceColor.equals(AllianceColor.RED)) {
+            drive.rotateDegrees(Direction.BACKWARD, Globals.HALF_TURN, Globals.HALF_MOTOR_POWER);
+        }
+        else {
+            Log.e(TAG, ERROR_MESSAGE);
+        }
+
+        drive.moveInches(Direction.FORWARD, Globals.DISTANCE2_TO_CAPBALL, Globals.MAX_MOTOR_POWER);
+
     }
 
-    //Goes to both beacons far side first to close - Blue side
-    public void BlueB() {
-        drive.moveInches(Direction.FORWARD, 60, Globals.HALF_MOTOR_POWER);
-        drive.rotateDegrees(Direction.RIGHT, 45, Globals.HALF_MOTOR_POWER);
-        //implement the color sensors here and distance
-        drive.rotateDegrees(Direction.RIGHT, 90, Globals.HALF_MOTOR_POWER);
-        drive.moveInches(Direction.FORWARD, 38, Globals.HALF_MOTOR_POWER);
-        drive.rotateDegrees(Direction.LEFT, 90, Globals.HALF_MOTOR_POWER);
-        //Implement the color sensors here and distance sensor
+    public static void driveToBeacon() {
+
+        drive.moveInches(Direction.FORWARD, Globals.DISTANCE1_TO_BEACON, Globals.MAX_MOTOR_POWER);
+
+        if(allianceColor.equals(AllianceColor.BLUE)) {
+            drive.rotateDegrees(Direction.FORWARD, Globals.HALF_TURN, Globals.HALF_MOTOR_POWER);
+        }
+        else if(allianceColor.equals(AllianceColor.RED)) {
+            drive.rotateDegrees(Direction.BACKWARD, Globals.HALF_TURN, Globals.HALF_MOTOR_POWER);
+        }
+        else {
+            Log.e(TAG, ERROR_MESSAGE);
+        }
+
+        drive.moveInches(Direction.FORWARD, Globals.DISTANCE2_TO_BEACON, Globals.MAX_MOTOR_POWER);
+
     }
 
-    //Goes to far beacon from Ball - blue side
-    public void BlueFarB() {
-        drive.moveInches(Direction.FORWARD, 60, Globals.HALF_MOTOR_POWER);
-        drive.rotateDegrees(Direction.RIGHT, 45, Globals.HALF_MOTOR_POWER);
-        //Implement the color and distance sensor code here
+    public static void alignToBeacon() {
+
+        OpenGLMatrix lastLocation = VuforiaNav.getNearestBeaconLocation();
+
+        while(VuforiaNav.getDistance(lastLocation) > Globals.MINIMUM_DISTANCE_TO_BEACON) {
+
+            lastLocation = VuforiaNav.getNearestBeaconLocation();
+            double offset = VuforiaNav.getxPos(lastLocation);
+
+            if(offset > Globals.BEACON_MAXIMUM_OFFSET) {
+                drive.rotateDegrees(Direction.BACKWARD, Globals.BEACON_ALIGN_TURN, Globals.HALF_MOTOR_POWER);
+            }
+            else if(offset < Globals.BEACON_MINIMUM_OFFSET) {
+                drive.rotateDegrees(Direction.FORWARD, Globals.BEACON_ALIGN_TURN, Globals.HALF_MOTOR_POWER);
+            }
+            else {
+                Log.e(TAG, ERROR_MESSAGE);
+            }
+
+        }
+
     }
 
-    //Goes to close beacon from ball - blue side
-    public void BlueCloseB() {
-        drive.rotateDegrees(Direction.RIGHT, 45, Globals.HALF_MOTOR_POWER);
-        drive.moveInches(Direction.FORWARD, 45, Globals.HALF_MOTOR_POWER);
-        //Implement the color and distance sensor code here
+    public static void driveToNextBeacon() {
+
+        drive.moveInches(Direction.BACKWARD, Globals.BEACON_BACKUP_DISTANCE, Globals.MAX_MOTOR_POWER);
+
+        if(allianceColor.equals(AllianceColor.BLUE)) {
+            drive.rotateDegrees(Direction.FORWARD, Globals.RIGHT_TURN, Globals.HALF_MOTOR_POWER);
+        }
+        else if(allianceColor.equals(AllianceColor.RED)) {
+            drive.rotateDegrees(Direction.BACKWARD, Globals.RIGHT_TURN, Globals.HALF_MOTOR_POWER);
+        }
+        else {
+            Log.e(TAG, ERROR_MESSAGE);
+        }
+
+        drive.moveInches(Direction.FORWARD, Globals.DISTANCE_TO_NEXT_BEACON, Globals.MAX_MOTOR_POWER);
+
+        if(allianceColor.equals(AllianceColor.BLUE)) {
+            drive.rotateDegrees(Direction.BACKWARD, Globals.RIGHT_TURN, Globals.HALF_MOTOR_POWER);
+        }
+        else if(allianceColor.equals(AllianceColor.RED)) {
+            drive.rotateDegrees(Direction.FORWARD, Globals.RIGHT_TURN, Globals.HALF_MOTOR_POWER);
+        }
+        else {
+            Log.e(TAG, ERROR_MESSAGE);
+        }
+
     }
 
-    //Parks from beacon - blue side
-    public void BluePark() {
-        drive.rotateDegrees(Direction.RIGHT, 90, Globals.HALF_MOTOR_POWER);
-        drive.moveInches(Direction.FORWARD, 42, Globals.HALF_MOTOR_POWER);
+    public static void driveToCornerVortex() {
+
+        drive.moveInches(Direction.BACKWARD, Globals.BEACON_BACKUP_DISTANCE, Globals.MAX_MOTOR_POWER);
+
+        if(allianceColor.equals(AllianceColor.BLUE)) {
+            drive.rotateDegrees(Direction.FORWARD, Globals.RIGHT_TURN, Globals.HALF_MOTOR_POWER);
+        }
+        else if(allianceColor.equals(AllianceColor.RED)) {
+            drive.rotateDegrees(Direction.BACKWARD, Globals.RIGHT_TURN, Globals.HALF_MOTOR_POWER);
+        }
+        else {
+            Log.e(TAG, ERROR_MESSAGE);
+        }
+
+        drive.moveInches(Direction.FORWARD, Globals.DISTANCE_TO_CORNER_VORTEX, Globals.MAX_MOTOR_POWER);
+
+        if(allianceColor.equals(AllianceColor.BLUE)) {
+            drive.rotateDegrees(Direction.BACKWARD, Globals.HALF_TURN, Globals.HALF_MOTOR_POWER);
+        }
+        else if(allianceColor.equals(AllianceColor.RED)) {
+            drive.rotateDegrees(Direction.FORWARD, Globals.HALF_TURN, Globals.HALF_MOTOR_POWER);
+        }
+        else {
+            Log.e(TAG, ERROR_MESSAGE);
+        }
+
     }
 
-    //~~~~~~~~~~~~ RED SIDE~~~~~~~~~~~ //
+    public static void climbCornerVortex() {
 
-    //Pushes Big Ball from Vortex Position - Red Side
-    public void RedVortexC(){
-        drive.moveInches(Direction.FORWARD, 15, Globals.HALF_MOTOR_POWER);
-        drive.rotateDegrees(Direction.LEFT, 45, Globals.HALF_MOTOR_POWER);
+        drive.moveInches(Direction.FORWARD, Globals.DISTANCE_TO_CLIMB_CORNER_VORTEX, Globals.MAX_MOTOR_POWER);
+
     }
 
-    //Pushes Big Ball from Corner Position - Red Side
-    public void RedCornerC() {
-        drive.moveInches(Direction.FORWARD, 84, Globals.HALF_MOTOR_POWER);
-    }
-
-    //Goes to both beacons far side first to close - Red side
-    public void RedB() {
-        drive.moveInches(Direction.FORWARD, 60, Globals.HALF_MOTOR_POWER);
-        drive.rotateDegrees(Direction.LEFT, 45, Globals.HALF_MOTOR_POWER);
-        //implement the color sensors here and distance
-        drive.rotateDegrees(Direction.LEFT, 90, Globals.HALF_MOTOR_POWER);
-        drive.moveInches(Direction.FORWARD, 38, Globals.HALF_MOTOR_POWER);
-        drive.rotateDegrees(Direction.RIGHT, 90, Globals.HALF_MOTOR_POWER);
-        //Implement the color sensors here and distance sensor
-    }
-
-    //Goes to far beacon from Ball - Red side
-    public void RedFarB() {
-        drive.moveInches(Direction.FORWARD, 60, Globals.HALF_MOTOR_POWER);
-        drive.rotateDegrees(Direction.LEFT, 45, Globals.HALF_MOTOR_POWER);
-        //Implement the color and distance sensor code here
-    }
-
-    //Goes to close beacon from ball - Red side
-    public void RedCloseB() {
-        drive.rotateDegrees(Direction.LEFT, 45, Globals.HALF_MOTOR_POWER);
-        drive.moveInches(Direction.FORWARD, 45, Globals.HALF_MOTOR_POWER);
-        //Implement the color and distance sensor code here
-    }
-
-    //Parks from beacon - Red side
-    public void RedPark() {
-        drive.rotateDegrees(Direction.LEFT, 90, Globals.HALF_MOTOR_POWER);
-        drive.moveInches(Direction.FORWARD, 42, Globals.HALF_MOTOR_POWER);
-    }
 }
