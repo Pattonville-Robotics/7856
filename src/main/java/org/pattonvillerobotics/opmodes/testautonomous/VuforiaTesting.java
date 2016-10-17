@@ -1,12 +1,9 @@
 package org.pattonvillerobotics.opmodes.testautonomous;
 
-import android.graphics.Bitmap;
-
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
-import org.lasarobotics.vision.ftc.resq.Beacon;
 import org.pattonvillerobotics.commoncode.opmodes.OpModeGroups;
 import org.pattonvillerobotics.opmodes.CustomizedRobotParameters;
 import org.pattonvillerobotics.robotclasses.vuforia.VuforiaNav;
@@ -18,8 +15,6 @@ public class VuforiaTesting extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
 
         OpenGLMatrix lastUpdatedLocation;
-        Beacon colorSensor = new Beacon();
-        Bitmap img;
 
         initialize();
         waitForStart();
@@ -40,9 +35,14 @@ public class VuforiaTesting extends LinearOpMode {
             idle();
             sleep(100);
         }
+        if(isStopRequested()) {
+            VuforiaNav.deactivate();
+        }
     }
 
+
+
     public void initialize() {
-        VuforiaNav.initializeVuforia(CustomizedRobotParameters.VUFORIA_PARAMETERS);
+        VuforiaNav.initializeVuforia(CustomizedRobotParameters.getVuforiaParameters());
     }
 }
