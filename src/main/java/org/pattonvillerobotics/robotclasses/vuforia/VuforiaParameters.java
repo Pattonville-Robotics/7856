@@ -18,14 +18,17 @@ public class VuforiaParameters {
     private OpenGLMatrix phoneLocation;
     private OpenGLMatrix beaconLocation;
     private VuforiaLocalizer.CameraDirection cameraDirection;
+    private VuforiaLocalizer.Parameters parameters;
     private VuforiaLocalizer vuforia;
+    private String licenseKey;
 
     private VuforiaParameters(String licenseKey, VuforiaLocalizer.CameraDirection cameraDirection, OpenGLMatrix phoneLocation, OpenGLMatrix beaconLocation) {
-        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(R.id.cameraMonitorViewId);
+        parameters = new VuforiaLocalizer.Parameters(R.id.cameraMonitorViewId);
         parameters.cameraDirection = cameraDirection;
         parameters.vuforiaLicenseKey = licenseKey;
         parameters.cameraMonitorFeedback = VuforiaLocalizer.Parameters.CameraMonitorFeedback.AXES;
         vuforia = ClassFactory.createVuforiaLocalizer(parameters);
+        this.licenseKey = licenseKey;
         this.phoneLocation = phoneLocation;
         this.cameraDirection = cameraDirection;
         this.beaconLocation = beaconLocation;
