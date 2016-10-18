@@ -13,25 +13,17 @@ import org.pattonvillerobotics.opmodes.CustomizedRobotParameters;
 
 public class BlueLineCBV extends LinearOpMode {
 
-    private EncoderDrive drive;
-
     @Override
     public void runOpMode() throws InterruptedException {
 
         initialize();
         waitForStart();
 
-        AutoMethods.driveToCapball();
-        AutoMethods.driveToBeacon();
-        AutoMethods.alignToBeacon();
-        AutoMethods.driveToNextBeacon();
-        AutoMethods.alignToBeacon();
-        AutoMethods.driveToCornerVortex();
-        AutoMethods.climbCornerVortex();
+        AutoMethods.runProcessCBV();
 
     }
 
     public void initialize() {
-        AutoMethods.init(new EncoderDrive(hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS), AllianceColor.BLUE);
+        AutoMethods.init(new EncoderDrive(hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS), AllianceColor.BLUE, StartPosition.LINE);
     }
 }

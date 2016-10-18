@@ -16,6 +16,7 @@ public class AutoMethods {
 
     private static EncoderDrive drive;
     private static AllianceColor allianceColor;
+    private static StartPosition startPosition;
     private static final String TAG = "AutoMethods";
     private static final String ERROR_MESSAGE = "Alliance color must either be red or blue.";
 
@@ -23,26 +24,39 @@ public class AutoMethods {
         this.drive = drive;
     }
 
-    public static void init(EncoderDrive newDrive, AllianceColor newAllianceColor) {
+    public static void init(EncoderDrive newDrive, AllianceColor newAllianceColor, StartPosition newStartPosition) {
         allianceColor = newAllianceColor;
         drive = newDrive;
+        startPosition = newStartPosition;
     }
 
     public static void driveToCapball() {
 
-        drive.moveInches(Direction.FORWARD, Globals.DISTANCE1_TO_CAPBALL, Globals.MAX_MOTOR_POWER);
+        if(startPosition.equals(StartPosition.LINE)) {
 
-        if(allianceColor.equals(AllianceColor.BLUE)) {
-            drive.rotateDegrees(Direction.FORWARD, Globals.HALF_TURN, Globals.HALF_MOTOR_POWER);
+            drive.moveInches(Direction.FORWARD, Globals.DISTANCE1_TO_CAPBALL, Globals.MAX_MOTOR_POWER);
+
+            if (allianceColor.equals(AllianceColor.BLUE)) {
+                drive.rotateDegrees(Direction.RIGHT, Globals.HALF_TURN, Globals.HALF_MOTOR_POWER);
+            } else if (allianceColor.equals(AllianceColor.RED)) {
+                drive.rotateDegrees(Direction.LEFT, Globals.HALF_TURN, Globals.HALF_MOTOR_POWER);
+            } else {
+                Log.e(TAG, ERROR_MESSAGE);
+            }
+
+            drive.moveInches(Direction.FORWARD, Globals.DISTANCE2_TO_CAPBALL, Globals.MAX_MOTOR_POWER);
+
         }
-        else if(allianceColor.equals(AllianceColor.RED)) {
-            drive.rotateDegrees(Direction.BACKWARD, Globals.HALF_TURN, Globals.HALF_MOTOR_POWER);
+
+        else if(startPosition.equals(StartPosition.VORTEX)) {
+
+            drive.moveInches(Direction.FORWARD, Globals.STRAIGHT_DISTANCE_TO_CAPBALL, Globals.MAX_MOTOR_POWER);
+
         }
+
         else {
             Log.e(TAG, ERROR_MESSAGE);
         }
-
-        drive.moveInches(Direction.FORWARD, Globals.DISTANCE2_TO_CAPBALL, Globals.MAX_MOTOR_POWER);
 
     }
 
@@ -51,10 +65,10 @@ public class AutoMethods {
         drive.moveInches(Direction.FORWARD, Globals.DISTANCE1_TO_BEACON, Globals.MAX_MOTOR_POWER);
 
         if(allianceColor.equals(AllianceColor.BLUE)) {
-            drive.rotateDegrees(Direction.FORWARD, Globals.HALF_TURN, Globals.HALF_MOTOR_POWER);
+            drive.rotateDegrees(Direction.RIGHT, Globals.HALF_TURN, Globals.HALF_MOTOR_POWER);
         }
         else if(allianceColor.equals(AllianceColor.RED)) {
-            drive.rotateDegrees(Direction.BACKWARD, Globals.HALF_TURN, Globals.HALF_MOTOR_POWER);
+            drive.rotateDegrees(Direction.LEFT, Globals.HALF_TURN, Globals.HALF_MOTOR_POWER);
         }
         else {
             Log.e(TAG, ERROR_MESSAGE);
@@ -74,10 +88,10 @@ public class AutoMethods {
             double offset = VuforiaNav.getxPos(lastLocation);
 
             if(offset > Globals.BEACON_MAXIMUM_OFFSET) {
-                drive.rotateDegrees(Direction.BACKWARD, Globals.BEACON_ALIGN_TURN, Globals.HALF_MOTOR_POWER);
+                drive.rotateDegrees(Direction.LEFT, Globals.BEACON_ALIGN_TURN, Globals.HALF_MOTOR_POWER);
             }
             else if(offset < Globals.BEACON_MINIMUM_OFFSET) {
-                drive.rotateDegrees(Direction.FORWARD, Globals.BEACON_ALIGN_TURN, Globals.HALF_MOTOR_POWER);
+                drive.rotateDegrees(Direction.RIGHT, Globals.BEACON_ALIGN_TURN, Globals.HALF_MOTOR_POWER);
             }
             else {
                 Log.e(TAG, ERROR_MESSAGE);
@@ -92,10 +106,10 @@ public class AutoMethods {
         drive.moveInches(Direction.BACKWARD, Globals.BEACON_BACKUP_DISTANCE, Globals.MAX_MOTOR_POWER);
 
         if(allianceColor.equals(AllianceColor.BLUE)) {
-            drive.rotateDegrees(Direction.FORWARD, Globals.RIGHT_TURN, Globals.HALF_MOTOR_POWER);
+            drive.rotateDegrees(Direction.RIGHT, Globals.RIGHT_TURN, Globals.HALF_MOTOR_POWER);
         }
         else if(allianceColor.equals(AllianceColor.RED)) {
-            drive.rotateDegrees(Direction.BACKWARD, Globals.RIGHT_TURN, Globals.HALF_MOTOR_POWER);
+            drive.rotateDegrees(Direction.LEFT, Globals.RIGHT_TURN, Globals.HALF_MOTOR_POWER);
         }
         else {
             Log.e(TAG, ERROR_MESSAGE);
@@ -104,10 +118,10 @@ public class AutoMethods {
         drive.moveInches(Direction.FORWARD, Globals.DISTANCE_TO_NEXT_BEACON, Globals.MAX_MOTOR_POWER);
 
         if(allianceColor.equals(AllianceColor.BLUE)) {
-            drive.rotateDegrees(Direction.BACKWARD, Globals.RIGHT_TURN, Globals.HALF_MOTOR_POWER);
+            drive.rotateDegrees(Direction.LEFT, Globals.RIGHT_TURN, Globals.HALF_MOTOR_POWER);
         }
         else if(allianceColor.equals(AllianceColor.RED)) {
-            drive.rotateDegrees(Direction.FORWARD, Globals.RIGHT_TURN, Globals.HALF_MOTOR_POWER);
+            drive.rotateDegrees(Direction.RIGHT, Globals.RIGHT_TURN, Globals.HALF_MOTOR_POWER);
         }
         else {
             Log.e(TAG, ERROR_MESSAGE);
@@ -120,10 +134,10 @@ public class AutoMethods {
         drive.moveInches(Direction.BACKWARD, Globals.BEACON_BACKUP_DISTANCE, Globals.MAX_MOTOR_POWER);
 
         if(allianceColor.equals(AllianceColor.BLUE)) {
-            drive.rotateDegrees(Direction.FORWARD, Globals.RIGHT_TURN, Globals.HALF_MOTOR_POWER);
+            drive.rotateDegrees(Direction.RIGHT, Globals.RIGHT_TURN, Globals.HALF_MOTOR_POWER);
         }
         else if(allianceColor.equals(AllianceColor.RED)) {
-            drive.rotateDegrees(Direction.BACKWARD, Globals.RIGHT_TURN, Globals.HALF_MOTOR_POWER);
+            drive.rotateDegrees(Direction.LEFT, Globals.RIGHT_TURN, Globals.HALF_MOTOR_POWER);
         }
         else {
             Log.e(TAG, ERROR_MESSAGE);
@@ -132,10 +146,10 @@ public class AutoMethods {
         drive.moveInches(Direction.FORWARD, Globals.DISTANCE_TO_CORNER_VORTEX, Globals.MAX_MOTOR_POWER);
 
         if(allianceColor.equals(AllianceColor.BLUE)) {
-            drive.rotateDegrees(Direction.BACKWARD, Globals.HALF_TURN, Globals.HALF_MOTOR_POWER);
+            drive.rotateDegrees(Direction.LEFT, Globals.HALF_TURN, Globals.HALF_MOTOR_POWER);
         }
         else if(allianceColor.equals(AllianceColor.RED)) {
-            drive.rotateDegrees(Direction.FORWARD, Globals.HALF_TURN, Globals.HALF_MOTOR_POWER);
+            drive.rotateDegrees(Direction.RIGHT, Globals.HALF_TURN, Globals.HALF_MOTOR_POWER);
         }
         else {
             Log.e(TAG, ERROR_MESSAGE);
@@ -147,6 +161,16 @@ public class AutoMethods {
 
         drive.moveInches(Direction.FORWARD, Globals.DISTANCE_TO_CLIMB_CORNER_VORTEX, Globals.MAX_MOTOR_POWER);
 
+    }
+
+    public static void runProcessCBV() {
+        AutoMethods.driveToCapball();
+        AutoMethods.driveToBeacon();
+        AutoMethods.alignToBeacon();
+        AutoMethods.driveToNextBeacon();
+        AutoMethods.alignToBeacon();
+        AutoMethods.driveToCornerVortex();
+        AutoMethods.climbCornerVortex();
     }
 
 }
