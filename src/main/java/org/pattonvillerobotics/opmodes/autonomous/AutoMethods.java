@@ -23,9 +23,9 @@ public class AutoMethods {
         this.drive = drive;
     }
 
-
-    public static void setAllianceColor(AllianceColor newAllianceColor) {
+    public static void init(EncoderDrive newDrive, AllianceColor newAllianceColor) {
         allianceColor = newAllianceColor;
+        drive = newDrive;
     }
 
     public static void driveToCapball() {
