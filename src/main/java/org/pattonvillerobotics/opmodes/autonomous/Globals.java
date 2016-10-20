@@ -34,7 +34,5 @@ public class Globals {
     public static final int MINIMUM_DISTANCE_TO_BEACON = 1;
     public static final int BEACON_BACKUP_DISTANCE = 12;
 
-    // Starting Positions
-
     
 }

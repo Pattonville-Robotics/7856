@@ -25,7 +25,7 @@ public class Hopper {
         hopper.setPower(Globals.MAX_MOTOR_POWER);
     }
 
-    public void stop() {
+    public void stopHopper() {
         hopper.setPower(0);
     }
 
