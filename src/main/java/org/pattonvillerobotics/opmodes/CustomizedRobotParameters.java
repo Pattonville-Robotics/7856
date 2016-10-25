@@ -17,7 +17,7 @@ public class CustomizedRobotParameters {
                     .encodersEnabled(true)
                     .gyroEnabled(false)
                     .wheelRadius(2)
-                    .wheelBaseRadius(16.13927)
+                    .wheelBaseRadius(16.36658366)
                     .driveGearRatio(2)
                     .build();
     }
