@@ -3,7 +3,6 @@ package org.pattonvillerobotics.robotclasses.vuforia;
 import android.graphics.Bitmap;
 
 import com.vuforia.Image;
-import com.vuforia.PIXEL_FORMAT;
 
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
@@ -29,7 +28,7 @@ public class VuforiaNav {
     public static void initializeVuforia(VuforiaParameters config) {
         vuforiaParameters = config;
         vuforiaParameters.getVuforia().setFrameQueueCapacity(1);
-        beacons = config.getVuforia().loadTrackablesFromAsset("FTC_2016-17");
+        beacons = vuforiaParameters.getVuforia().loadTrackablesFromAsset("FTC_2016-17");
 
         beacons.get(0).setName("Wheels");
         beacons.get(1).setName("Tools");
@@ -95,13 +94,7 @@ public class VuforiaNav {
     }
 
     public static Bitmap getImage() {
-        Image img = null;
-
-        for(int i = 0; i<vuforiaParameters.getVuforia().getFrameQueueCapacity(); i++) {
-            if(vuforiaParameters.getVuforia().getFrameQueue().poll().getImage(i).getFormat() == PIXEL_FORMAT.RGB565) {
-                img = vuforiaParameters.getVuforia().getFrameQueue().poll().getImage(i);
-            }
-        }
+        Image img = vuforiaParameters.getVuforia().getImage();
 
         if(img != null) {
             Bitmap bm = Bitmap.createBitmap(img.getWidth(), img.getHeight(), Bitmap.Config.RGB_565);
