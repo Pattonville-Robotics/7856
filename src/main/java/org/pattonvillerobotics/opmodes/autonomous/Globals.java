@@ -7,8 +7,8 @@ package org.pattonvillerobotics.opmodes.autonomous;
 public class Globals {
 
     // Motors
-    public static final double MAX_MOTOR_POWER = 0.7;
-    public static final double HALF_MOTOR_POWER = 0.5;
+    public static final double MAX_MOTOR_POWER = -0.7;
+    public static final double HALF_MOTOR_POWER = -0.5;
 
     // Turning
     public static final int RIGHT_TURN = 90;
@@ -24,14 +24,15 @@ public class Globals {
 
     // Distances
     public static final int DISTANCE1_TO_CAPBALL = 15;
-    public static final int DISTANCE2_TO_CAPBALL = 52;
+    public static final int DISTANCE2_TO_CAPBALL = 40;
     public static final int STRAIGHT_DISTANCE_TO_CAPBALL = 50;
+    public static final int DISTANCE_TO_NEAR_BEACON = 50;
     public static final int DISTANCE1_TO_BEACON = 60;
     public static final int DISTANCE2_TO_BEACON = 10;
     public static final int DISTANCE_TO_NEXT_BEACON = 55;
     public static final int DISTANCE_TO_CORNER_VORTEX = 38;
     public static final int DISTANCE_TO_CLIMB_CORNER_VORTEX = 20;
-    public static final int MINIMUM_DISTANCE_TO_BEACON = 1;
+    public static final int MINIMUM_DISTANCE_TO_BEACON = 6;
     public static final int BEACON_BACKUP_DISTANCE = 12;
 
     

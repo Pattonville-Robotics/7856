@@ -4,8 +4,11 @@ import android.util.Log;
 
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.pattonvillerobotics.commoncode.enums.AllianceColor;
+import org.pattonvillerobotics.commoncode.enums.ColorSensorColor;
 import org.pattonvillerobotics.commoncode.enums.Direction;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.EncoderDrive;
+import org.pattonvillerobotics.robotclasses.colordetection.BeaconColorDetection;
+import org.pattonvillerobotics.robotclasses.mechanisms.ArmMover;
 import org.pattonvillerobotics.robotclasses.vuforia.VuforiaNav;
 
 /**
@@ -17,6 +20,11 @@ public class AutoMethods {
     private static EncoderDrive drive;
     private static AllianceColor allianceColor;
     private static StartPosition startPosition;
+    private static ArmMover armMover;
+    private static ColorSensorColor leftColor;
+    private static ColorSensorColor rightColor;
+    private static BeaconColorDetection beaconColorDetection;
+
     private static final String TAG = "AutoMethods";
     private static final String ERROR_MESSAGE = "Alliance color must either be red or blue.";
 
@@ -75,6 +83,33 @@ public class AutoMethods {
         }
 
         drive.moveInches(Direction.FORWARD, Globals.DISTANCE2_TO_BEACON, Globals.MAX_MOTOR_POWER);
+
+    }
+
+    public static void detectColor() {
+
+        leftColor = beaconColorDetection.getLeftColor();
+        rightColor = beaconColorDetection.getRightColor();
+
+    }
+
+    public static void pressBeacon() {
+
+        if(leftColor.equals(ColorSensorColor.BLUE) && allianceColor.equals(AllianceColor.BLUE)) {
+            armMover.moveTo(ArmMover.Position.LEFT);
+        }
+        else if(leftColor.equals(ColorSensorColor.RED) && allianceColor.equals(AllianceColor.RED)) {
+            armMover.moveTo(ArmMover.Position.LEFT);
+        }
+        else if(rightColor.equals(ColorSensorColor.BLUE) && allianceColor.equals(AllianceColor.BLUE)) {
+            armMover.moveTo(ArmMover.Position.RIGHT);
+        }
+        else if(rightColor.equals(ColorSensorColor.RED) && allianceColor.equals(AllianceColor.RED)) {
+            armMover.moveTo(ArmMover.Position.RIGHT);
+        }
+        else {
+            armMover.moveTo(ArmMover.Position.DEFAULT);
+        }
 
     }
 
@@ -163,14 +198,37 @@ public class AutoMethods {
 
     }
 
+    public static void driveToNearBeacon() {
+
+        drive.rotateDegrees(Direction.RIGHT, Globals.HALF_TURN, Globals.HALF_MOTOR_POWER);
+        drive.moveInches(Direction.FORWARD, Globals.DISTANCE_TO_NEAR_BEACON, Globals.MAX_MOTOR_POWER);
+
+    }
+
     public static void runProcessCBV() {
+
         AutoMethods.driveToCapball();
-        AutoMethods.driveToBeacon();
+        AutoMethods.driveToNearBeacon();
+        AutoMethods.detectColor();
         AutoMethods.alignToBeacon();
-        AutoMethods.driveToNextBeacon();
-        AutoMethods.alignToBeacon();
+        AutoMethods.pressBeacon();
         AutoMethods.driveToCornerVortex();
         AutoMethods.climbCornerVortex();
+
+        /*
+        AutoMethods.driveToCapball();
+        AutoMethods.driveToBeacon();
+        AutoMethods.detectColor();
+        AutoMethods.alignToBeacon();
+        AutoMethods.pressBeacon();
+        armMover.moveTo(ArmMover.Position.LEFT);
+        AutoMethods.driveToNextBeacon();
+        AutoMethods.detectColor();
+        AutoMethods.alignToBeacon();
+        AutoMethods.pressBeacon();
+        AutoMethods.driveToCornerVortex();
+        AutoMethods.climbCornerVortex();
+        */
     }
 
 }
