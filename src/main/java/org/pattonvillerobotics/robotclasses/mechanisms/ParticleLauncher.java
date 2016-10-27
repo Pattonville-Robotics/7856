@@ -10,13 +10,14 @@ import org.pattonvillerobotics.opmodes.autonomous.Globals;
  * Created by pieperm on 10/20/16.
  */
 
-public class ParticleLauncher {
+public class ParticleLauncher extends AbstractMechanism {
 
     private GyroSensor gyro;
     private DcMotor particleLauncher;
     private DcMotor launcherRotater;
 
-    private ParticleLauncher(HardwareMap hardwareMap) {
+    public ParticleLauncher(HardwareMap hardwareMap) {
+        super(hardwareMap);
         gyro = hardwareMap.gyroSensor.get("name");
         particleLauncher = hardwareMap.dcMotor.get("name");
         launcherRotater = hardwareMap.dcMotor.get("name");
