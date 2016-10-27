@@ -41,7 +41,6 @@ public class ParticleLauncher extends AbstractMechanism {
 
     }
 
-
     public void launchParticle() {
 
         rotateLauncher();
