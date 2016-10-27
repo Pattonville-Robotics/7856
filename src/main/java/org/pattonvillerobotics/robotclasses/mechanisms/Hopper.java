@@ -13,7 +13,7 @@ public class Hopper {
 
     private DcMotor hopper;
 
-    private Hopper(HardwareMap hardwareMap) {
+    public Hopper(HardwareMap hardwareMap) {
         hopper = hardwareMap.dcMotor.get("name");
     }
 

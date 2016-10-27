@@ -40,7 +40,6 @@ public class ParticleLauncher {
 
     }
 
-
     public void launchParticle() {
 
         rotateLauncher();
