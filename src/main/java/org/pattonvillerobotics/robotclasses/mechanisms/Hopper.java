@@ -9,11 +9,12 @@ import org.pattonvillerobotics.opmodes.autonomous.Globals;
  * Created by pieperm on 10/20/16.
  */
 
-public class Hopper {
+public class Hopper extends AbstractMechanism {
 
     private DcMotor hopper;
 
     public Hopper(HardwareMap hardwareMap) {
+        super(hardwareMap);
         hopper = hardwareMap.dcMotor.get("name");
     }
 
