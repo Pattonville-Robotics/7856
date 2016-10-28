@@ -118,26 +118,19 @@ public class AutoMethods {
         boolean aligned = false;
         OpenGLMatrix lastLocation;
 
-
-        while(!aligned) {
+        while (!aligned) {
             lastLocation = VuforiaNav.getNearestBeaconLocation();
-            if(lastLocation != null) {
-                while(VuforiaNav.getDistance(lastLocation) > Globals.MINIMUM_DISTANCE_TO_BEACON) {
-                    double offset = VuforiaNav.getxPos(lastLocation);
+            if (lastLocation != null) {
+                double offset = VuforiaNav.getxPos(lastLocation);
 
-                    if(offset > Globals.BEACON_MAXIMUM_OFFSET) {
-                        drive.rightDriveMotor.setPower(Globals.MAX_MOTOR_POWER);
-                    }
-                    else if(offset < Globals.BEACON_MINIMUM_OFFSET) {
-                        drive.leftDriveMotor.setPower(Globals.MAX_MOTOR_POWER);
-                    }
-                    else {
-                        Log.e(TAG, ERROR_MESSAGE);
-                    }
-                    if(offset < 1 || offset > -1) {
-                        aligned = true;
-                    }
+                if (offset > Globals.BEACON_MAXIMUM_OFFSET) {
+                    drive.rightDriveMotor.setPower(Globals.HALF_MOTOR_POWER);
+                } else if (offset < Globals.BEACON_MINIMUM_OFFSET) {
+                    drive.leftDriveMotor.setPower(Globals.HALF_MOTOR_POWER);
+                } else {
+                    aligned = true;
                 }
+
             }
 
         }
