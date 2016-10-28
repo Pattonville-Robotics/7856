@@ -115,20 +115,28 @@ public class AutoMethods {
 
     public static void alignToBeacon() {
 
-        OpenGLMatrix lastLocation = VuforiaNav.getNearestBeaconLocation();
+        boolean aligned = false;
+        OpenGLMatrix lastLocation;
 
-        while(VuforiaNav.getDistance(lastLocation) > Globals.MINIMUM_DISTANCE_TO_BEACON) {
 
+        while(!aligned) {
             lastLocation = VuforiaNav.getNearestBeaconLocation();
             if(lastLocation != null) {
-                double offset = VuforiaNav.getxPos(lastLocation);
+                while(VuforiaNav.getDistance(lastLocation) > Globals.MINIMUM_DISTANCE_TO_BEACON) {
+                    double offset = VuforiaNav.getxPos(lastLocation);
 
-                if (offset > Globals.BEACON_MAXIMUM_OFFSET) {
-                    drive.rotateDegrees(Direction.LEFT, Globals.BEACON_ALIGN_TURN, Globals.HALF_MOTOR_POWER);
-                } else if (offset < Globals.BEACON_MINIMUM_OFFSET) {
-                    drive.rotateDegrees(Direction.RIGHT, Globals.BEACON_ALIGN_TURN, Globals.HALF_MOTOR_POWER);
-                } else {
-                    Log.e(TAG, ERROR_MESSAGE);
+                    if(offset > Globals.BEACON_MAXIMUM_OFFSET) {
+                        drive.rotateDegrees(Direction.LEFT, Globals.BEACON_ALIGN_TURN, Globals.HALF_MOTOR_POWER);
+                    }
+                    else if(offset < Globals.BEACON_MINIMUM_OFFSET) {
+                        drive.rotateDegrees(Direction.RIGHT, Globals.BEACON_ALIGN_TURN, Globals.HALF_MOTOR_POWER);
+                    }
+                    else {
+                        Log.e(TAG, ERROR_MESSAGE);
+                    }
+                    if(offset < 1 || offset > -1) {
+                        aligned = true;
+                    }
                 }
             }
 
@@ -211,7 +219,7 @@ public class AutoMethods {
         AutoMethods.driveToNearBeacon();
         //AutoMethods.detectColor();
         AutoMethods.alignToBeacon();
-        AutoMethods.pressBeacon();
+/*        AutoMethods.pressBeacon();
         AutoMethods.driveToCornerVortex();
         AutoMethods.climbCornerVortex();
 
