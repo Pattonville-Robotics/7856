@@ -7,8 +7,8 @@ package org.pattonvillerobotics.opmodes.autonomous;
 public class Globals {
 
     // Motors
-    public static final double MAX_MOTOR_POWER = -0.7;
-    public static final double HALF_MOTOR_POWER = -0.5;
+    public static final double MAX_MOTOR_POWER = 0.7;
+    public static final double HALF_MOTOR_POWER = 0.5;
 
     // Turning
     public static final int RIGHT_TURN = 90;
@@ -23,10 +23,10 @@ public class Globals {
     public static final double BUTTON_PRESSER_DEFAULT_POSITION = 0.5;
 
     // Distances
-    public static final int DISTANCE1_TO_CAPBALL = 15;
-    public static final int DISTANCE2_TO_CAPBALL = 40;
+    public static final int DISTANCE1_TO_CAPBALL = 10;
+    public static final int DISTANCE2_TO_CAPBALL = 46;
     public static final int STRAIGHT_DISTANCE_TO_CAPBALL = 50;
-    public static final int DISTANCE_TO_NEAR_BEACON = 50;
+    public static final int DISTANCE_TO_NEAR_BEACON = 40;
     public static final int DISTANCE1_TO_BEACON = 60;
     public static final int DISTANCE2_TO_BEACON = 10;
     public static final int DISTANCE_TO_NEXT_BEACON = 55;
