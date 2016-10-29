@@ -129,7 +129,27 @@ public class AutoMethods {
         OpenGLMatrix lastLocation;
 
         while (!aligned) {
+
             lastLocation = VuforiaNav.getNearestBeaconLocation();
+            double angleToBeacon = VuforiaNav.getAngle(lastLocation);
+
+            double x = VuforiaNav.getxPos(lastLocation);
+            double y = VuforiaNav.getDistance(lastLocation);
+            double Q = Globals.Q_DISTANCE;
+            double d = Math.sqrt( Math.pow(x, 2) + Math.pow((y - Q), 2) );
+            double c = Math.sqrt( Math.pow(x, 2) + Math.pow(y, 2) );
+            double angleToTurn = Math.acos( (Math.pow(d, 2) + Math.pow(c, 2) + Math.pow(Q, 2)) / (2*d*c) );
+
+            if(angleToBeacon > 0) {
+                drive.rotateDegrees(Direction.LEFT, angleToTurn, Globals.HALF_MOTOR_POWER);
+            }
+            else if(angleToBeacon < 0) {
+                drive.rotateDegrees(Direction.RIGHT, angleToTurn, Globals.HALF_MOTOR_POWER);
+            }
+            else {
+                drive.rotateDegrees(Direction.RIGHT, 0, Globals.HALF_MOTOR_POWER);
+            }
+
             if (lastLocation != null) {
                 double offset = VuforiaNav.getxPos(lastLocation);
 
