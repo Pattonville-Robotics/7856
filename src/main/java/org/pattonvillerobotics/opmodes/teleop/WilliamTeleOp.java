@@ -26,6 +26,7 @@ public class WilliamTeleOp extends LinearOpMode {
     private Hopper hopper;
     private ParticleLauncher particleLauncher;
     private boolean hopperOn = false;
+    private Direction currentDirection;
 
     public void runOpMode() throws InterruptedException {
         initialize();
@@ -43,6 +44,7 @@ public class WilliamTeleOp extends LinearOpMode {
         armMover = new ArmMover(hardwareMap);
         particleLauncher = new ParticleLauncher(hardwareMap, this);
         hopper = new Hopper(hardwareMap, this);
+        currentDirection = Direction.IN;
         gamepad.getButton(GamepadData.Button.LEFT_BUMPER).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
             @Override
             public void run() {
@@ -59,6 +61,17 @@ public class WilliamTeleOp extends LinearOpMode {
             @Override
             public void run() {
                 hopperOn = !hopperOn;
+            }
+        });
+        gamepad.getButton(GamepadData.Button.Y).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
+            @Override
+            public void run() {
+                switch (currentDirection) {
+                    case IN:
+                        currentDirection = Direction.OUT;
+                    case OUT:
+                        currentDirection = Direction.IN;
+                }
             }
         });
         gamepad.getButton(GamepadData.Button.B).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
@@ -80,6 +93,8 @@ public class WilliamTeleOp extends LinearOpMode {
         drive.moveFreely(gamepad1.left_stick_y, gamepad1.right_stick_y);
         gamepad.update(new GamepadData(gamepad1));
         particleLauncher.holdPrime();
-        hopper.update(hopperOn);
+        hopper.update(hopperOn, currentDirection);
     }
+
+    public enum Direction {IN, OUT}
 }
