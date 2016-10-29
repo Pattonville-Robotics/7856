@@ -93,6 +93,13 @@ public class VuforiaNav {
         return translation.getData()[1]/mmPerInch;
     }
 
+    public static double getAngle(OpenGLMatrix lastLocation) {
+        double xDist = getxPos(lastLocation);
+        double yDist = getDistance(lastLocation);
+        double angleToBeacon = Math.atan(yDist/xDist);
+        return angleToBeacon;
+    }
+
     public static Bitmap getImage() {
         Image img = vuforiaParameters.getVuforia().getImage();
 
