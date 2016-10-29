@@ -1,5 +1,6 @@
 package org.pattonvillerobotics.robotclasses.mechanisms;
 
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
@@ -13,8 +14,8 @@ public class Hopper extends AbstractMechanism {
 
     private DcMotor hopper;
 
-    public Hopper(HardwareMap hardwareMap) {
-        super(hardwareMap);
+    public Hopper(HardwareMap hardwareMap, LinearOpMode linearOpMode) {
+        super(hardwareMap, linearOpMode);
         hopper = hardwareMap.dcMotor.get("name");
     }
 

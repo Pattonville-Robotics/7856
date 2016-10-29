@@ -9,8 +9,9 @@ import org.pattonvillerobotics.commoncode.robotclasses.gamepad.GamepadData;
 import org.pattonvillerobotics.commoncode.robotclasses.gamepad.ListenableButton;
 import org.pattonvillerobotics.commoncode.robotclasses.gamepad.ListenableGamepad;
 import org.pattonvillerobotics.opmodes.CustomizedRobotParameters;
+import org.pattonvillerobotics.robotclasses.mechanisms.ArmMover;
 import org.pattonvillerobotics.robotclasses.mechanisms.Hopper;
-import org.pattonvillerobotics.robotclasses.servo.ServoMover;
+import org.pattonvillerobotics.robotclasses.mechanisms.OtherParticleLauncher;
 
 /**
  * Created by skaggsw on 10/4/16.
@@ -21,9 +22,11 @@ public class WilliamTeleOp extends LinearOpMode {
 
     private EncoderDrive drive;
     private ListenableGamepad gamepad;
-    private ServoMover servoMover;
+    private ArmMover armMover;
     private Hopper hopper;
+    private OtherParticleLauncher particleLauncher;
     private boolean hopperOn = false;
+    private boolean launcherPrimed = false;
 
     public void runOpMode() throws InterruptedException {
         initialize();
@@ -38,23 +41,43 @@ public class WilliamTeleOp extends LinearOpMode {
     public void initialize() {
         drive = new EncoderDrive(hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS);
         gamepad = new ListenableGamepad();
-        servoMover = new ServoMover(hardwareMap);
-        gamepad.getButton(GamepadData.Button.A).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
+        armMover = new ArmMover(hardwareMap);
+        particleLauncher = new OtherParticleLauncher(hardwareMap, this);
+        hopper = new Hopper(hardwareMap, this);
+        gamepad.getButton(GamepadData.Button.LEFT_BUMPER).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
             @Override
             public void run() {
-                servoMover.moveTo(ServoMover.Position.LEFT);
+                armMover.moveTo(ArmMover.Position.LEFT);
             }
         });
-        gamepad.getButton(GamepadData.Button.A).addListener(ListenableButton.ButtonState.JUST_RELEASED, new ListenableButton.ButtonListener() {
+        gamepad.getButton(GamepadData.Button.RIGHT_BUMPER).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
             @Override
             public void run() {
-                servoMover.moveTo(ServoMover.Position.RIGHT);
+                armMover.moveTo(ArmMover.Position.RIGHT);
             }
         });
         gamepad.getButton(GamepadData.Button.X).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
             @Override
             public void run() {
                 hopperOn = !hopperOn;
+            }
+        });
+        gamepad.getButton(GamepadData.Button.A).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
+            @Override
+            public void run() {
+                if (!launcherPrimed) {
+                    particleLauncher.primeLauncher();
+                    launcherPrimed = true;
+                }
+            }
+        });
+        gamepad.getButton(GamepadData.Button.B).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
+            @Override
+            public void run() {
+                if (launcherPrimed) {
+                    particleLauncher.releaseLauncher();
+                    launcherPrimed = false;
+                }
             }
         });
 
