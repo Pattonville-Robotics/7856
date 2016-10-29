@@ -20,6 +20,8 @@ import org.pattonvillerobotics.robotclasses.vuforia.VuforiaNav;
 
 public class AutoMethods {
 
+    private static final String TAG = "AutoMethods";
+    private static final String ERROR_MESSAGE = "Alliance color must either be red or blue.";
     private static EncoderDrive drive;
     private static AllianceColor allianceColor;
     private static StartPosition startPosition;
@@ -27,9 +29,6 @@ public class AutoMethods {
     private static AllianceColor leftColor;
     private static BeaconColorDetection beaconColorDetection;
     private static LinearOpMode opMode;
-
-    private static final String TAG = "AutoMethods";
-    private static final String ERROR_MESSAGE = "Alliance color must either be red or blue.";
 
     AutoMethods(EncoderDrive drive) {
         this.drive = drive;
@@ -106,7 +105,7 @@ public class AutoMethods {
         } else if(!leftColor.equals(allianceColor)) {
             armMover.moveTo(ArmMover.Position.RIGHT);
         } else {
-            armMover.moveTo(ArmMover.Position.DEFAULT);
+            armMover.moveTo(ArmMover.Position.UP);
         }
     }
 

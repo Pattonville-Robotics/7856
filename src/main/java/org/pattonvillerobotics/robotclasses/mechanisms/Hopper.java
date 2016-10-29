@@ -18,22 +18,9 @@ public class Hopper extends AbstractMechanism {
         super(hardwareMap, linearOpMode);
         hopper = hardwareMap.dcMotor.get("hopper");
     }
-
-    public void collect() {
-        hopper.setPower(Globals.MAX_MOTOR_POWER);
-    }
-
-    public void expel() {
-        hopper.setPower(Globals.MAX_MOTOR_POWER);
-    }
-
-    public void stopHopper() {
-        hopper.setPower(0);
-    }
-
     public void update(boolean toggle) {
         if (toggle) {
-            hopper.setPower(Globals.MAX_MOTOR_POWER);
+            hopper.setPower(-(Globals.MAX_MOTOR_POWER));
         } else {
             hopper.setPower(0);
         }
