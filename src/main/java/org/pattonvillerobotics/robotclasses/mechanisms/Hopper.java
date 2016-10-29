@@ -32,7 +32,6 @@ public class Hopper extends AbstractMechanism {
     }
 
     public void update(boolean toggle) {
-
         if (toggle) {
             hopper.setPower(Globals.MAX_MOTOR_POWER);
         } else {
