@@ -14,7 +14,7 @@ public class ArmMover {
     private Servo armMover;
 
     public ArmMover(HardwareMap hardwareMap) {
-        armMover = hardwareMap.servo.get("servo_mover");
+        armMover = hardwareMap.servo.get("arm_mover");
     }
 
     public void moveTo(Position position) {

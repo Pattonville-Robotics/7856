@@ -16,7 +16,7 @@ public class Hopper extends AbstractMechanism {
 
     public Hopper(HardwareMap hardwareMap, LinearOpMode linearOpMode) {
         super(hardwareMap, linearOpMode);
-        hopper = hardwareMap.dcMotor.get("name");
+        hopper = hardwareMap.dcMotor.get("hopper");
     }
 
     public void collect() {
