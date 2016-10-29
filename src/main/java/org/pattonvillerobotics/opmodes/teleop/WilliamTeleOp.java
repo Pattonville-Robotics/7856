@@ -11,7 +11,7 @@ import org.pattonvillerobotics.commoncode.robotclasses.gamepad.ListenableGamepad
 import org.pattonvillerobotics.opmodes.CustomizedRobotParameters;
 import org.pattonvillerobotics.robotclasses.mechanisms.ArmMover;
 import org.pattonvillerobotics.robotclasses.mechanisms.Hopper;
-import org.pattonvillerobotics.robotclasses.mechanisms.OtherParticleLauncher;
+import org.pattonvillerobotics.robotclasses.mechanisms.ParticleLauncher;
 
 /**
  * Created by skaggsw on 10/4/16.
@@ -24,7 +24,7 @@ public class WilliamTeleOp extends LinearOpMode {
     private ListenableGamepad gamepad;
     private ArmMover armMover;
     private Hopper hopper;
-    private OtherParticleLauncher particleLauncher;
+    private ParticleLauncher particleLauncher;
     private boolean hopperOn = false;
 
     public void runOpMode() throws InterruptedException {
@@ -41,7 +41,7 @@ public class WilliamTeleOp extends LinearOpMode {
         drive = new EncoderDrive(hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS);
         gamepad = new ListenableGamepad();
         armMover = new ArmMover(hardwareMap);
-        particleLauncher = new OtherParticleLauncher(hardwareMap, this);
+        particleLauncher = new ParticleLauncher(hardwareMap, this);
         hopper = new Hopper(hardwareMap, this);
         gamepad.getButton(GamepadData.Button.LEFT_BUMPER).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
             @Override

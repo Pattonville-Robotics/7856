@@ -11,12 +11,12 @@ import org.pattonvillerobotics.opmodes.CustomizedRobotParameters;
  * Created by skaggsw on 10/27/16.
  */
 
-public class OtherParticleLauncher extends AbstractMechanism {
+public class ParticleLauncher extends AbstractMechanism {
 
     public DcMotor particleLauncher;
     public boolean launcherPrimed = false;
 
-    public OtherParticleLauncher(HardwareMap hardwareMap, LinearOpMode linearOpMode) {
+    public ParticleLauncher(HardwareMap hardwareMap, LinearOpMode linearOpMode) {
         super(hardwareMap, linearOpMode);
         particleLauncher = hardwareMap.dcMotor.get("particle_launcher");
         if (CustomizedRobotParameters.ROBOT_PARAMETERS.areEncodersEnabled()) {
