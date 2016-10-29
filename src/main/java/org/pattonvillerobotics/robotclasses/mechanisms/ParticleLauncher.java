@@ -15,6 +15,7 @@ public class ParticleLauncher extends AbstractMechanism {
 
     public DcMotor particleLauncher;
     public boolean launcherPrimed = false;
+    public int targetPosition = 0;
 
     public ParticleLauncher(HardwareMap hardwareMap, LinearOpMode linearOpMode) {
         super(hardwareMap, linearOpMode);
@@ -28,8 +29,6 @@ public class ParticleLauncher extends AbstractMechanism {
         //Pull the launcher bottom back
 
         if (!launcherPrimed) {
-
-            int targetPosition;
 
             targetPosition = 0; //This needs to be set to the actual target position
 
@@ -72,6 +71,19 @@ public class ParticleLauncher extends AbstractMechanism {
             particleLauncher.setPower(0);
 
             launcherPrimed = false;
+        }
+    }
+
+    public void holdPrime() {
+
+        if (launcherPrimed && (particleLauncher.getCurrentPosition() < targetPosition)) {
+            particleLauncher.setPower(0.2);
+            while (particleLauncher.getCurrentPosition() < targetPosition) {
+                if (linearOpMode.isStopRequested()) {
+                    break;
+                }
+            }
+            particleLauncher.setPower(0);
         }
     }
 }

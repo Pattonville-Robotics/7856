@@ -11,6 +11,7 @@ import org.opencv.android.OpenCVLoader;
 import org.opencv.android.Utils;
 import org.opencv.core.Mat;
 import org.opencv.imgproc.Imgproc;
+import org.pattonvillerobotics.commoncode.enums.AllianceColor;
 import org.pattonvillerobotics.commoncode.enums.ColorSensorColor;
 import org.vision.ftc.resq.Beacon;
 
@@ -136,8 +137,8 @@ public class BeaconColorDetection {
      *
      * @return the {@link ColorSensorColor} of the left side of the beacon
      */
-    public ColorSensorColor getLeftColor() {
-        return getAnalysis().isLeftBlue() ? ColorSensorColor.BLUE : ColorSensorColor.RED;
+    public AllianceColor getLeftColor() {
+        return getAnalysis().isLeftBlue() ? AllianceColor.BLUE : AllianceColor.RED;
     }
 
 
@@ -146,7 +147,7 @@ public class BeaconColorDetection {
      *
      * @return the {@link ColorSensorColor} of the left side of the beacon
      */
-    public ColorSensorColor getRightColor() {
-        return getAnalysis().isRightBlue() ? ColorSensorColor.BLUE : ColorSensorColor.RED;
+    public AllianceColor getRightColor() {
+        return getAnalysis().isRightBlue() ? AllianceColor.BLUE : AllianceColor.RED;
     }
 }

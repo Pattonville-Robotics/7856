@@ -61,13 +61,13 @@ public class WilliamTeleOp extends LinearOpMode {
                 hopperOn = !hopperOn;
             }
         });
-        gamepad.getButton(GamepadData.Button.A).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
+        gamepad.getButton(GamepadData.Button.B).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
             @Override
             public void run() {
                 particleLauncher.primeLauncher();
             }
         });
-        gamepad.getButton(GamepadData.Button.B).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
+        gamepad.getButton(GamepadData.Button.A).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
             @Override
             public void run() {
                 particleLauncher.releaseLauncher();
@@ -79,15 +79,11 @@ public class WilliamTeleOp extends LinearOpMode {
     public void doLoop() {
         drive.moveFreely(gamepad1.left_stick_y, gamepad1.right_stick_y);
         gamepad.update(new GamepadData(gamepad1));
+        particleLauncher.holdPrime();
         if (hopperOn) {
             hopper.collect();
         } else {
             hopper.stopHopper();
-        }
-        if (particleLauncher.launcherPrimed) {
-            particleLauncher.particleLauncher.setPower(0.2);
-        } else {
-            particleLauncher.particleLauncher.setPower(0);
         }
     }
 }
