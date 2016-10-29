@@ -19,12 +19,14 @@ public class ArmMover {
 
     public void moveTo(Position position) {
         switch (position) {
-            case DEFAULT:
-                armMover.setPosition(Globals.BUTTON_PRESSER_DEFAULT_POSITION);
+            case DOWN:
+                armMover.setPosition(Globals.BUTTON_PRESSER_DOWN_POSITION);
                 break;
             case LEFT:
                 armMover.setPosition(Globals.BUTTON_PRESSER_LEFT_POSITION);
                 break;
+            case UP:
+                armMover.setPosition(Globals.BUTTON_PRESSER_UP_POSITION);
             case RIGHT:
                 armMover.setPosition(Globals.BUTTON_PRESSER_RIGHT_POSITION);
                 break;
@@ -32,7 +34,7 @@ public class ArmMover {
     }
 
     public enum Position {
-        DEFAULT, LEFT, RIGHT
+        DOWN, LEFT, UP, RIGHT
     }
 
 }
