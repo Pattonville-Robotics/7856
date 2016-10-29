@@ -25,6 +25,12 @@ public class BlueLineCBV extends LinearOpMode {
         VuforiaNav.activate();
         AutoMethods.runProcessCBV();
 
+        while(opModeIsActive()) {
+            idle();
+            sleep(50);
+            telemetry.update();
+        }
+
     }
 
     public void initialize() {
@@ -32,7 +38,9 @@ public class BlueLineCBV extends LinearOpMode {
         AutoMethods.init(
                 new EncoderDrive(hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS),
                 AllianceColor.BLUE,
-                StartPosition.LINE
+                StartPosition.LINE,
+                this,
+                hardwareMap
         );
     }
 }
