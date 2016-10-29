@@ -28,7 +28,7 @@ public class BlueVortexCBV extends LinearOpMode {
 
     public void initialize() {
         VuforiaNav.initializeVuforia(CustomizedRobotParameters.getVuforiaParameters());
-        AutoMethods.init(new EncoderDrive(hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS), AllianceColor.BLUE, StartPosition.VORTEX);
+        AutoMethods.init(new EncoderDrive(hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS), AllianceColor.BLUE, StartPosition.VORTEX, this, hardwareMap);
 
     }
 }

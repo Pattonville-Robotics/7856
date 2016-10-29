@@ -1,6 +1,10 @@
 package org.pattonvillerobotics.opmodes.autonomous;
 
+import android.graphics.Bitmap;
 import android.util.Log;
+
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.pattonvillerobotics.commoncode.enums.AllianceColor;
@@ -24,6 +28,7 @@ public class AutoMethods {
     private static ColorSensorColor leftColor;
     private static ColorSensorColor rightColor;
     private static BeaconColorDetection beaconColorDetection;
+    private static LinearOpMode opMode;
 
     private static final String TAG = "AutoMethods";
     private static final String ERROR_MESSAGE = "Alliance color must either be red or blue.";
@@ -32,10 +37,12 @@ public class AutoMethods {
         this.drive = drive;
     }
 
-    public static void init(EncoderDrive newDrive, AllianceColor newAllianceColor, StartPosition newStartPosition) {
+    public static void init(EncoderDrive newDrive, AllianceColor newAllianceColor, StartPosition newStartPosition, LinearOpMode linearOpMode, HardwareMap hardwareMap) {
         allianceColor = newAllianceColor;
         drive = newDrive;
         startPosition = newStartPosition;
+        opMode = linearOpMode;
+        beaconColorDetection = new BeaconColorDetection(hardwareMap);
     }
 
     public static void driveToCapball() {
@@ -87,10 +94,13 @@ public class AutoMethods {
     }
 
     public static void detectColor() {
-
-        leftColor = beaconColorDetection.getLeftColor();
-        rightColor = beaconColorDetection.getRightColor();
-
+        Bitmap bm = VuforiaNav.getImage();
+        if(bm != null) {
+            opMode.telemetry.addData("Colors", beaconColorDetection.analyzeFrame(bm).getColorString());
+            bm.recycle();
+            leftColor = beaconColorDetection.getLeftColor();
+            rightColor = beaconColorDetection.getRightColor();
+        }
     }
 
     public static void pressBeacon() {

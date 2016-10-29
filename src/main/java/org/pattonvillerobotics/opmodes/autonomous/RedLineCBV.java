@@ -28,6 +28,6 @@ public class RedLineCBV extends LinearOpMode {
 
     public void initialize() {
         VuforiaNav.initializeVuforia(CustomizedRobotParameters.getVuforiaParameters());
-        AutoMethods.init(new EncoderDrive(hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS), AllianceColor.RED, StartPosition.LINE);
+        AutoMethods.init(new EncoderDrive(hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS), AllianceColor.RED, StartPosition.LINE, this, hardwareMap);
     }
 }
