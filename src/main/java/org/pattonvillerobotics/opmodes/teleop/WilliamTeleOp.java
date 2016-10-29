@@ -80,13 +80,14 @@ public class WilliamTeleOp extends LinearOpMode {
         drive.moveFreely(gamepad1.left_stick_y, gamepad1.right_stick_y);
         gamepad.update(new GamepadData(gamepad1));
         if (hopperOn) {
-
             hopper.collect();
-
         } else {
-
             hopper.stopHopper();
-
+        }
+        if (particleLauncher.launcherPrimed) {
+            particleLauncher.particleLauncher.setPower(0.2);
+        } else {
+            particleLauncher.particleLauncher.setPower(0);
         }
     }
 }
