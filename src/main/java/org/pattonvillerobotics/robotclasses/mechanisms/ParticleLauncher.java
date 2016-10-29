@@ -1,53 +1,77 @@
 package org.pattonvillerobotics.robotclasses.mechanisms;
 
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.GyroSensor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import org.pattonvillerobotics.opmodes.autonomous.Globals;
+import org.pattonvillerobotics.opmodes.CustomizedRobotParameters;
 
 /**
- * Created by pieperm on 10/20/16.
+ * Created by skaggsw on 10/27/16.
  */
 
 public class ParticleLauncher extends AbstractMechanism {
 
-    private GyroSensor gyro;
-    private DcMotor particleLauncher;
-    private DcMotor launcherRotater;
+    public DcMotor particleLauncher;
+    public boolean launcherPrimed = false;
 
-    public ParticleLauncher(HardwareMap hardwareMap) {
-        super(hardwareMap);
-        gyro = hardwareMap.gyroSensor.get("name");
-        particleLauncher = hardwareMap.dcMotor.get("name");
-        launcherRotater = hardwareMap.dcMotor.get("name");
-    }
-
-    public void rotateLauncher() {
-
-        gyro.calibrate();
-
-        if(!gyro.isCalibrating()) {
-
-            int x = 2;
-            double t = 1;
-            int currentAngle = gyro.rawY();
-            int launchAngle = (int)Math.atan( (1.27 + 4.9 * Math.pow(t, 2)) / x );
-            int degreesToTurn = launchAngle - currentAngle;
-
-            //launcherRotater.
-
+    public ParticleLauncher(HardwareMap hardwareMap, LinearOpMode linearOpMode) {
+        super(hardwareMap, linearOpMode);
+        particleLauncher = hardwareMap.dcMotor.get("particle_launcher");
+        if (CustomizedRobotParameters.ROBOT_PARAMETERS.areEncodersEnabled()) {
+            this.particleLauncher.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
-
     }
 
-    public void launchParticle() {
+    public void primeLauncher() {
+        //Pull the launcher bottom back
 
-        rotateLauncher();
+        if (!launcherPrimed) {
 
-        // Do processes here that are necessary to launch the particle
-        particleLauncher.setPower(Globals.MAX_MOTOR_POWER);
+            int targetPosition;
 
+            targetPosition = 0; //This needs to be set to the actual target position
+
+            particleLauncher.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+            particleLauncher.setTargetPosition(targetPosition);
+
+            particleLauncher.setDirection(DcMotorSimple.Direction.FORWARD);
+
+            particleLauncher.setPower(0.7);
+            while (particleLauncher.getCurrentPosition() < targetPosition) {
+                if (linearOpMode.isStopRequested())
+                    break;
+            }
+            particleLauncher.setPower(0);
+
+            launcherPrimed = true;
+        }
     }
 
+    public void releaseLauncher() {
+
+        if (launcherPrimed) {
+
+            int targetPosition;
+
+            targetPosition = 0; //This needs to be set to the actual target position
+
+            particleLauncher.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+            particleLauncher.setTargetPosition(targetPosition);
+
+            particleLauncher.setDirection(DcMotorSimple.Direction.FORWARD);
+
+            particleLauncher.setPower(0.7);
+            while (particleLauncher.getCurrentPosition() < targetPosition) {
+                if (linearOpMode.isStopRequested())
+                    break;
+            }
+            particleLauncher.setPower(0);
+
+            launcherPrimed = false;
+        }
+    }
 }
