@@ -14,6 +14,7 @@ import org.pattonvillerobotics.opmodes.CustomizedRobotParameters;
 public class OtherParticleLauncher extends AbstractMechanism {
 
     public DcMotor particleLauncher;
+    public boolean launcherPrimed = false;
 
     public OtherParticleLauncher(HardwareMap hardwareMap, LinearOpMode linearOpMode) {
         super(hardwareMap, linearOpMode);
@@ -26,41 +27,51 @@ public class OtherParticleLauncher extends AbstractMechanism {
     public void primeLauncher() {
         //Pull the launcher bottom back
 
-        int targetPosition;
+        if (!launcherPrimed) {
 
-        targetPosition = 0; //This needs to be set to the actual target position
+            int targetPosition;
 
-        particleLauncher.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            targetPosition = 0; //This needs to be set to the actual target position
 
-        particleLauncher.setTargetPosition(targetPosition);
+            particleLauncher.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        particleLauncher.setDirection(DcMotorSimple.Direction.FORWARD);
+            particleLauncher.setTargetPosition(targetPosition);
 
-        particleLauncher.setPower(0.7);
-        while (particleLauncher.getCurrentPosition() < targetPosition) {
-            if (linearOpMode.isStopRequested())
-                break;
+            particleLauncher.setDirection(DcMotorSimple.Direction.FORWARD);
+
+            particleLauncher.setPower(0.7);
+            while (particleLauncher.getCurrentPosition() < targetPosition) {
+                if (linearOpMode.isStopRequested())
+                    break;
+            }
+            particleLauncher.setPower(0);
+
+            launcherPrimed = true;
         }
-        particleLauncher.setPower(0);
     }
 
     public void releaseLauncher() {
 
-        int targetPosition;
+        if (launcherPrimed) {
 
-        targetPosition = 0; //This needs to be set to the actual target position
+            int targetPosition;
 
-        particleLauncher.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            targetPosition = 0; //This needs to be set to the actual target position
 
-        particleLauncher.setTargetPosition(targetPosition);
+            particleLauncher.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        particleLauncher.setDirection(DcMotorSimple.Direction.FORWARD);
+            particleLauncher.setTargetPosition(targetPosition);
 
-        particleLauncher.setPower(0.7);
-        while (particleLauncher.getCurrentPosition() < targetPosition) {
-            if (linearOpMode.isStopRequested())
-                break;
+            particleLauncher.setDirection(DcMotorSimple.Direction.FORWARD);
+
+            particleLauncher.setPower(0.7);
+            while (particleLauncher.getCurrentPosition() < targetPosition) {
+                if (linearOpMode.isStopRequested())
+                    break;
+            }
+            particleLauncher.setPower(0);
+
+            launcherPrimed = false;
         }
-        particleLauncher.setPower(0);
     }
 }

@@ -26,7 +26,6 @@ public class WilliamTeleOp extends LinearOpMode {
     private Hopper hopper;
     private OtherParticleLauncher particleLauncher;
     private boolean hopperOn = false;
-    private boolean launcherPrimed = false;
 
     public void runOpMode() throws InterruptedException {
         initialize();
@@ -65,22 +64,15 @@ public class WilliamTeleOp extends LinearOpMode {
         gamepad.getButton(GamepadData.Button.A).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
             @Override
             public void run() {
-                if (!launcherPrimed) {
-                    particleLauncher.primeLauncher();
-                    launcherPrimed = true;
-                }
+                particleLauncher.primeLauncher();
             }
         });
         gamepad.getButton(GamepadData.Button.B).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
             @Override
             public void run() {
-                if (launcherPrimed) {
-                    particleLauncher.releaseLauncher();
-                    launcherPrimed = false;
-                }
+                particleLauncher.releaseLauncher();
             }
         });
-
         telemetry.addData("Init", "Initialized.");
     }
 
