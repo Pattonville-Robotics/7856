@@ -87,7 +87,7 @@ public class VuforiaNav {
     }
 
     public double getAngle() {
-        return FastMath.atan2(getDistance(), getxPos());
+        return FastMath.toDegrees(FastMath.atan2(getDistance(), getxPos()));
     }
 
     public Bitmap getImage() {

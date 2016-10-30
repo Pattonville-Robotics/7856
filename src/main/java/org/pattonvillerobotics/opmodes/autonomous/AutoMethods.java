@@ -103,7 +103,7 @@ public class AutoMethods {
         double Q = Globals.Q_DISTANCE;
         double d = Math.sqrt(Math.pow(x, 2) + Math.pow((y - Q), 2));
         double c = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
-        double angleToTurn = FastMath.acos((Math.pow(d, 2) + Math.pow(c, 2) - Math.pow(Q, 2)) / (2 * d * c));
+        double angleToTurn = FastMath.toDegrees(FastMath.acos((Math.pow(d, 2) + Math.pow(c, 2) - Math.pow(Q, 2)) / (2 * d * c)));
 
         if (angleToBeacon > 0) {
             drive.rotateDegrees(Direction.LEFT, angleToTurn, Globals.HALF_MOTOR_POWER);
