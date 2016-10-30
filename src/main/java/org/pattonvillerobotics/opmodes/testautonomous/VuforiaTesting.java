@@ -15,50 +15,43 @@ import org.pattonvillerobotics.robotclasses.vuforia.VuforiaNav;
 public class VuforiaTesting extends LinearOpMode {
 
     BeaconColorDetection colorDetection;
+    VuforiaNav vuforiaNav;
 
     @Override
     public void runOpMode() throws InterruptedException {
 
-        OpenGLMatrix lastUpdatedLocation;
-        colorDetection = new BeaconColorDetection(hardwareMap);
+        OpenGLMatrix lastUpdatedLocation = vuforiaNav.getNearestBeaconLocation();
         Bitmap bm;
 
         initialize();
-        telemetry.update();
         waitForStart();
-        VuforiaNav.activate();
+        vuforiaNav.activate();
 
         while (opModeIsActive()) {
-            lastUpdatedLocation = VuforiaNav.getNearestBeaconLocation();
             if (lastUpdatedLocation != null) {
-                telemetry.addData("Distance", VuforiaNav.getDistance(lastUpdatedLocation));
-                telemetry.addData("x Position", VuforiaNav.getxPos(lastUpdatedLocation));
+                telemetry.addData("Distance", vuforiaNav.getDistance());
+                telemetry.addData("x Position", vuforiaNav.getxPos());
+                telemetry.addData("Angle To Turn", vuforiaNav.getAngle());
             } else {
                 telemetry.addData("Position", "Unknown");
             }
 
-            bm = VuforiaNav.getImage();
-
-            // do color stuff PLEASE
-            if (bm != null) {
-                telemetry.addData("Detecting an image.", "");
-                telemetry.addData("Colors", colorDetection.analyzeFrame(bm).getColorString());
+            bm = vuforiaNav.getImage();
+            if(bm != null) {
+                telemetry.addData("Imaging", "Grabbing Frames");
                 bm.recycle();
             }
 
             telemetry.update();
             idle();
-            sleep(100);
-        }
-        if (isStopRequested()) {
-            VuforiaNav.deactivate();
+            sleep(50);
         }
     }
 
     public void initialize() {
-        VuforiaNav.initializeVuforia(CustomizedRobotParameters.getVuforiaParameters());
-        colorDetection.setColorToleranceBlue(0);
-        colorDetection.setColorToleranceRed(0);
+        colorDetection = new BeaconColorDetection(hardwareMap);
+        vuforiaNav = new VuforiaNav(CustomizedRobotParameters.VUFORIA_PARAMETERS);
         telemetry.addData("Initialization", "Complete");
+        telemetry.update();
     }
 }

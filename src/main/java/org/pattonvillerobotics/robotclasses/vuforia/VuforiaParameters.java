@@ -47,6 +47,10 @@ public class VuforiaParameters {
         return cameraDirection;
     }
 
+    public VuforiaLocalizer.Parameters getParameters() {
+        return parameters;
+    }
+
     public static class Builder {
         private String licenseKey;
         private VuforiaLocalizer.CameraDirection cameraDirection = VuforiaLocalizer.CameraDirection.BACK;

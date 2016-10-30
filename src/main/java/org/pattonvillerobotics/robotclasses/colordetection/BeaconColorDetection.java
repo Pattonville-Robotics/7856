@@ -14,6 +14,7 @@ import org.pattonvillerobotics.commoncode.opencv.android.Utils;
 import org.pattonvillerobotics.commoncode.opencv.core.Mat;
 import org.pattonvillerobotics.commoncode.opencv.imgproc.Imgproc;
 import org.pattonvillerobotics.commoncode.vision.ftc.resq.Beacon;
+import org.pattonvillerobotics.commoncode.vision.util.ScreenOrientation;
 
 import static com.qualcomm.ftccommon.DbgLog.error;
 
@@ -127,7 +128,7 @@ public class BeaconColorDetection {
         Utils.bitmapToMat(frame, rgba);
         Imgproc.cvtColor(rgba, gray, Imgproc.COLOR_RGBA2GRAY);
 
-        this.analysis = beacon.analyzeFrame(rgba, gray);
+        this.analysis = beacon.analyzeFrame(rgba, gray, ScreenOrientation.LANDSCAPE_REVERSE);
         return this.analysis;
     }
 
