@@ -5,15 +5,15 @@ import android.util.Log;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import org.opencv.android.BaseLoaderCallback;
-import org.opencv.android.LoaderCallbackInterface;
-import org.opencv.android.OpenCVLoader;
-import org.opencv.android.Utils;
-import org.opencv.core.Mat;
-import org.opencv.imgproc.Imgproc;
 import org.pattonvillerobotics.commoncode.enums.AllianceColor;
 import org.pattonvillerobotics.commoncode.enums.ColorSensorColor;
-import org.vision.ftc.resq.Beacon;
+import org.pattonvillerobotics.commoncode.opencv.android.BaseLoaderCallback;
+import org.pattonvillerobotics.commoncode.opencv.android.LoaderCallbackInterface;
+import org.pattonvillerobotics.commoncode.opencv.android.OpenCVLoader;
+import org.pattonvillerobotics.commoncode.opencv.android.Utils;
+import org.pattonvillerobotics.commoncode.opencv.core.Mat;
+import org.pattonvillerobotics.commoncode.opencv.imgproc.Imgproc;
+import org.pattonvillerobotics.commoncode.vision.ftc.resq.Beacon;
 
 import static com.qualcomm.ftccommon.DbgLog.error;
 
