@@ -29,7 +29,8 @@ public class BlueLineCBV extends LinearOpMode {
                 new EncoderDrive(hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS),
                 AllianceColor.BLUE,
                 StartPosition.LINE,
-                hardwareMap
+                hardwareMap,
+                this
         );
     }
 }

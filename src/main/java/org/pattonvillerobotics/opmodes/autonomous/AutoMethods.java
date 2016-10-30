@@ -3,6 +3,7 @@ package org.pattonvillerobotics.opmodes.autonomous;
 import android.graphics.Bitmap;
 import android.util.Log;
 
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.apache.commons.math3.util.FastMath;
@@ -28,6 +29,7 @@ public class AutoMethods {
     private static BeaconColorDetection beaconColorDetection;
     private static Direction defaultTurnDirection;
     private static VuforiaNav vuforia;
+    private static LinearOpMode opMode;
 
     private static final String TAG = "AutoMethods";
     private static final String ERROR_MESSAGE = "Alliance color must either be red or blue.";
@@ -36,12 +38,14 @@ public class AutoMethods {
         this.drive = drive;
     }
 
-    public static void init(EncoderDrive newDrive, AllianceColor newAllianceColor, StartPosition newStartPosition, HardwareMap hardwareMap) {
+    public static void init(EncoderDrive newDrive, AllianceColor newAllianceColor, StartPosition newStartPosition, HardwareMap hardwareMap, LinearOpMode linearOpMode) {
         setAllianceColor(newAllianceColor);
         drive = newDrive;
         startPosition = newStartPosition;
         beaconColorDetection = new BeaconColorDetection(hardwareMap);
         vuforia = new VuforiaNav(CustomizedRobotParameters.VUFORIA_PARAMETERS);
+        armMover = new ArmMover(hardwareMap, linearOpMode);
+        opMode = linearOpMode;
     }
 
     private static void setAllianceColor(AllianceColor newAllianceColor) {

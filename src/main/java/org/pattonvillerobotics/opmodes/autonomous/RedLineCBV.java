@@ -25,6 +25,6 @@ public class RedLineCBV extends LinearOpMode {
     }
 
     public void initialize() {
-        AutoMethods.init(new EncoderDrive(hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS), AllianceColor.RED, StartPosition.LINE, hardwareMap);
+        AutoMethods.init(new EncoderDrive(hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS), AllianceColor.RED, StartPosition.LINE, hardwareMap, this);
     }
 }

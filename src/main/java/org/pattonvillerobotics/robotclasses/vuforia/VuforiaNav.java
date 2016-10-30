@@ -91,7 +91,7 @@ public class VuforiaNav {
     }
 
     public Bitmap getImage() {
-        Image img = vuforiaParameters.getVuforia().getImage();
+        Image img = vuforia.getImage();
 
         if(img != null) {
             Bitmap bm = Bitmap.createBitmap(img.getWidth(), img.getHeight(), Bitmap.Config.RGB_565);

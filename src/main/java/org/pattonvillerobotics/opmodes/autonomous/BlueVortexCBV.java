@@ -25,7 +25,7 @@ public class BlueVortexCBV extends LinearOpMode {
     }
 
     public void initialize() {
-        AutoMethods.init(new EncoderDrive(hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS), AllianceColor.BLUE, StartPosition.VORTEX, hardwareMap);
+        AutoMethods.init(new EncoderDrive(hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS), AllianceColor.BLUE, StartPosition.VORTEX, hardwareMap, this);
 
     }
 }
