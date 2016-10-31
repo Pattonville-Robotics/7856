@@ -14,13 +14,13 @@ import org.pattonvillerobotics.robotclasses.vuforia.VuforiaNav;
 @Autonomous(name = "VuforiaTest", group = OpModeGroups.TESTING)
 public class VuforiaTesting extends LinearOpMode {
 
-    BeaconColorDetection colorDetection;
-    VuforiaNav vuforiaNav;
+    private VuforiaNav vuforiaNav;
+    private BeaconColorDetection beaconColorDetection;
 
     @Override
     public void runOpMode() throws InterruptedException {
 
-        OpenGLMatrix lastUpdatedLocation = vuforiaNav.getNearestBeaconLocation();
+        OpenGLMatrix lastUpdatedLocation;
         Bitmap bm;
 
         initialize();
@@ -28,6 +28,7 @@ public class VuforiaTesting extends LinearOpMode {
         vuforiaNav.activate();
 
         while (opModeIsActive()) {
+            lastUpdatedLocation = vuforiaNav.getNearestBeaconLocation();
             if (lastUpdatedLocation != null) {
                 telemetry.addData("Distance", vuforiaNav.getDistance());
                 telemetry.addData("x Position", vuforiaNav.getxPos());
@@ -38,8 +39,7 @@ public class VuforiaTesting extends LinearOpMode {
 
             bm = vuforiaNav.getImage();
             if(bm != null) {
-                telemetry.addData("Imaging", "Grabbing Frames");
-                bm.recycle();
+                telemetry.addData("Color", beaconColorDetection.analyzeFrame(bm).getColorString());
             }
 
             telemetry.update();
@@ -49,8 +49,8 @@ public class VuforiaTesting extends LinearOpMode {
     }
 
     public void initialize() {
-        colorDetection = new BeaconColorDetection(hardwareMap);
         vuforiaNav = new VuforiaNav(CustomizedRobotParameters.VUFORIA_PARAMETERS);
+        beaconColorDetection = new BeaconColorDetection(hardwareMap);
         telemetry.addData("Initialization", "Complete");
         telemetry.update();
     }
