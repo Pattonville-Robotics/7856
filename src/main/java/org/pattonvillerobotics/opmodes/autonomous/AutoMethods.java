@@ -10,10 +10,10 @@ import org.apache.commons.math3.util.FastMath;
 import org.pattonvillerobotics.commoncode.enums.AllianceColor;
 import org.pattonvillerobotics.commoncode.enums.Direction;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.EncoderDrive;
+import org.pattonvillerobotics.commoncode.robotclasses.drive.trailblazer.vuforia.VuforiaNav;
 import org.pattonvillerobotics.opmodes.CustomizedRobotParameters;
 import org.pattonvillerobotics.robotclasses.colordetection.BeaconColorDetection;
 import org.pattonvillerobotics.robotclasses.mechanisms.ArmMover;
-import org.pattonvillerobotics.robotclasses.vuforia.VuforiaNav;
 
 /**
  * Created by murphyk01 on 10/1/16.
@@ -21,6 +21,8 @@ import org.pattonvillerobotics.robotclasses.vuforia.VuforiaNav;
 
 public class AutoMethods {
 
+    private static final String TAG = "AutoMethods";
+    private static final String ERROR_MESSAGE = "Alliance color must either be red or blue.";
     private static EncoderDrive drive;
     private static AllianceColor allianceColor;
     private static StartPosition startPosition;
@@ -30,9 +32,6 @@ public class AutoMethods {
     private static Direction defaultTurnDirection;
     private static VuforiaNav vuforia;
     private static LinearOpMode opMode;
-
-    private static final String TAG = "AutoMethods";
-    private static final String ERROR_MESSAGE = "Alliance color must either be red or blue.";
 
     AutoMethods(EncoderDrive drive) {
         this.drive = drive;
