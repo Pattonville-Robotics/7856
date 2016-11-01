@@ -30,7 +30,7 @@ public class ParticleLauncher extends AbstractMechanism {
 
         if (!launcherPrimed) {
 
-            targetPosition = 0; //This needs to be set to the actual target position
+            targetPosition = 310;
 
             particleLauncher.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
@@ -55,7 +55,7 @@ public class ParticleLauncher extends AbstractMechanism {
 
             int targetPosition;
 
-            targetPosition = 0; //This needs to be set to the actual target position
+            targetPosition = 360;
 
             particleLauncher.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
