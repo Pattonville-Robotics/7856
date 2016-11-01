@@ -41,7 +41,7 @@ public class WilliamTeleOp extends LinearOpMode {
     public void initialize() {
         drive = new EncoderDrive(hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS);
         gamepad = new ListenableGamepad();
-        armMover = new ArmMover(hardwareMap);
+        armMover = new ArmMover(hardwareMap, this);
         particleLauncher = new ParticleLauncher(hardwareMap, this);
         hopper = new Hopper(hardwareMap, this);
         currentDirection = Direction.IN;

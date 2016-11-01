@@ -7,7 +7,6 @@ import org.pattonvillerobotics.commoncode.enums.AllianceColor;
 import org.pattonvillerobotics.commoncode.opmodes.OpModeGroups;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.EncoderDrive;
 import org.pattonvillerobotics.opmodes.CustomizedRobotParameters;
-import org.pattonvillerobotics.robotclasses.vuforia.VuforiaNav;
 
 /**
  * Created by pieperm on 10/18/16.
@@ -20,13 +19,11 @@ public class RedVortexCBV extends LinearOpMode {
         initialize();
         waitForStart();
 
-        VuforiaNav.activate();
         AutoMethods.runProcessCBV();
 
     }
 
     public void initialize() {
-        VuforiaNav.initializeVuforia(CustomizedRobotParameters.getVuforiaParameters());
-        AutoMethods.init(new EncoderDrive(hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS), AllianceColor.RED, StartPosition.VORTEX, this, hardwareMap);
+        AutoMethods.init(new EncoderDrive(hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS), AllianceColor.RED, StartPosition.VORTEX, hardwareMap, this);
     }
 }

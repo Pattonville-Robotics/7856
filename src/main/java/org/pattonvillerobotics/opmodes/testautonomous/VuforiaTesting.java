@@ -7,58 +7,51 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.pattonvillerobotics.commoncode.opmodes.OpModeGroups;
+import org.pattonvillerobotics.commoncode.robotclasses.drive.trailblazer.vuforia.VuforiaNav;
 import org.pattonvillerobotics.opmodes.CustomizedRobotParameters;
 import org.pattonvillerobotics.robotclasses.colordetection.BeaconColorDetection;
-import org.pattonvillerobotics.robotclasses.vuforia.VuforiaNav;
 
 @Autonomous(name = "VuforiaTest", group = OpModeGroups.TESTING)
 public class VuforiaTesting extends LinearOpMode {
 
-    BeaconColorDetection colorDetection;
+    private VuforiaNav vuforiaNav;
+    private BeaconColorDetection beaconColorDetection;
 
     @Override
     public void runOpMode() throws InterruptedException {
 
         OpenGLMatrix lastUpdatedLocation;
-        colorDetection = new BeaconColorDetection(hardwareMap);
         Bitmap bm;
 
         initialize();
-        telemetry.update();
         waitForStart();
-        VuforiaNav.activate();
+        vuforiaNav.activate();
 
         while (opModeIsActive()) {
-            lastUpdatedLocation = VuforiaNav.getNearestBeaconLocation();
+            lastUpdatedLocation = vuforiaNav.getNearestBeaconLocation();
             if (lastUpdatedLocation != null) {
-                telemetry.addData("Distance", VuforiaNav.getDistance(lastUpdatedLocation));
-                telemetry.addData("x Position", VuforiaNav.getxPos(lastUpdatedLocation));
+                telemetry.addData("Distance", vuforiaNav.getDistance());
+                telemetry.addData("x Position", vuforiaNav.getxPos());
+                telemetry.addData("Angle To Turn", vuforiaNav.getAngle());
             } else {
                 telemetry.addData("Position", "Unknown");
             }
 
-            bm = VuforiaNav.getImage();
-
-            // do color stuff PLEASE
-            if (bm != null) {
-                telemetry.addData("Detecting an image.", "");
-                telemetry.addData("Colors", colorDetection.analyzeFrame(bm).getColorString());
-                bm.recycle();
+            bm = vuforiaNav.getImage();
+            if(bm != null) {
+                telemetry.addData("Color", beaconColorDetection.analyzeFrame(bm).getColorString());
             }
 
             telemetry.update();
             idle();
-            sleep(100);
-        }
-        if (isStopRequested()) {
-            VuforiaNav.deactivate();
+            sleep(50);
         }
     }
 
     public void initialize() {
-        VuforiaNav.initializeVuforia(CustomizedRobotParameters.getVuforiaParameters());
-        colorDetection.setColorToleranceBlue(0);
-        colorDetection.setColorToleranceRed(0);
+        vuforiaNav = new VuforiaNav(CustomizedRobotParameters.VUFORIA_PARAMETERS);
+        beaconColorDetection = new BeaconColorDetection(hardwareMap);
         telemetry.addData("Initialization", "Complete");
+        telemetry.update();
     }
 }
