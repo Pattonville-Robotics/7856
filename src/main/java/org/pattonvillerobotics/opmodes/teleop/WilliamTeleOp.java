@@ -69,8 +69,10 @@ public class WilliamTeleOp extends LinearOpMode {
                 switch (currentDirection) {
                     case IN:
                         currentDirection = Direction.OUT;
+                        break;
                     case OUT:
                         currentDirection = Direction.IN;
+                        break;
                 }
             }
         });

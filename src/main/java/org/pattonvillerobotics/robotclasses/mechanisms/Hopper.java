@@ -25,8 +25,10 @@ public class Hopper extends AbstractMechanism {
             switch (direction) {
                 case IN:
                     hopper.setPower(-(Globals.MAX_MOTOR_POWER));
+                    break;
                 case OUT:
                     hopper.setPower(Globals.MAX_MOTOR_POWER);
+                    break;
             }
         } else {
             hopper.setPower(0);
