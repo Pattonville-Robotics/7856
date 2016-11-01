@@ -157,7 +157,7 @@ public class AutoMethods {
 
     public static void driveToNearBeacon() {
 
-        drive.rotateDegrees(Direction.RIGHT, Globals.HALF_TURN, Globals.HALF_MOTOR_POWER);
+        drive.rotateDegrees(defaultTurnDirection, Globals.HALF_TURN, Globals.HALF_MOTOR_POWER);
         drive.moveInches(Direction.BACKWARD, Globals.DISTANCE_TO_NEAR_BEACON, Globals.MAX_MOTOR_POWER);
 
     }
