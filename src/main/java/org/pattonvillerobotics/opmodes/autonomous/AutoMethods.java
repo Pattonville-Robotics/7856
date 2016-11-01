@@ -111,6 +111,7 @@ public class AutoMethods {
             drive.rotateDegrees(Direction.RIGHT, -angleToTurn, Globals.HALF_MOTOR_POWER);
         }
         drive.moveInches(Direction.BACKWARD, d, Globals.HALF_MOTOR_POWER);
+        drive.rotateDegrees(defaultTurnDirection, 180-angleToTurn, Globals.HALF_MOTOR_POWER);
     }
 
     public static void driveToNextBeacon() {
@@ -150,9 +151,7 @@ public class AutoMethods {
     }
 
     public static void climbCornerVortex() {
-
         drive.moveInches(Direction.BACKWARD, Globals.DISTANCE_TO_CLIMB_CORNER_VORTEX, Globals.MAX_MOTOR_POWER);
-
     }
 
     public static void driveToNearBeacon() {
