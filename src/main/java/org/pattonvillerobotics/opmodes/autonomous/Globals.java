@@ -33,9 +33,8 @@ public class Globals {
     public static final int DISTANCE_TO_NEXT_BEACON = 55;
     public static final int DISTANCE_TO_CORNER_VORTEX = 38;
     public static final int DISTANCE_TO_CLIMB_CORNER_VORTEX = 20;
-    public static final int MINIMUM_DISTANCE_TO_BEACON = 6;
+    public static final int MINIMUM_DISTANCE_TO_BEACON = 12;
     public static final int BEACON_BACKUP_DISTANCE = 12;
-    public static final int Q_DISTANCE = MINIMUM_DISTANCE_TO_BEACON;
 
     
 }

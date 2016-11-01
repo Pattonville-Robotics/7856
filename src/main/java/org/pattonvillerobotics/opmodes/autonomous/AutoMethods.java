@@ -99,10 +99,10 @@ public class AutoMethods {
 
         double x = vuforia.getxPos();
         double y = vuforia.getDistance();
-        double Q = Globals.Q_DISTANCE;
+        double Q = Globals.MINIMUM_DISTANCE_TO_BEACON;
         double d = Math.sqrt(Math.pow(x, 2) + Math.pow((y - Q), 2));
-        double c = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
-        double angleToTurn = FastMath.toDegrees(FastMath.acos((Math.pow(d, 2) + Math.pow(c, 2) - Math.pow(Q, 2)) / (2 * d * c)));
+        double angleToTurn = FastMath.toDegrees( FastMath.atan(y/x) - FastMath.atan((y-Q)/x) );
+        double adjustmentAngle = FastMath.asin(x/d);
 
         if (angleToBeacon > 0) {
             drive.rotateDegrees(Direction.LEFT, angleToTurn, Globals.HALF_MOTOR_POWER);
@@ -110,7 +110,7 @@ public class AutoMethods {
             drive.rotateDegrees(Direction.RIGHT, -angleToTurn, Globals.HALF_MOTOR_POWER);
         }
         drive.moveInches(Direction.BACKWARD, d, Globals.HALF_MOTOR_POWER);
-        drive.rotateDegrees(defaultTurnDirection, 180-angleToTurn, Globals.HALF_MOTOR_POWER);
+        drive.rotateDegrees(defaultTurnDirection, adjustmentAngle, Globals.HALF_MOTOR_POWER);
     }
 
     public static void driveToNextBeacon() {
