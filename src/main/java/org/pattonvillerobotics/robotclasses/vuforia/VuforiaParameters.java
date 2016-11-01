@@ -6,7 +6,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
-import org.firstinspires.ftc.teamcode.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,18 +19,17 @@ public class VuforiaParameters {
     private OpenGLMatrix phoneLocation;
     private List<OpenGLMatrix> beaconLocations;
     private VuforiaLocalizer.CameraDirection cameraDirection;
-    private VuforiaLocalizer.Parameters parameters;
     private String licenseKey;
 
-    private VuforiaParameters(String licenseKey, VuforiaLocalizer.CameraDirection cameraDirection, OpenGLMatrix phoneLocation, List<OpenGLMatrix> beaconLocations) {
-        parameters = new VuforiaLocalizer.Parameters(R.id.cameraMonitorViewId);
-        parameters.cameraDirection = cameraDirection;
-        parameters.vuforiaLicenseKey = licenseKey;
-        parameters.cameraMonitorFeedback = VuforiaLocalizer.Parameters.CameraMonitorFeedback.AXES;
+    private VuforiaParameters(String licenseKey, VuforiaLocalizer.CameraDirection cameraDirection, OpenGLMatrix phoneLocation, OpenGLMatrix beaconLocation) {
         this.licenseKey = licenseKey;
         this.phoneLocation = phoneLocation;
         this.cameraDirection = cameraDirection;
         this.beaconLocations = beaconLocations;
+    }
+
+    public String getLicenseKey() {
+        return licenseKey;
     }
 
     public OpenGLMatrix getPhoneLocation() {
@@ -44,10 +42,6 @@ public class VuforiaParameters {
 
     public VuforiaLocalizer.CameraDirection getCameraDirection() {
         return cameraDirection;
-    }
-
-    public VuforiaLocalizer.Parameters getParameters() {
-        return parameters;
     }
 
     public static class Builder {

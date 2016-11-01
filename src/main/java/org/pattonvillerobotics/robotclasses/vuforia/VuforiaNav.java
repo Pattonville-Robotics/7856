@@ -7,9 +7,11 @@ import com.vuforia.Image;
 import org.apache.commons.math3.util.FastMath;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
+import org.firstinspires.ftc.teamcode.R;
 
 import java.util.List;
 
@@ -25,10 +27,14 @@ public class VuforiaNav {
     private boolean isActivated;
     private VuforiaLocalizerImplSubclass vuforia;
     private OpenGLMatrix lastLocation;
+    private VuforiaLocalizer.Parameters parameters;
 
     public VuforiaNav(VuforiaParameters parameters) {
-        vuforiaParameters = parameters;
-        vuforia = new VuforiaLocalizerImplSubclass(vuforiaParameters.getParameters());
+        this.parameters = new VuforiaLocalizer.Parameters(R.id.cameraMonitorViewId);
+        this.parameters.cameraDirection = parameters.getCameraDirection();
+        this.parameters.vuforiaLicenseKey = parameters.getLicenseKey();
+        this.parameters.cameraMonitorFeedback = VuforiaLocalizer.Parameters.CameraMonitorFeedback.AXES;
+        vuforia = new VuforiaLocalizerImplSubclass(this.parameters);
         beacons = vuforia.loadTrackablesFromAsset("FTC_2016-17");
 
         beacons.get(0).setName("Wheels");
@@ -36,8 +42,8 @@ public class VuforiaNav {
         beacons.get(2).setName("Lego");
         beacons.get(3).setName("Gears");
 
-        setPhoneInformation(vuforiaParameters.getPhoneLocation());
-        setBeaconLocations(vuforiaParameters.getBeaconLocations());
+        setPhoneInformation(parameters.getPhoneLocation());
+        setBeaconLocations(parameters.getBeaconLocations());
 
         isActivated = false;
     }
@@ -50,7 +56,7 @@ public class VuforiaNav {
 
     private void setPhoneInformation(OpenGLMatrix location) {
         for(VuforiaTrackable beacon : beacons) {
-            ((VuforiaTrackableDefaultListener)beacon.getListener()).setPhoneInformation(location, vuforiaParameters.getCameraDirection());
+            ((VuforiaTrackableDefaultListener)beacon.getListener()).setPhoneInformation(location, parameters.cameraDirection);
         }
     }
 
