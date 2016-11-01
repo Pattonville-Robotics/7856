@@ -6,7 +6,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
-import org.firstinspires.ftc.teamcode.R;
 
 /**
  * Created by greg on 10/12/2016.
@@ -17,18 +16,17 @@ public class VuforiaParameters {
     private OpenGLMatrix phoneLocation;
     private OpenGLMatrix beaconLocation;
     private VuforiaLocalizer.CameraDirection cameraDirection;
-    private VuforiaLocalizer.Parameters parameters;
     private String licenseKey;
 
     private VuforiaParameters(String licenseKey, VuforiaLocalizer.CameraDirection cameraDirection, OpenGLMatrix phoneLocation, OpenGLMatrix beaconLocation) {
-        parameters = new VuforiaLocalizer.Parameters(R.id.cameraMonitorViewId);
-        parameters.cameraDirection = cameraDirection;
-        parameters.vuforiaLicenseKey = licenseKey;
-        parameters.cameraMonitorFeedback = VuforiaLocalizer.Parameters.CameraMonitorFeedback.AXES;
         this.licenseKey = licenseKey;
         this.phoneLocation = phoneLocation;
         this.cameraDirection = cameraDirection;
         this.beaconLocation = beaconLocation;
+    }
+
+    public String getLicenseKey() {
+        return licenseKey;
     }
 
     public OpenGLMatrix getPhoneLocation() {
@@ -41,10 +39,6 @@ public class VuforiaParameters {
 
     public VuforiaLocalizer.CameraDirection getCameraDirection() {
         return cameraDirection;
-    }
-
-    public VuforiaLocalizer.Parameters getParameters() {
-        return parameters;
     }
 
     public static class Builder {
