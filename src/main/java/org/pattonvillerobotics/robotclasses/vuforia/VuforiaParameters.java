@@ -8,6 +8,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.teamcode.R;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by greg on 10/12/2016.
  */
@@ -15,12 +18,12 @@ import org.firstinspires.ftc.teamcode.R;
 public class VuforiaParameters {
 
     private OpenGLMatrix phoneLocation;
-    private OpenGLMatrix beaconLocation;
+    private List<OpenGLMatrix> beaconLocations;
     private VuforiaLocalizer.CameraDirection cameraDirection;
     private VuforiaLocalizer.Parameters parameters;
     private String licenseKey;
 
-    private VuforiaParameters(String licenseKey, VuforiaLocalizer.CameraDirection cameraDirection, OpenGLMatrix phoneLocation, OpenGLMatrix beaconLocation) {
+    private VuforiaParameters(String licenseKey, VuforiaLocalizer.CameraDirection cameraDirection, OpenGLMatrix phoneLocation, List<OpenGLMatrix> beaconLocations) {
         parameters = new VuforiaLocalizer.Parameters(R.id.cameraMonitorViewId);
         parameters.cameraDirection = cameraDirection;
         parameters.vuforiaLicenseKey = licenseKey;
@@ -28,15 +31,15 @@ public class VuforiaParameters {
         this.licenseKey = licenseKey;
         this.phoneLocation = phoneLocation;
         this.cameraDirection = cameraDirection;
-        this.beaconLocation = beaconLocation;
+        this.beaconLocations = beaconLocations;
     }
 
     public OpenGLMatrix getPhoneLocation() {
         return phoneLocation;
     }
 
-    public OpenGLMatrix getBeaconLocation() {
-        return beaconLocation;
+    public List<OpenGLMatrix> getBeaconLocations() {
+        return beaconLocations;
     }
 
     public VuforiaLocalizer.CameraDirection getCameraDirection() {
@@ -50,8 +53,8 @@ public class VuforiaParameters {
     public static class Builder {
         private String licenseKey;
         private VuforiaLocalizer.CameraDirection cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
-        private OpenGLMatrix phoneLocation = createMatrix(0,0,0, AxesOrder.XYZ, 0, 0, 0);
-        private OpenGLMatrix beaconLocation = createMatrix(0,0,0, AxesOrder.XYZ, 0, 0, 0);
+        private OpenGLMatrix phoneLocation = createMatrix(0, 0, 0, AxesOrder.XYZ, 0, 0, 0);
+        private List<OpenGLMatrix> beaconLocations = new ArrayList<>();
 
         public Builder() {
         }
@@ -77,16 +80,28 @@ public class VuforiaParameters {
             return this;
         }
 
-        public Builder beaconLocation(float x, float y, float z, AxesOrder o, float a, float b, float c) {
-            this.beaconLocation = createMatrix(x, y, z, o, a, b, c);
+        /**
+         * Should be called IN ORDER
+         *
+         * @param x
+         * @param y
+         * @param z
+         * @param o
+         * @param a
+         * @param b
+         * @param c
+         * @return this
+         */
+        public Builder addBeaconLocation(float x, float y, float z, AxesOrder o, float a, float b, float c) {
+            this.beaconLocations.add(createMatrix(x, y, z, o, a, b, c));
             return this;
         }
 
         public VuforiaParameters build() {
-            if(licenseKey == null) {
+            if (licenseKey == null) {
                 throw new IllegalArgumentException("Must provide a license key.");
             }
-            return new VuforiaParameters(licenseKey, cameraDirection, phoneLocation, beaconLocation);
+            return new VuforiaParameters(licenseKey, cameraDirection, phoneLocation, beaconLocations);
         }
     }
 }

@@ -11,14 +11,16 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
+import java.util.List;
+
 /**
  * Created by bahrg on 10/29/16.
  */
 
 public class VuforiaNav {
 
-    private VuforiaTrackables beacons;
     private final double mmPerInch = 25.4;
+    private VuforiaTrackables beacons;
     private VuforiaParameters vuforiaParameters;
     private boolean isActivated;
     private VuforiaLocalizerImplSubclass vuforia;
@@ -35,14 +37,14 @@ public class VuforiaNav {
         beacons.get(3).setName("Gears");
 
         setPhoneInformation(vuforiaParameters.getPhoneLocation());
-        setBeaconLocation(vuforiaParameters.getBeaconLocation());
+        setBeaconLocations(vuforiaParameters.getBeaconLocations());
 
         isActivated = false;
     }
 
-    private void setBeaconLocation(OpenGLMatrix location) {
-        for(VuforiaTrackable beacon : beacons) {
-            beacon.setLocation(location);
+    private void setBeaconLocations(List<OpenGLMatrix> locations) {
+        for (int i = 0; i < beacons.size(); i++) {
+            beacons.get(i).setLocation(locations.get(i));
         }
     }
 
