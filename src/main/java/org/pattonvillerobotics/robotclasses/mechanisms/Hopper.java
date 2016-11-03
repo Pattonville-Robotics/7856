@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.pattonvillerobotics.opmodes.autonomous.Globals;
-import org.pattonvillerobotics.opmodes.teleop.WilliamTeleOp;
+import org.pattonvillerobotics.opmodes.teleop.MainTeleOp;
 
 /**
  * Created by pieperm on 10/20/16.
@@ -20,7 +20,7 @@ public class Hopper extends AbstractMechanism {
         hopper = hardwareMap.dcMotor.get("hopper");
     }
 
-    public void update(boolean toggle, WilliamTeleOp.Direction direction) {
+    public void update(boolean toggle, MainTeleOp.Direction direction) {
         if (toggle) {
             switch (direction) {
                 case IN:
