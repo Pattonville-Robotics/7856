@@ -16,17 +16,18 @@ import org.pattonvillerobotics.opmodes.autonomous.StartPosition;
 @Autonomous(name="Alignment TEST")
 public class BeaconAlignTest extends LinearOpMode {
     private VuforiaNav vuforia;
+    private AutoMethods autoMethods;
 
     @Override
     public void runOpMode() throws InterruptedException {
         initialize();
         waitForStart();
 
-        AutoMethods.alignToBeacon();
+        autoMethods.alignToBeacon();
     }
 
     private void initialize() {
-        AutoMethods.init(
+        autoMethods = new AutoMethods(
                 new EncoderDrive(hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS),
                 AllianceColor.BLUE,
                 StartPosition.LINE,

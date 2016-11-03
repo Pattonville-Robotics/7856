@@ -14,17 +14,19 @@ import org.pattonvillerobotics.opmodes.CustomizedRobotParameters;
 @Autonomous(name = "RedLineCBV", group = OpModeGroups.MAIN)
 public class RedLineCBV extends LinearOpMode {
 
+    private AutoMethods autoMethods;
+
     @Override
     public void runOpMode() throws InterruptedException {
 
         initialize();
         waitForStart();
 
-        AutoMethods.runProcessCBV();
+        autoMethods.runProcessCBV();
 
     }
 
     public void initialize() {
-        AutoMethods.init(new EncoderDrive(hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS), AllianceColor.RED, StartPosition.LINE, hardwareMap, this);
+        autoMethods = new AutoMethods(new EncoderDrive(hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS), AllianceColor.RED, StartPosition.LINE, hardwareMap, this);
     }
 }

@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.apache.commons.math3.util.FastMath;
+import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.pattonvillerobotics.commoncode.enums.AllianceColor;
 import org.pattonvillerobotics.commoncode.enums.Direction;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.EncoderDrive;
@@ -21,33 +22,30 @@ import org.pattonvillerobotics.robotclasses.mechanisms.ArmMover;
 
 public class AutoMethods {
 
-    private static final String TAG = "AutoMethods";
-    private static final String ERROR_MESSAGE = "Alliance color must either be red or blue.";
-    private static EncoderDrive drive;
-    private static AllianceColor allianceColor;
-    private static StartPosition startPosition;
-    private static ArmMover armMover;
-    private static AllianceColor beaconLeftColor;
-    private static BeaconColorDetection beaconColorDetection;
-    private static Direction defaultTurnDirection;
-    private static VuforiaNav vuforia;
-    private static LinearOpMode opMode;
+    private final String TAG = "AutoMethods";
+    private final String ERROR_MESSAGE = "Alliance color must either be red or blue.";
+    private EncoderDrive drive;
+    private AllianceColor allianceColor;
+    private StartPosition startPosition;
+    private ArmMover armMover;
+    private AllianceColor beaconLeftColor;
+    private BeaconColorDetection beaconColorDetection;
+    private Direction defaultTurnDirection;
+    private VuforiaNav vuforia;
+    private LinearOpMode opMode;
 
-    AutoMethods(EncoderDrive drive) {
-        this.drive = drive;
-    }
-
-    public static void init(EncoderDrive newDrive, AllianceColor newAllianceColor, StartPosition newStartPosition, HardwareMap hardwareMap, LinearOpMode linearOpMode) {
+    public AutoMethods(EncoderDrive newDrive, AllianceColor newAllianceColor, StartPosition newStartPosition, HardwareMap hardwareMap, LinearOpMode linearOpMode) {
         setAllianceColor(newAllianceColor);
         drive = newDrive;
         startPosition = newStartPosition;
-        beaconColorDetection = new BeaconColorDetection(hardwareMap);
+        //beaconColorDetection = new BeaconColorDetection(hardwareMap);
         vuforia = new VuforiaNav(CustomizedRobotParameters.VUFORIA_PARAMETERS);
+        vuforia.activate();
         armMover = new ArmMover(hardwareMap, linearOpMode);
         opMode = linearOpMode;
     }
 
-    private static void setAllianceColor(AllianceColor newAllianceColor) {
+    private void setAllianceColor(AllianceColor newAllianceColor) {
         allianceColor = newAllianceColor;
         if(newAllianceColor == AllianceColor.BLUE) {
             defaultTurnDirection = Direction.RIGHT;
@@ -56,7 +54,7 @@ public class AutoMethods {
         }
     }
 
-    public static void driveToCapball() {
+    public void driveToCapball() {
         if(startPosition == StartPosition.LINE) {
             drive.moveInches(Direction.BACKWARD, Globals.DISTANCE1_TO_CAPBALL, Globals.MAX_MOTOR_POWER);
             drive.rotateDegrees(defaultTurnDirection, Globals.HALF_TURN, Globals.HALF_MOTOR_POWER);
@@ -69,13 +67,13 @@ public class AutoMethods {
 
     }
 
-    public static void driveToBeacon() {
+    public void driveToBeacon() {
         drive.moveInches(Direction.BACKWARD, Globals.DISTANCE1_TO_BEACON, Globals.MAX_MOTOR_POWER);
         drive.rotateDegrees(defaultTurnDirection, Globals.HALF_TURN, Globals.HALF_MOTOR_POWER);
         drive.moveInches(Direction.BACKWARD, Globals.DISTANCE2_TO_BEACON, Globals.MAX_MOTOR_POWER);
     }
 
-    public static void detectColor() {
+    public void detectColor() {
         Bitmap bm = vuforia.getImage();
         if(bm != null) {
             beaconColorDetection.analyzeFrame(bm);
@@ -84,7 +82,7 @@ public class AutoMethods {
         }
     }
 
-    public static void pressBeacon() {
+    public void pressBeacon() {
         if(beaconLeftColor == allianceColor) {
             armMover.moveTo(ArmMover.Position.LEFT);
         } else {
@@ -93,8 +91,12 @@ public class AutoMethods {
         // move robot to press button
     }
 
-    public static void alignToBeacon() {
-        vuforia.getNearestBeaconLocation();
+    public void alignToBeacon() {
+        OpenGLMatrix lastLocation = vuforia.getNearestBeaconLocation();
+        while(lastLocation == null) {
+            lastLocation = vuforia.getNearestBeaconLocation();
+            Thread.yield();
+        }
         double angleToBeacon = vuforia.getAngle();
 
         double x = vuforia.getxPos();
@@ -103,6 +105,12 @@ public class AutoMethods {
         double d = Math.sqrt(Math.pow(x, 2) + Math.pow((y - Q), 2));
         double angleToTurn = FastMath.toDegrees( FastMath.atan(y/x) - FastMath.atan((y-Q)/x) );
         double adjustmentAngle = FastMath.asin(x/d);
+
+        opMode.telemetry.addData("Angle to Turn", angleToTurn);
+        opMode.telemetry.addData("d", d);
+        opMode.telemetry.addData("x", x);
+        opMode.telemetry.addData("y", y);
+        opMode.telemetry.update();
 
         if (angleToBeacon > 0) {
             drive.rotateDegrees(Direction.LEFT, angleToTurn, Globals.HALF_MOTOR_POWER);
@@ -113,7 +121,7 @@ public class AutoMethods {
         drive.rotateDegrees(defaultTurnDirection, adjustmentAngle, Globals.HALF_MOTOR_POWER);
     }
 
-    public static void driveToNextBeacon() {
+    public void driveToNextBeacon() {
 
         drive.moveInches(Direction.FORWARD, Globals.BEACON_BACKUP_DISTANCE, Globals.MAX_MOTOR_POWER);
         drive.rotateDegrees(defaultTurnDirection, Globals.RIGHT_TURN, Globals.HALF_MOTOR_POWER);
@@ -131,7 +139,7 @@ public class AutoMethods {
 
     }
 
-    public static void driveToCornerVortex() {
+    public void driveToCornerVortex() {
 
         drive.moveInches(Direction.FORWARD, Globals.BEACON_BACKUP_DISTANCE, Globals.MAX_MOTOR_POWER);
         drive.rotateDegrees(defaultTurnDirection, Globals.RIGHT_TURN, Globals.HALF_MOTOR_POWER);
@@ -149,21 +157,22 @@ public class AutoMethods {
 
     }
 
-    public static void climbCornerVortex() {
+    public void climbCornerVortex() {
         drive.moveInches(Direction.BACKWARD, Globals.DISTANCE_TO_CLIMB_CORNER_VORTEX, Globals.MAX_MOTOR_POWER);
     }
 
-    public static void driveToNearBeacon() {
+    public void driveToNearBeacon() {
 
+        opMode.telemetry.addData("Drive to Near Beacon", "Driving");
+        opMode.telemetry.update();
         drive.rotateDegrees(defaultTurnDirection, Globals.HALF_TURN, Globals.HALF_MOTOR_POWER);
         drive.moveInches(Direction.BACKWARD, Globals.DISTANCE_TO_NEAR_BEACON, Globals.MAX_MOTOR_POWER);
 
     }
 
-    public static void runProcessCBV() {
-        vuforia.activate();
-        AutoMethods.driveToCapball();
-        AutoMethods.driveToNearBeacon();
-        AutoMethods.alignToBeacon();
+    public void runProcessCBV() {
+        driveToCapball();
+        driveToNearBeacon();
+        alignToBeacon();
     }
 }
