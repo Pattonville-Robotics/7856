@@ -16,9 +16,9 @@ import org.pattonvillerobotics.robotclasses.mechanisms.ParticleLauncher;
 /**
  * Created by skaggsw on 10/4/16.
  */
-@TeleOp(name = "WilliamTeleOp", group = OpModeGroups.TESTING)
+@TeleOp(name = "MainTeleOp", group = OpModeGroups.MAIN)
 
-public class WilliamTeleOp extends LinearOpMode {
+public class MainTeleOp extends LinearOpMode {
 
     private EncoderDrive drive;
     private ListenableGamepad gamepad;
