@@ -14,16 +14,18 @@ import org.pattonvillerobotics.opmodes.CustomizedRobotParameters;
 @Autonomous(name = "RedVortexCBV", group = OpModeGroups.MAIN)
 public class RedVortexCBV extends LinearOpMode {
 
+    private AutoMethods autoMethods;
+
     public void runOpMode() throws InterruptedException {
 
         initialize();
         waitForStart();
 
-        AutoMethods.runProcessCBV();
+        autoMethods.runProcessCBV();
 
     }
 
     public void initialize() {
-        AutoMethods.init(new EncoderDrive(hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS), AllianceColor.RED, StartPosition.VORTEX, hardwareMap, this);
+        autoMethods = new AutoMethods(new EncoderDrive(hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS), AllianceColor.RED, StartPosition.VORTEX, hardwareMap, this);
     }
 }

@@ -15,17 +15,18 @@ import org.pattonvillerobotics.opmodes.CustomizedRobotParameters;
 @Autonomous(name = "BlueLineCBV", group = OpModeGroups.MAIN)
 public class BlueLineCBV extends LinearOpMode {
 
+    private AutoMethods autoMethods;
+
     @Override
     public void runOpMode() throws InterruptedException {
-
         initialize();
         waitForStart();
-        AutoMethods.runProcessCBV();
+        autoMethods.runProcessCBV();
 
     }
 
     public void initialize() {
-        AutoMethods.init(
+        autoMethods = new AutoMethods(
                 new EncoderDrive(hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS),
                 AllianceColor.BLUE,
                 StartPosition.LINE,
