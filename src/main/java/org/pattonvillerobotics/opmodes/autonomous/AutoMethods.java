@@ -21,7 +21,6 @@ import org.pattonvillerobotics.robotclasses.mechanisms.ArmMover;
  */
 
 public class AutoMethods {
-
     private final String TAG = "AutoMethods";
     private final String ERROR_MESSAGE = "Alliance color must either be red or blue.";
     private EncoderDrive drive;
@@ -35,14 +34,14 @@ public class AutoMethods {
     private LinearOpMode opMode;
 
     public AutoMethods(EncoderDrive newDrive, AllianceColor newAllianceColor, StartPosition newStartPosition, HardwareMap hardwareMap, LinearOpMode linearOpMode) {
+        opMode = linearOpMode;
         setAllianceColor(newAllianceColor);
         drive = newDrive;
         startPosition = newStartPosition;
-        //beaconColorDetection = new BeaconColorDetection(hardwareMap);
+        beaconColorDetection = new BeaconColorDetection(hardwareMap);
         vuforia = new VuforiaNav(CustomizedRobotParameters.VUFORIA_PARAMETERS);
         vuforia.activate();
         armMover = new ArmMover(hardwareMap, linearOpMode);
-        opMode = linearOpMode;
     }
 
     private void setAllianceColor(AllianceColor newAllianceColor) {
@@ -52,24 +51,25 @@ public class AutoMethods {
         } else {
             defaultTurnDirection = Direction.LEFT;
         }
+        opMode.telemetry.addData("Setup", "Setting default turn direction to:" + defaultTurnDirection);
+        opMode.telemetry.update();
     }
 
     public void driveToCapball() {
         if(startPosition == StartPosition.LINE) {
             drive.moveInches(Direction.BACKWARD, Globals.DISTANCE1_TO_CAPBALL, Globals.MAX_MOTOR_POWER);
-            drive.rotateDegrees(defaultTurnDirection, Globals.HALF_TURN, Globals.HALF_MOTOR_POWER);
+            drive.rotateDegrees(defaultTurnDirection, Globals.HALF_TURN, Globals.MAX_MOTOR_POWER);
             drive.moveInches(Direction.BACKWARD, Globals.DISTANCE2_TO_CAPBALL, Globals.MAX_MOTOR_POWER);
         } else if(startPosition == StartPosition.VORTEX) {
             drive.moveInches(Direction.BACKWARD, Globals.STRAIGHT_DISTANCE_TO_CAPBALL, Globals.MAX_MOTOR_POWER);
         } else {
             Log.e(TAG, ERROR_MESSAGE);
         }
-
     }
 
     public void driveToBeacon() {
         drive.moveInches(Direction.BACKWARD, Globals.DISTANCE1_TO_BEACON, Globals.MAX_MOTOR_POWER);
-        drive.rotateDegrees(defaultTurnDirection, Globals.HALF_TURN, Globals.HALF_MOTOR_POWER);
+        drive.rotateDegrees(defaultTurnDirection, Globals.HALF_TURN, Globals.MAX_MOTOR_POWER);
         drive.moveInches(Direction.BACKWARD, Globals.DISTANCE2_TO_BEACON, Globals.MAX_MOTOR_POWER);
     }
 
@@ -103,7 +103,7 @@ public class AutoMethods {
         double y = vuforia.getDistance();
         double Q = Globals.MINIMUM_DISTANCE_TO_BEACON;
         double d = Math.sqrt(Math.pow(x, 2) + Math.pow((y - Q), 2));
-        double angleToTurn = FastMath.toDegrees( FastMath.atan(y/x) - FastMath.atan((y-Q)/x) );
+        double angleToTurn = FastMath.toDegrees(FastMath.atan(y/x) - FastMath.atan((y-Q)/x) );
         double adjustmentAngle = FastMath.asin(x/d);
 
         opMode.telemetry.addData("Angle to Turn", angleToTurn);
@@ -113,48 +113,45 @@ public class AutoMethods {
         opMode.telemetry.update();
 
         if (angleToBeacon > 0) {
-            drive.rotateDegrees(Direction.LEFT, angleToTurn, Globals.HALF_MOTOR_POWER);
+            drive.rotateDegrees(Direction.LEFT, angleToTurn, Globals.MAX_MOTOR_POWER);
         } else {
-            drive.rotateDegrees(Direction.RIGHT, -angleToTurn, Globals.HALF_MOTOR_POWER);
+            drive.rotateDegrees(Direction.RIGHT, -angleToTurn, Globals.MAX_MOTOR_POWER);
         }
-        drive.moveInches(Direction.BACKWARD, d, Globals.HALF_MOTOR_POWER);
-        drive.rotateDegrees(defaultTurnDirection, adjustmentAngle, Globals.HALF_MOTOR_POWER);
+        drive.moveInches(Direction.BACKWARD, d, Globals.MAX_MOTOR_POWER);
+        drive.rotateDegrees(defaultTurnDirection, adjustmentAngle, Globals.MAX_MOTOR_POWER);
     }
 
     public void driveToNextBeacon() {
 
         drive.moveInches(Direction.FORWARD, Globals.BEACON_BACKUP_DISTANCE, Globals.MAX_MOTOR_POWER);
-        drive.rotateDegrees(defaultTurnDirection, Globals.RIGHT_TURN, Globals.HALF_MOTOR_POWER);
+        drive.rotateDegrees(defaultTurnDirection, Globals.RIGHT_TURN, Globals.MAX_MOTOR_POWER);
         drive.moveInches(Direction.BACKWARD, Globals.DISTANCE_TO_NEXT_BEACON, Globals.MAX_MOTOR_POWER);
 
         if(allianceColor.equals(AllianceColor.BLUE)) {
-            drive.rotateDegrees(Direction.LEFT, Globals.RIGHT_TURN, Globals.HALF_MOTOR_POWER);
+            drive.rotateDegrees(Direction.LEFT, Globals.RIGHT_TURN, Globals.MAX_MOTOR_POWER);
         }
         else if(allianceColor.equals(AllianceColor.RED)) {
-            drive.rotateDegrees(Direction.RIGHT, Globals.RIGHT_TURN, Globals.HALF_MOTOR_POWER);
+            drive.rotateDegrees(Direction.RIGHT, Globals.RIGHT_TURN, Globals.MAX_MOTOR_POWER);
         }
         else {
             Log.e(TAG, ERROR_MESSAGE);
         }
-
     }
 
     public void driveToCornerVortex() {
-
         drive.moveInches(Direction.FORWARD, Globals.BEACON_BACKUP_DISTANCE, Globals.MAX_MOTOR_POWER);
-        drive.rotateDegrees(defaultTurnDirection, Globals.RIGHT_TURN, Globals.HALF_MOTOR_POWER);
+        drive.rotateDegrees(defaultTurnDirection, Globals.RIGHT_TURN, Globals.MAX_MOTOR_POWER);
         drive.moveInches(Direction.BACKWARD, Globals.DISTANCE_TO_CORNER_VORTEX, Globals.MAX_MOTOR_POWER);
 
         if(allianceColor.equals(AllianceColor.BLUE)) {
-            drive.rotateDegrees(Direction.LEFT, Globals.HALF_TURN, Globals.HALF_MOTOR_POWER);
+            drive.rotateDegrees(Direction.LEFT, Globals.HALF_TURN, Globals.MAX_MOTOR_POWER);
         }
         else if(allianceColor.equals(AllianceColor.RED)) {
-            drive.rotateDegrees(Direction.RIGHT, Globals.HALF_TURN, Globals.HALF_MOTOR_POWER);
+            drive.rotateDegrees(Direction.RIGHT, Globals.HALF_TURN, Globals.MAX_MOTOR_POWER);
         }
         else {
             Log.e(TAG, ERROR_MESSAGE);
         }
-
     }
 
     public void climbCornerVortex() {
@@ -162,17 +159,15 @@ public class AutoMethods {
     }
 
     public void driveToNearBeacon() {
-
         opMode.telemetry.addData("Drive to Near Beacon", "Driving");
         opMode.telemetry.update();
-        drive.rotateDegrees(defaultTurnDirection, Globals.HALF_TURN, Globals.HALF_MOTOR_POWER);
+        drive.rotateDegrees(defaultTurnDirection, Globals.HALF_TURN, Globals.MAX_MOTOR_POWER);
         drive.moveInches(Direction.BACKWARD, Globals.DISTANCE_TO_NEAR_BEACON, Globals.MAX_MOTOR_POWER);
-
     }
 
     public void runProcessCBV() {
         driveToCapball();
-        driveToNearBeacon();
-        alignToBeacon();
+        //driveToNearBeacon();
+        //alignToBeacon();
     }
 }
