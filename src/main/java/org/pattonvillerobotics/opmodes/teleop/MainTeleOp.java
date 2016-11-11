@@ -57,12 +57,19 @@ public class MainTeleOp extends LinearOpMode {
                 armMover.moveTo(ArmMover.Position.RIGHT);
             }
         });
+        gamepad.getButton(GamepadData.Button.DPAD_DOWN).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
+            @Override
+            public void run() {
+                armMover.moveTo(ArmMover.Position.DOWN);
+            }
+        });
         gamepad.getButton(GamepadData.Button.X).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
             @Override
             public void run() {
                 hopperOn = !hopperOn;
             }
         });
+
         gamepad.getButton(GamepadData.Button.Y).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
             @Override
             public void run() {
