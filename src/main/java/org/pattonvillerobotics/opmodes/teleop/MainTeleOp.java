@@ -84,33 +84,33 @@ public class MainTeleOp extends LinearOpMode {
                 }
             }
         });
-//        gamepad.getButton(GamepadData.Button.B).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
-//            @Override
-//            public void run() {
-//                particleLauncher.primeLauncher();
-//            }
-//        });
-//        gamepad.getButton(GamepadData.Button.A).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
-//            @Override
-//            public void run() {
-//                particleLauncher.releaseLauncher();
-//            }
-//        });
-
+        gamepad.getButton(GamepadData.Button.B).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
+            @Override
+            public void run() {
+                particleLauncher.primeLauncher();
+            }
+        });
         gamepad.getButton(GamepadData.Button.A).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
             @Override
             public void run() {
-                particleLauncherOn = !particleLauncherOn;
+                particleLauncher.releaseLauncher();
             }
         });
-        telemetry.addData("Init", "Initialized.");
+
+//        gamepad.getButton(GamepadData.Button.A).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
+//            @Override
+//            public void run() {
+//                particleLauncherOn = !particleLauncherOn;
+//            }
+//        });
+//        telemetry.addData("Init", "Initialized.");
     }
 
     public void doLoop() {
         drive.moveFreely(gamepad1.left_stick_y, gamepad1.right_stick_y);
         gamepad.update(new GamepadData(gamepad1));
-        //particleLauncher.holdPrime();
-        particleLauncher.update(particleLauncherOn);
+        particleLauncher.holdPrime();
+        //particleLauncher.update(particleLauncherOn);
         hopper.update(hopperOn, currentDirection);
     }
 
