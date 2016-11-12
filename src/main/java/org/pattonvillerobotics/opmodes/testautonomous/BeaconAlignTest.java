@@ -24,6 +24,7 @@ public class BeaconAlignTest extends LinearOpMode {
         waitForStart();
 
         autoMethods.alignToBeacon();
+        while(opModeIsActive()){}
     }
 
     private void initialize() {

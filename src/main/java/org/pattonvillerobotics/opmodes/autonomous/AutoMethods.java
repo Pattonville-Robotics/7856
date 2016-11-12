@@ -42,6 +42,8 @@ public class AutoMethods {
         vuforia = new VuforiaNav(CustomizedRobotParameters.VUFORIA_PARAMETERS);
         vuforia.activate();
         armMover = new ArmMover(hardwareMap, linearOpMode);
+        linearOpMode.telemetry.addData("Init", "Complete");
+        linearOpMode.telemetry.update();
     }
 
     private void setAllianceColor(AllianceColor newAllianceColor) {
@@ -104,9 +106,10 @@ public class AutoMethods {
         double Q = Globals.MINIMUM_DISTANCE_TO_BEACON;
         double d = Math.sqrt(Math.pow(x, 2) + Math.pow((y - Q), 2));
         double angleToTurn = FastMath.toDegrees(FastMath.atan(y/x) - FastMath.atan((y-Q)/x) );
-        double adjustmentAngle = FastMath.asin(x/d);
+        double adjustmentAngle = FastMath.toDegrees(FastMath.asin(x/d));
 
         opMode.telemetry.addData("Angle to Turn", angleToTurn);
+        opMode.telemetry.addData("Adjustment Angle", adjustmentAngle);
         opMode.telemetry.addData("d", d);
         opMode.telemetry.addData("x", x);
         opMode.telemetry.addData("y", y);

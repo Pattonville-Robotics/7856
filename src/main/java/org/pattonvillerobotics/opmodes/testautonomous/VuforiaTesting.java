@@ -37,11 +37,6 @@ public class VuforiaTesting extends LinearOpMode {
                 telemetry.addData("Position", "Unknown");
             }
 
-            bm = vuforiaNav.getImage();
-            if(bm != null) {
-                telemetry.addData("Color", beaconColorDetection.analyzeFrame(bm).getColorString());
-            }
-
             telemetry.update();
             idle();
             sleep(50);
