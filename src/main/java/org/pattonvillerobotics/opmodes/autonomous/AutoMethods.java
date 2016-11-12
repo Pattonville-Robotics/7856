@@ -15,6 +15,7 @@ import org.pattonvillerobotics.commoncode.robotclasses.drive.trailblazer.vuforia
 import org.pattonvillerobotics.opmodes.CustomizedRobotParameters;
 import org.pattonvillerobotics.robotclasses.colordetection.BeaconColorDetection;
 import org.pattonvillerobotics.robotclasses.mechanisms.ArmMover;
+import org.pattonvillerobotics.robotclasses.mechanisms.ParticleLauncher;
 
 /**
  * Created by murphyk01 on 10/1/16.
@@ -32,8 +33,10 @@ public class AutoMethods {
     private Direction defaultTurnDirection;
     private VuforiaNav vuforia;
     private LinearOpMode opMode;
+    private HardwareMap hardwareMap;
 
     public AutoMethods(EncoderDrive newDrive, AllianceColor newAllianceColor, StartPosition newStartPosition, HardwareMap hardwareMap, LinearOpMode linearOpMode) {
+        this.hardwareMap = hardwareMap;
         opMode = linearOpMode;
         setAllianceColor(newAllianceColor);
         drive = newDrive;
@@ -43,7 +46,6 @@ public class AutoMethods {
         vuforia.activate();
         armMover = new ArmMover(hardwareMap, linearOpMode);
         linearOpMode.telemetry.addData("Init", "Complete");
-        linearOpMode.telemetry.update();
     }
 
     private void setAllianceColor(AllianceColor newAllianceColor) {
@@ -54,7 +56,6 @@ public class AutoMethods {
             defaultTurnDirection = Direction.LEFT;
         }
         opMode.telemetry.addData("Setup", "Setting default turn direction to:" + defaultTurnDirection);
-        opMode.telemetry.update();
     }
 
     public void driveToCapball() {
@@ -113,7 +114,6 @@ public class AutoMethods {
         opMode.telemetry.addData("d", d);
         opMode.telemetry.addData("x", x);
         opMode.telemetry.addData("y", y);
-        opMode.telemetry.update();
 
         if (angleToBeacon > 0) {
             drive.rotateDegrees(Direction.LEFT, angleToTurn, Globals.MAX_MOTOR_POWER);
@@ -157,6 +157,13 @@ public class AutoMethods {
         }
     }
 
+    public void fireLauncher() {
+        ParticleLauncher launcher = new ParticleLauncher(hardwareMap, opMode);
+        launcher.update(true);
+        opMode.sleep(2000);
+        launcher.update(false);
+    }
+
     public void climbCornerVortex() {
         drive.moveInches(Direction.BACKWARD, Globals.DISTANCE_TO_CLIMB_CORNER_VORTEX, Globals.MAX_MOTOR_POWER);
     }
@@ -169,8 +176,9 @@ public class AutoMethods {
     }
 
     public void runProcessCBV() {
+        fireLauncher();
         driveToCapball();
-        //driveToNearBeacon();
-        //alignToBeacon();
+        driveToNearBeacon();
+        alignToBeacon();
     }
 }

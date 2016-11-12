@@ -22,7 +22,6 @@ public class BlueLineCBV extends LinearOpMode {
         initialize();
         waitForStart();
         autoMethods.runProcessCBV();
-
     }
 
     public void initialize() {
