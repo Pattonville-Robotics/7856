@@ -26,6 +26,7 @@ public class MainTeleOp extends LinearOpMode {
     private Hopper hopper;
     private ParticleLauncher particleLauncher;
     private boolean hopperOn = false;
+    private boolean particleLauncherOn = false;
     private Direction currentDirection;
 
     public void runOpMode() throws InterruptedException {
@@ -83,16 +84,23 @@ public class MainTeleOp extends LinearOpMode {
                 }
             }
         });
-        gamepad.getButton(GamepadData.Button.B).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
-            @Override
-            public void run() {
-                particleLauncher.primeLauncher();
-            }
-        });
+//        gamepad.getButton(GamepadData.Button.B).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
+//            @Override
+//            public void run() {
+//                particleLauncher.primeLauncher();
+//            }
+//        });
+//        gamepad.getButton(GamepadData.Button.A).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
+//            @Override
+//            public void run() {
+//                particleLauncher.releaseLauncher();
+//            }
+//        });
+
         gamepad.getButton(GamepadData.Button.A).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
             @Override
             public void run() {
-                particleLauncher.releaseLauncher();
+                particleLauncherOn = !particleLauncherOn;
             }
         });
         telemetry.addData("Init", "Initialized.");
@@ -101,7 +109,8 @@ public class MainTeleOp extends LinearOpMode {
     public void doLoop() {
         drive.moveFreely(gamepad1.left_stick_y, gamepad1.right_stick_y);
         gamepad.update(new GamepadData(gamepad1));
-        particleLauncher.holdPrime();
+        //particleLauncher.holdPrime();
+        particleLauncher.update(particleLauncherOn);
         hopper.update(hopperOn, currentDirection);
     }
 

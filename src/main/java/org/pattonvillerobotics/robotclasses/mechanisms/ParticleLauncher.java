@@ -86,4 +86,16 @@ public class ParticleLauncher extends AbstractMechanism {
             particleLauncher.setPower(0);
         }
     }
+
+    public void update(boolean toggle) {
+
+        if(toggle) {
+            particleLauncher.setPower(0.2);
+        }
+        else {
+            particleLauncher.setPower(0);
+        }
+
+    }
+
 }
