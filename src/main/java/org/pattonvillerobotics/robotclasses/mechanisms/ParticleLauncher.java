@@ -30,7 +30,7 @@ public class ParticleLauncher extends AbstractMechanism {
 
         if (!launcherPrimed) {
 
-            targetPosition = 310;
+            targetPosition = 1240;
 
             particleLauncher.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
@@ -39,11 +39,11 @@ public class ParticleLauncher extends AbstractMechanism {
             particleLauncher.setDirection(DcMotorSimple.Direction.FORWARD);
 
             particleLauncher.setPower(0.7);
-            while (particleLauncher.getCurrentPosition() < targetPosition) {
+            while (java.lang.Math.abs(particleLauncher.getCurrentPosition() - targetPosition) > 20) {
                 if (linearOpMode.isStopRequested())
                     break;
             }
-            particleLauncher.setPower(0);
+            particleLauncher.setPower(0.2);
 
             launcherPrimed = true;
         }
@@ -55,7 +55,7 @@ public class ParticleLauncher extends AbstractMechanism {
 
             int targetPosition;
 
-            targetPosition = 360;
+            targetPosition = 1440;
 
             particleLauncher.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
@@ -64,7 +64,7 @@ public class ParticleLauncher extends AbstractMechanism {
             particleLauncher.setDirection(DcMotorSimple.Direction.FORWARD);
 
             particleLauncher.setPower(0.7);
-            while (particleLauncher.getCurrentPosition() < targetPosition) {
+            while (java.lang.Math.abs(particleLauncher.getCurrentPosition() - targetPosition) > 20) {
                 if (linearOpMode.isStopRequested())
                     break;
             }
@@ -76,7 +76,7 @@ public class ParticleLauncher extends AbstractMechanism {
 
     public void holdPrime() {
 
-        if (launcherPrimed && (particleLauncher.getCurrentPosition() < targetPosition)) {
+        if (launcherPrimed && (java.lang.Math.abs(particleLauncher.getCurrentPosition() - targetPosition) > 20)) {
             particleLauncher.setPower(0.2);
             while (particleLauncher.getCurrentPosition() < targetPosition) {
                 if (linearOpMode.isStopRequested()) {
