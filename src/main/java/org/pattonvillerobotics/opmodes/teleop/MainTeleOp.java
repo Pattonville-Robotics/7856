@@ -3,6 +3,7 @@ package org.pattonvillerobotics.opmodes.teleop;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.pattonvillerobotics.commoncode.opmodes.OpModeGroups;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.EncoderDrive;
 import org.pattonvillerobotics.commoncode.robotclasses.gamepad.GamepadData;
@@ -46,6 +47,10 @@ public class MainTeleOp extends LinearOpMode {
         particleLauncher = new ParticleLauncher(hardwareMap, this);
         hopper = new Hopper(hardwareMap, this);
         currentDirection = Direction.IN;
+
+        telemetry.setMsTransmissionInterval(16);
+        final Telemetry.Item particle_Launcher = telemetry.addData("Particle Launcher: ", "N/A").setRetained(true);
+
         gamepad.getButton(GamepadData.Button.LEFT_BUMPER).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
             @Override
             public void run() {
@@ -88,12 +93,14 @@ public class MainTeleOp extends LinearOpMode {
             @Override
             public void run() {
                 particleLauncher.primeLauncher();
+                particle_Launcher.setValue(particleLauncher.particleLauncher.getCurrentPosition());
             }
         });
         gamepad.getButton(GamepadData.Button.A).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
             @Override
             public void run() {
                 particleLauncher.releaseLauncher();
+                particle_Launcher.setValue(particleLauncher.particleLauncher.getCurrentPosition());
             }
         });
 
@@ -112,6 +119,7 @@ public class MainTeleOp extends LinearOpMode {
         particleLauncher.holdPrime();
         //particleLauncher.update(particleLauncherOn);
         hopper.update(hopperOn, currentDirection);
+        telemetry.update();
     }
 
     public enum Direction {IN, OUT}
