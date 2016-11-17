@@ -51,13 +51,13 @@ public class MainTeleOp extends LinearOpMode {
         telemetry.setMsTransmissionInterval(16);
         final Telemetry.Item particle_Launcher = telemetry.addData("Particle Launcher: ", "N/A").setRetained(true);
 
-        gamepad.getButton(GamepadData.Button.LEFT_BUMPER).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
+        gamepad.getButton(GamepadData.Button.DPAD_LEFT).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
             @Override
             public void run() {
                 armMover.moveTo(ArmMover.Position.LEFT);
             }
         });
-        gamepad.getButton(GamepadData.Button.RIGHT_BUMPER).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
+        gamepad.getButton(GamepadData.Button.DPAD_RIGHT).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
             @Override
             public void run() {
                 armMover.moveTo(ArmMover.Position.RIGHT);
@@ -101,6 +101,18 @@ public class MainTeleOp extends LinearOpMode {
             public void run() {
                 particleLauncher.releaseLauncher();
                 particle_Launcher.setValue(particleLauncher.particleLauncher.getCurrentPosition());
+            }
+        });
+        gamepad.getButton(GamepadData.Button.LEFT_BUMPER).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
+            @Override
+            public void run() {
+                armMover.decrementPosition();
+            }
+        });
+        gamepad.getButton(GamepadData.Button.RIGHT_BUMPER).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
+            @Override
+            public void run() {
+                armMover.incrementPosition();
             }
         });
 
