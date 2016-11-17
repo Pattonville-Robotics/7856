@@ -3,6 +3,7 @@ package org.pattonvillerobotics.opmodes.teleop;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.pattonvillerobotics.commoncode.opmodes.OpModeGroups;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.EncoderDrive;
 import org.pattonvillerobotics.commoncode.robotclasses.gamepad.GamepadData;
@@ -31,9 +32,12 @@ public class MainTeleOp extends LinearOpMode {
 
     public void runOpMode() throws InterruptedException {
         initialize();
+        telemetry.setMsTransmissionInterval(16);
+        final Telemetry.Item particle_Launcher = telemetry.addData("Particle Launcher: ", "N/A").setRetained(true);
         waitForStart();
 
         while (opModeIsActive()) {
+            particle_Launcher.setValue(particleLauncher.particleLauncher.getCurrentPosition());
             doLoop();
             idle();
         }
@@ -46,6 +50,10 @@ public class MainTeleOp extends LinearOpMode {
         particleLauncher = new ParticleLauncher(hardwareMap, this);
         hopper = new Hopper(hardwareMap, this);
         currentDirection = Direction.IN;
+
+        telemetry.setMsTransmissionInterval(16);
+        final Telemetry.Item particle_Launcher = telemetry.addData("Particle Launcher: ", "N/A").setRetained(true);
+
         gamepad.getButton(GamepadData.Button.LEFT_BUMPER).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
             @Override
             public void run() {
@@ -96,6 +104,24 @@ public class MainTeleOp extends LinearOpMode {
                 particleLauncher.releaseLauncher();
             }
         });
+        gamepad.getButton(GamepadData.Button.DPAD_UP).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
+            @Override
+            public void run() {
+                particleLauncher.returntozero();
+            }
+        });
+        gamepad.getButton(GamepadData.Button.DPAD_LEFT).addListener(ListenableButton.ButtonState.BEING_PRESSED, new ListenableButton.ButtonListener() {
+            @Override
+            public void run() {
+                particleLauncher.turnmotorleft();
+            }
+        });
+        gamepad.getButton(GamepadData.Button.DPAD_RIGHT).addListener(ListenableButton.ButtonState.BEING_PRESSED, new ListenableButton.ButtonListener() {
+            @Override
+            public void run() {
+                particleLauncher.turnmotorright();
+            }
+        });
 
 //        gamepad.getButton(GamepadData.Button.A).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
 //            @Override
@@ -109,9 +135,9 @@ public class MainTeleOp extends LinearOpMode {
     public void doLoop() {
         drive.moveFreely(gamepad1.left_stick_y, gamepad1.right_stick_y);
         gamepad.update(new GamepadData(gamepad1));
-        particleLauncher.holdPrime();
         //particleLauncher.update(particleLauncherOn);
         hopper.update(hopperOn, currentDirection);
+        telemetry.update();
     }
 
     public enum Direction {IN, OUT}
