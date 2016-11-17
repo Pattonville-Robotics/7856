@@ -23,6 +23,8 @@ public class FireDrive extends LinearOpMode {
 
         drive = new EncoderDrive(hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS);
         autoMethods = new AutoMethods(drive, AllianceColor.BLUE, StartPosition.LINE, hardwareMap, this);
+        waitForStart();
+
 
         autoMethods.fireLauncher();
         drive.moveInches(Direction.BACKWARD, 60, Globals.MAX_MOTOR_POWER);

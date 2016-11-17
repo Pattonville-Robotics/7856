@@ -30,9 +30,9 @@ public class ParticleLauncher extends AbstractMechanism {
 
         if (!launcherPrimed) {
 
-            targetPosition = 1240;
+            targetPosition = particleLauncher.getCurrentPosition() + 1040;
 
-            particleLauncher.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            particleLauncher.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
             particleLauncher.setTargetPosition(targetPosition);
 
@@ -43,7 +43,7 @@ public class ParticleLauncher extends AbstractMechanism {
                 if (linearOpMode.isStopRequested())
                     break;
             }
-            particleLauncher.setPower(0.2);
+            particleLauncher.setPower(0);
 
             launcherPrimed = true;
         }
@@ -53,11 +53,9 @@ public class ParticleLauncher extends AbstractMechanism {
 
         if (launcherPrimed) {
 
-            int targetPosition;
+            targetPosition = particleLauncher.getCurrentPosition() + 400;
 
-            targetPosition = 1440;
-
-            particleLauncher.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            particleLauncher.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
             particleLauncher.setTargetPosition(targetPosition);
 
@@ -85,6 +83,63 @@ public class ParticleLauncher extends AbstractMechanism {
             }
             particleLauncher.setPower(0);
         }
+    }
+
+    public void returntozero() {
+
+        targetPosition = 0;
+
+        particleLauncher.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        particleLauncher.setTargetPosition(targetPosition);
+
+        particleLauncher.setDirection(DcMotorSimple.Direction.FORWARD);
+
+        particleLauncher.setPower(0.7);
+        while (java.lang.Math.abs(particleLauncher.getCurrentPosition() - targetPosition) > 20) {
+            if (linearOpMode.isStopRequested())
+                break;
+        }
+        particleLauncher.setPower(0);
+
+    }
+
+    public void turnmotorleft() {
+
+        targetPosition = particleLauncher.getCurrentPosition() + 16;
+
+        particleLauncher.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        particleLauncher.setTargetPosition(targetPosition);
+
+        particleLauncher.setDirection(DcMotorSimple.Direction.FORWARD);
+
+        particleLauncher.setPower(0.7);
+        while (java.lang.Math.abs(particleLauncher.getCurrentPosition() - targetPosition) > 20) {
+            if (linearOpMode.isStopRequested())
+                break;
+        }
+        particleLauncher.setPower(0);
+
+    }
+
+    public void turnmotorright() {
+
+        targetPosition = particleLauncher.getCurrentPosition() - 16;
+
+        particleLauncher.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        particleLauncher.setTargetPosition(targetPosition);
+
+        particleLauncher.setDirection(DcMotorSimple.Direction.FORWARD);
+
+        particleLauncher.setPower(0.7);
+        while (java.lang.Math.abs(particleLauncher.getCurrentPosition() - targetPosition) > 20) {
+            if (linearOpMode.isStopRequested())
+                break;
+        }
+        particleLauncher.setPower(0);
+
     }
 
     public void update(boolean toggle) {
