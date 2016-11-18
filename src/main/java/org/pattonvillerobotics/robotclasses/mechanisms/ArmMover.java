@@ -35,6 +35,17 @@ public class ArmMover extends AbstractMechanism {
         }
     }
 
+    // Two methods for testing purposes
+    public void incrementPosition() {
+        armMover.setPosition(armMover.getPosition() + 0.1);
+        linearOpMode.telemetry.addData("Arm position", armMover.getPosition());
+
+    }
+    public void decrementPosition() {
+        armMover.setPosition(armMover.getPosition() - 0.1);
+        linearOpMode.telemetry.addData("Arm position", armMover.getPosition());
+    }
+
     public enum Position {
         DOWN, LEFT, UP, RIGHT
     }
