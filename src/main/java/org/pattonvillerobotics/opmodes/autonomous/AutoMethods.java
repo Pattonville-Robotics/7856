@@ -60,6 +60,7 @@ public class AutoMethods {
     }
 
     public void driveToCapball() {
+        opMode.telemetry.addData("Auto Methods", "Driving to the first capball");
         if(startPosition == StartPosition.LINE) {
             drive.moveInches(Direction.BACKWARD, Globals.DISTANCE1_TO_CAPBALL, Globals.MAX_MOTOR_POWER);
             drive.rotateDegrees(defaultTurnDirection, Globals.HALF_TURN, Globals.MAX_MOTOR_POWER);
@@ -72,12 +73,14 @@ public class AutoMethods {
     }
 
     public void driveToBeacon() {
+        opMode.telemetry.addData("Auto Methods", "Driving to first beacon.");
         drive.moveInches(Direction.BACKWARD, Globals.DISTANCE1_TO_BEACON, Globals.MAX_MOTOR_POWER);
         drive.rotateDegrees(defaultTurnDirection, Globals.HALF_TURN, Globals.MAX_MOTOR_POWER);
         drive.moveInches(Direction.BACKWARD, Globals.DISTANCE2_TO_BEACON, Globals.MAX_MOTOR_POWER);
     }
 
     public void detectColor() {
+        opMode.telemetry.addData("Auto Methods", "Detecting Colors...");
         Bitmap bm = vuforia.getImage();
         if(bm != null) {
             beaconColorDetection.analyzeFrame(bm, ScreenOrientation.LANDSCAPE_REVERSE);
@@ -87,6 +90,7 @@ public class AutoMethods {
     }
 
     public void pressBeacon() {
+        opMode.telemetry.addData("Auto Methods", "Pressing Beacon");
         if(beaconLeftColor == allianceColor) {
             armMover.moveTo(ArmMover.Position.LEFT);
         } else {
@@ -96,6 +100,7 @@ public class AutoMethods {
     }
 
     public void alignToBeacon() {
+        opMode.telemetry.addData("Auto Methods", "Attempting to align to beacon.");
         OpenGLMatrix lastLocation = vuforia.getNearestBeaconLocation();
         while(lastLocation == null) {
             lastLocation = vuforia.getNearestBeaconLocation();
@@ -126,6 +131,7 @@ public class AutoMethods {
     }
 
     public void driveToNextBeacon() {
+        opMode.telemetry.addData("Auto Methods", "Driving to next "+allianceColor+" side beacon.");
 
         drive.moveInches(Direction.FORWARD, Globals.BEACON_BACKUP_DISTANCE, Globals.MAX_MOTOR_POWER);
         drive.rotateDegrees(defaultTurnDirection, Globals.RIGHT_TURN, Globals.MAX_MOTOR_POWER);
@@ -159,6 +165,7 @@ public class AutoMethods {
     }
 
     public void fireLauncher() {
+        opMode.telemetry.addData("Cannon", "Firing cannon.");
         ParticleLauncher launcher = new ParticleLauncher(hardwareMap, opMode);
         launcher.update(true);
         opMode.sleep(2000);
@@ -171,7 +178,6 @@ public class AutoMethods {
 
     public void driveToNearBeacon() {
         opMode.telemetry.addData("Drive to Near Beacon", "Driving");
-        opMode.telemetry.update();
         drive.rotateDegrees(defaultTurnDirection, Globals.HALF_TURN, Globals.MAX_MOTOR_POWER);
         drive.moveInches(Direction.BACKWARD, Globals.DISTANCE_TO_NEAR_BEACON, Globals.MAX_MOTOR_POWER);
     }

@@ -22,6 +22,11 @@ public class BlueLineCBV extends LinearOpMode {
         initialize();
         waitForStart();
         autoMethods.runProcessCBV();
+
+        while(opModeIsActive()) {
+            telemetry.update();
+            idle();
+        }
     }
 
     public void initialize() {

@@ -24,6 +24,11 @@ public class BlueVortexCBV extends LinearOpMode {
 
         autoMethods.runProcessCBV();
 
+        while(opModeIsActive()) {
+            telemetry.update();
+            idle();
+        }
+
     }
 
     public void initialize() {
