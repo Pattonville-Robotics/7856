@@ -7,9 +7,9 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.pattonvillerobotics.commoncode.opmodes.OpModeGroups;
+import org.pattonvillerobotics.commoncode.robotclasses.colordetection.BeaconColorDetection;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.trailblazer.vuforia.VuforiaNav;
 import org.pattonvillerobotics.opmodes.CustomizedRobotParameters;
-import org.pattonvillerobotics.robotclasses.colordetection.BeaconColorDetection;
 
 @Autonomous(name = "VuforiaTest", group = OpModeGroups.TESTING)
 public class VuforiaTesting extends LinearOpMode {
