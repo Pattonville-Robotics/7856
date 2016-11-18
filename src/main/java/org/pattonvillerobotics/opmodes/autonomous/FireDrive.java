@@ -27,7 +27,7 @@ public class FireDrive extends LinearOpMode {
 
 
         autoMethods.fireLauncher();
-        drive.moveInches(Direction.BACKWARD, 60, Globals.MAX_MOTOR_POWER);
+        drive.moveInches(Direction.BACKWARD, 67, Globals.MAX_MOTOR_POWER);
 
     }
 }

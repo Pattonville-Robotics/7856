@@ -110,16 +110,7 @@ public class MainTeleOp extends LinearOpMode {
                 armMover.incrementPosition();
             }
         });
-
-//        gamepad.getButton(GamepadData.Button.A).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
-//            @Override
-//            public void run() {
-//                particleLauncherOn = !particleLauncherOn;
-//            }
-//        });
-//        telemetry.addData("Init", "Initialized.");
     }
-
     public void doLoop() {
         drive.moveFreely(gamepad1.left_stick_y, gamepad1.right_stick_y);
         gamepad.update(new GamepadData(gamepad1));
