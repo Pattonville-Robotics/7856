@@ -25,6 +25,26 @@ public class ParticleLauncher extends AbstractMechanism {
         }
     }
 
+    public void launchLauncher() {
+
+        targetPosition = particleLauncher.getCurrentPosition() + 1440;
+
+        particleLauncher.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        particleLauncher.setTargetPosition(targetPosition);
+
+        particleLauncher.setDirection(DcMotorSimple.Direction.FORWARD);
+
+        particleLauncher.setPower(0.7);
+        while (java.lang.Math.abs(particleLauncher.getCurrentPosition() - targetPosition) > 10) {
+            if (linearOpMode.isStopRequested())
+                break;
+        }
+        particleLauncher.setPower(0);
+
+
+    }
+
     public void primeLauncher() {
         //Pull the launcher bottom back
 
@@ -134,7 +154,7 @@ public class ParticleLauncher extends AbstractMechanism {
         particleLauncher.setDirection(DcMotorSimple.Direction.FORWARD);
 
         particleLauncher.setPower(0.7);
-        while (java.lang.Math.abs(particleLauncher.getCurrentPosition() - targetPosition) > 20) {
+        while (java.lang.Math.abs(particleLauncher.getCurrentPosition() - targetPosition) > 5) {
             if (linearOpMode.isStopRequested())
                 break;
         }
