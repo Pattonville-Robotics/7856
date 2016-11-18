@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import org.pattonvillerobotics.commoncode.opmodes.OpModeGroups;
 import org.pattonvillerobotics.commoncode.robotclasses.colordetection.BeaconColorDetection;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.trailblazer.vuforia.VuforiaNav;
+import org.pattonvillerobotics.commoncode.vision.util.ScreenOrientation;
 import org.pattonvillerobotics.opmodes.CustomizedRobotParameters;
 
 /**
@@ -29,7 +30,7 @@ public class BeaconColorTesting extends LinearOpMode {
         while(opModeIsActive()) {
             bm = vuforiaNav.getImage();
             if(bm != null) {
-                beaconColorDetection.analyzeFrame(bm);
+                beaconColorDetection.analyzeFrame(bm, ScreenOrientation.LANDSCAPE_REVERSE);
                 telemetry.addData("Colors", beaconColorDetection.getLeftColor());
             }
 

@@ -13,6 +13,7 @@ import org.pattonvillerobotics.commoncode.enums.Direction;
 import org.pattonvillerobotics.commoncode.robotclasses.colordetection.BeaconColorDetection;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.EncoderDrive;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.trailblazer.vuforia.VuforiaNav;
+import org.pattonvillerobotics.commoncode.vision.util.ScreenOrientation;
 import org.pattonvillerobotics.opmodes.CustomizedRobotParameters;
 import org.pattonvillerobotics.robotclasses.mechanisms.ArmMover;
 import org.pattonvillerobotics.robotclasses.mechanisms.ParticleLauncher;
@@ -79,7 +80,7 @@ public class AutoMethods {
     public void detectColor() {
         Bitmap bm = vuforia.getImage();
         if(bm != null) {
-            beaconColorDetection.analyzeFrame(bm);
+            beaconColorDetection.analyzeFrame(bm, ScreenOrientation.LANDSCAPE_REVERSE);
             bm.recycle();
             beaconLeftColor = beaconColorDetection.getLeftColor();
         }
