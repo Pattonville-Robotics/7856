@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.pattonvillerobotics.opmodes.CustomizedRobotParameters;
+import org.pattonvillerobotics.opmodes.autonomous.Globals;
 
 /**
  * Created by skaggsw on 10/27/16.
@@ -35,7 +36,7 @@ public class ParticleLauncher extends AbstractMechanism {
 
         particleLauncher.setDirection(DcMotorSimple.Direction.FORWARD);
 
-        particleLauncher.setPower(0.7);
+        particleLauncher.setPower(Globals.CANNON_POWER);
         while (java.lang.Math.abs(particleLauncher.getCurrentPosition() - targetPosition) > 10) {
             if (linearOpMode.isStopRequested())
                 break;
@@ -58,7 +59,7 @@ public class ParticleLauncher extends AbstractMechanism {
 
             particleLauncher.setDirection(DcMotorSimple.Direction.FORWARD);
 
-            particleLauncher.setPower(0.7);
+            particleLauncher.setPower(Globals.CANNON_POWER);
             while (java.lang.Math.abs(particleLauncher.getCurrentPosition() - targetPosition) > 20) {
                 if (linearOpMode.isStopRequested())
                     break;
@@ -81,7 +82,7 @@ public class ParticleLauncher extends AbstractMechanism {
 
             particleLauncher.setDirection(DcMotorSimple.Direction.FORWARD);
 
-            particleLauncher.setPower(0.7);
+            particleLauncher.setPower(Globals.CANNON_POWER);
             while (java.lang.Math.abs(particleLauncher.getCurrentPosition() - targetPosition) > 20) {
                 if (linearOpMode.isStopRequested())
                     break;
@@ -95,7 +96,7 @@ public class ParticleLauncher extends AbstractMechanism {
     public void holdPrime() {
 
         if (launcherPrimed && (java.lang.Math.abs(particleLauncher.getCurrentPosition() - targetPosition) > 20)) {
-            particleLauncher.setPower(0.2);
+            particleLauncher.setPower(Globals.CANNON_POWER);
             while (particleLauncher.getCurrentPosition() < targetPosition) {
                 if (linearOpMode.isStopRequested()) {
                     break;
@@ -115,7 +116,7 @@ public class ParticleLauncher extends AbstractMechanism {
 
         particleLauncher.setDirection(DcMotorSimple.Direction.FORWARD);
 
-        particleLauncher.setPower(0.7);
+        particleLauncher.setPower(Globals.CANNON_POWER);
         while (java.lang.Math.abs(particleLauncher.getCurrentPosition() - targetPosition) > 20) {
             if (linearOpMode.isStopRequested())
                 break;
@@ -134,7 +135,7 @@ public class ParticleLauncher extends AbstractMechanism {
 
         particleLauncher.setDirection(DcMotorSimple.Direction.FORWARD);
 
-        particleLauncher.setPower(0.7);
+        particleLauncher.setPower(Globals.CANNON_POWER);
         while (java.lang.Math.abs(particleLauncher.getCurrentPosition() - targetPosition) > 20) {
             if (linearOpMode.isStopRequested())
                 break;
@@ -153,7 +154,7 @@ public class ParticleLauncher extends AbstractMechanism {
 
         particleLauncher.setDirection(DcMotorSimple.Direction.FORWARD);
 
-        particleLauncher.setPower(0.7);
+        particleLauncher.setPower(Globals.CANNON_POWER);
         while (java.lang.Math.abs(particleLauncher.getCurrentPosition() - targetPosition) > 5) {
             if (linearOpMode.isStopRequested())
                 break;
@@ -165,7 +166,7 @@ public class ParticleLauncher extends AbstractMechanism {
     public void update(boolean toggle) {
 
         if(toggle) {
-            particleLauncher.setPower(0.2);
+            particleLauncher.setPower(Globals.CANNON_POWER);
         }
         else {
             particleLauncher.setPower(0);
