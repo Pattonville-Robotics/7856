@@ -165,6 +165,7 @@ public class ParticleLauncher extends AbstractMechanism {
 
     public void update(boolean toggle) {
 
+        particleLauncher.setDirection(DcMotorSimple.Direction.REVERSE);
         if(toggle) {
             particleLauncher.setPower(Globals.CANNON_POWER);
         }
