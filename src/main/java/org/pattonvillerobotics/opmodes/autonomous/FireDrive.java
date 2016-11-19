@@ -29,5 +29,10 @@ public class FireDrive extends LinearOpMode {
         autoMethods.fireLauncher();
         drive.moveInches(Direction.BACKWARD, 67, Globals.MAX_MOTOR_POWER);
 
+        while(opModeIsActive()) {
+            telemetry.update();
+            idle();
+        }
+
     }
 }
