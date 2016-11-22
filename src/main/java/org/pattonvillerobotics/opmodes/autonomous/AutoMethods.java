@@ -106,14 +106,20 @@ public class AutoMethods {
         opMode.telemetry.addData("d", d);
         opMode.telemetry.addData("x", x);
         opMode.telemetry.addData("y", y);
+        opMode.telemetry.update();
+        opMode.sleep(15000);
 
         if (angleToBeacon > 0) {
             drive.rotateDegrees(Direction.LEFT, angleToTurn, Globals.MAX_MOTOR_POWER);
+            opMode.sleep(5000);
         } else {
             drive.rotateDegrees(Direction.RIGHT, -angleToTurn, Globals.MAX_MOTOR_POWER);
+            opMode.sleep(5000);
         }
         drive.moveInches(Direction.BACKWARD, d, Globals.MAX_MOTOR_POWER);
+        opMode.sleep(5000);
         drive.rotateDegrees(defaultTurnDirection, adjustmentAngle, Globals.MAX_MOTOR_POWER);
+        opMode.sleep(5000);
     }
 
 
