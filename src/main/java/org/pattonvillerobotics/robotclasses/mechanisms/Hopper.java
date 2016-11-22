@@ -4,7 +4,6 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import org.pattonvillerobotics.opmodes.autonomous.Globals;
 import org.pattonvillerobotics.opmodes.teleop.MainTeleOp;
 
 /**
@@ -24,10 +23,10 @@ public class Hopper extends AbstractMechanism {
         if (toggle) {
             switch (direction) {
                 case IN:
-                    hopper.setPower(-(Globals.MAX_MOTOR_POWER));
+                    hopper.setPower(-.8);
                     break;
                 case OUT:
-                    hopper.setPower(Globals.MAX_MOTOR_POWER);
+                    hopper.setPower(.8);
                     break;
             }
         } else {

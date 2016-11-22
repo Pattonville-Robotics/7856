@@ -35,6 +35,7 @@ public class AutoMethods {
     private VuforiaNav vuforia;
     private LinearOpMode opMode;
     private HardwareMap hardwareMap;
+    private ParticleLauncher launcher;
 
     public AutoMethods(EncoderDrive newDrive, AllianceColor newAllianceColor, StartPosition newStartPosition, HardwareMap hardwareMap, LinearOpMode linearOpMode) {
         this.hardwareMap = hardwareMap;
@@ -46,6 +47,7 @@ public class AutoMethods {
         vuforia = new VuforiaNav(CustomizedRobotParameters.VUFORIA_PARAMETERS);
         vuforia.activate();
         armMover = new ArmMover(hardwareMap, linearOpMode);
+        launcher = new ParticleLauncher(hardwareMap, opMode);
         linearOpMode.telemetry.addData("Init", "Complete");
     }
 
@@ -166,7 +168,6 @@ public class AutoMethods {
 
     public void fireLauncher() {
         opMode.telemetry.addData("Cannon", "Firing cannon.");
-        ParticleLauncher launcher = new ParticleLauncher(hardwareMap, opMode);
         launcher.update(true);
         opMode.sleep(2000);
         launcher.update(false);

@@ -127,7 +127,7 @@ public class ParticleLauncher extends AbstractMechanism {
 
     public void turnmotorleft() {
 
-        targetPosition = particleLauncher.getCurrentPosition() + 16;
+        targetPosition = particleLauncher.getCurrentPosition() + 20;
 
         particleLauncher.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
@@ -136,7 +136,7 @@ public class ParticleLauncher extends AbstractMechanism {
         particleLauncher.setDirection(DcMotorSimple.Direction.FORWARD);
 
         particleLauncher.setPower(Globals.CANNON_POWER);
-        while (java.lang.Math.abs(particleLauncher.getCurrentPosition() - targetPosition) > 20) {
+        while (java.lang.Math.abs(particleLauncher.getCurrentPosition() - targetPosition) > 10) {
             if (linearOpMode.isStopRequested())
                 break;
         }
@@ -146,16 +146,16 @@ public class ParticleLauncher extends AbstractMechanism {
 
     public void turnmotorright() {
 
-        targetPosition = particleLauncher.getCurrentPosition() - 16;
+        targetPosition = particleLauncher.getCurrentPosition() - 20;
 
         particleLauncher.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         particleLauncher.setTargetPosition(targetPosition);
 
-        particleLauncher.setDirection(DcMotorSimple.Direction.FORWARD);
+        particleLauncher.setDirection(DcMotorSimple.Direction.REVERSE);
 
         particleLauncher.setPower(Globals.CANNON_POWER);
-        while (java.lang.Math.abs(particleLauncher.getCurrentPosition() - targetPosition) > 5) {
+        while (java.lang.Math.abs(particleLauncher.getCurrentPosition() - targetPosition) > 10) {
             if (linearOpMode.isStopRequested())
                 break;
         }
