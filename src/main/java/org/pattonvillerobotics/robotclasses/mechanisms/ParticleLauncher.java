@@ -51,7 +51,7 @@ public class ParticleLauncher extends AbstractMechanism {
 
         if (!launcherPrimed) {
 
-            targetPosition = particleLauncher.getCurrentPosition() + 1040;
+            targetPosition = particleLauncher.getCurrentPosition() + 1000;
 
             particleLauncher.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
@@ -74,7 +74,7 @@ public class ParticleLauncher extends AbstractMechanism {
 
         if (launcherPrimed) {
 
-            targetPosition = particleLauncher.getCurrentPosition() + 400;
+            targetPosition = particleLauncher.getCurrentPosition() + 440;
 
             particleLauncher.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
