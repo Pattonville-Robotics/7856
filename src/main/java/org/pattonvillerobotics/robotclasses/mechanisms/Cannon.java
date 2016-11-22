@@ -12,13 +12,13 @@ import org.pattonvillerobotics.opmodes.autonomous.Globals;
  * Created by skaggsw on 10/27/16.
  */
 
-public class ParticleLauncher extends AbstractMechanism {
+public class Cannon extends AbstractMechanism {
 
     public DcMotor particleLauncher;
     public boolean launcherPrimed = false;
     public int targetPosition = 0;
 
-    public ParticleLauncher(HardwareMap hardwareMap, LinearOpMode linearOpMode) {
+    public Cannon(HardwareMap hardwareMap, LinearOpMode linearOpMode) {
         super(hardwareMap, linearOpMode);
         particleLauncher = hardwareMap.dcMotor.get("particle_launcher");
         if (CustomizedRobotParameters.ROBOT_PARAMETERS.areEncodersEnabled()) {
