@@ -11,8 +11,8 @@ import org.pattonvillerobotics.opmodes.CustomizedRobotParameters;
 /**
  * Created by pieperm on 10/18/16.
  */
-@Autonomous(name = "RedLineCBV", group = OpModeGroups.MAIN)
-public class RedLineCBV extends LinearOpMode {
+@Autonomous(name = "BlueVortex", group = OpModeGroups.MAIN)
+public class BlueVortex extends LinearOpMode {
 
     private AutoMethods autoMethods;
 
@@ -22,7 +22,7 @@ public class RedLineCBV extends LinearOpMode {
         initialize();
         waitForStart();
 
-        autoMethods.runProcessCBV();
+        autoMethods.runAutonomousProcess();
 
         while(opModeIsActive()) {
             telemetry.update();
@@ -32,6 +32,7 @@ public class RedLineCBV extends LinearOpMode {
     }
 
     public void initialize() {
-        autoMethods = new AutoMethods(new EncoderDrive(hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS), AllianceColor.RED, StartPosition.LINE, hardwareMap, this);
+        autoMethods = new AutoMethods(new EncoderDrive(hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS), AllianceColor.BLUE, StartPosition.VORTEX, EndPosition.CENTER_VORTEX, hardwareMap, this);
+
     }
 }
