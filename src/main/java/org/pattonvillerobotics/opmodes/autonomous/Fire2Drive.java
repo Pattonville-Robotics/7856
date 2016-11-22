@@ -25,16 +25,16 @@ public class Fire2Drive extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
 
         drive = new EncoderDrive(hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS);
-        autoMethods = new AutoMethods(drive, AllianceColor.BLUE, StartPosition.LINE, hardwareMap, this);
+        autoMethods = new AutoMethods(drive, AllianceColor.BLUE, StartPosition.LINE, EndPosition.CENTER_VORTEX, hardwareMap, this);
         hopper = new Hopper(hardwareMap, this);
         waitForStart();
 
-        autoMethods.fireLauncher();
+        autoMethods.fireCannon();
         sleep(1000);
         hopper.update(true, MainTeleOp.Direction.IN);
         sleep(7000);
         hopper.update(false, MainTeleOp.Direction.IN);
-        autoMethods.fireLauncher();
+        autoMethods.fireCannon();
 
         drive.moveInches(Direction.BACKWARD, 67, Globals.MAX_MOTOR_POWER);
 
