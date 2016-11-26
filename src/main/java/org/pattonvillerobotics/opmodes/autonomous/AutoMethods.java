@@ -15,7 +15,6 @@ import org.pattonvillerobotics.commoncode.robotclasses.drive.EncoderDrive;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.trailblazer.vuforia.VuforiaNav;
 import org.pattonvillerobotics.commoncode.vision.util.ScreenOrientation;
 import org.pattonvillerobotics.opmodes.CustomizedRobotParameters;
-import org.pattonvillerobotics.robotclasses.mechanisms.ArmMover;
 import org.pattonvillerobotics.robotclasses.mechanisms.Cannon;
 
 /**
@@ -30,8 +29,8 @@ public class AutoMethods {
     private AllianceColor allianceColor;
     private StartPosition startPosition;
     private EndPosition endPosition;
-    private ArmMover armMover;
     private AllianceColor beaconLeftColor;
+    private AllianceColor beaconRightColor;
     private BeaconColorDetection beaconColorDetection;
     private Direction defaultTurnDirection;
     private VuforiaNav vuforia;
@@ -49,7 +48,6 @@ public class AutoMethods {
         beaconColorDetection = new BeaconColorDetection(hardwareMap);
         vuforia = new VuforiaNav(CustomizedRobotParameters.VUFORIA_PARAMETERS);
         vuforia.activate();
-        armMover = new ArmMover(hardwareMap, linearOpMode);
         cannon = new Cannon(hardwareMap, opMode);
         linearOpMode.telemetry.addData("Init", "Complete");
     }
@@ -77,9 +75,7 @@ public class AutoMethods {
         }
     }
 
-    public void pressBeacon() {
-
-        drive.moveInches(Direction.FORWARD, Globals.MINIMUM_DISTANCE_TO_BEACON, Globals.MAX_MOTOR_POWER);
+    public void detectColor() {
 
         opMode.telemetry.addData("Auto Methods", "Detecting Colors...");
         Bitmap bm = vuforia.getImage();
@@ -87,10 +83,7 @@ public class AutoMethods {
             beaconColorDetection.analyzeFrame(bm, ScreenOrientation.LANDSCAPE_REVERSE);
             bm.recycle();
             beaconLeftColor = beaconColorDetection.getLeftColor();
-        }
-
-        if(beaconLeftColor.equals(allianceColor)) {
-
+            beaconRightColor = beaconColorDetection.getRightColor();
         }
 
     }
