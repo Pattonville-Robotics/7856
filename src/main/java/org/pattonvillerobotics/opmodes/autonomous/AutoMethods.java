@@ -23,15 +23,14 @@ import org.pattonvillerobotics.robotclasses.mechanisms.Cannon;
  */
 
 public class AutoMethods {
-
     private final String TAG = "AutoMethods";
-    private final String ERROR_MESSAGE = "Invalid parameter passed";
+    private final String ERROR_MESSAGE = "Alliance color must either be red or blue.";
     private EncoderDrive drive;
     private AllianceColor allianceColor;
     private StartPosition startPosition;
     private EndPosition endPosition;
     private ArmMover armMover;
-    private AllianceColor beaconLeftColor;
+    private AllianceColor beaconLeftColor, beaconRightColor;
     private BeaconColorDetection beaconColorDetection;
     private Direction defaultTurnDirection;
     private VuforiaNav vuforia;
@@ -64,6 +63,18 @@ public class AutoMethods {
         opMode.telemetry.addData("Setup", "Setting default turn direction to:" + defaultTurnDirection);
     }
 
+    public void driveToCapball() {
+        opMode.telemetry.addData("Auto Methods", "Driving to the first capball");
+        if(startPosition == StartPosition.LINE) {
+            drive.moveInches(Direction.BACKWARD, Globals.DISTANCE1_TO_CAPBALL, Globals.MAX_MOTOR_POWER);
+            drive.rotateDegrees(defaultTurnDirection, Globals.HALF_TURN, Globals.MAX_MOTOR_POWER);
+            drive.moveInches(Direction.BACKWARD, Globals.DISTANCE2_TO_CAPBALL, Globals.MAX_MOTOR_POWER);
+        } else if(startPosition == StartPosition.VORTEX) {
+            drive.moveInches(Direction.BACKWARD, Globals.STRAIGHT_DISTANCE_TO_CAPBALL, Globals.MAX_MOTOR_POWER);
+        } else {
+            Log.e(TAG, ERROR_MESSAGE);
+        }
+    }
 
     public void pressBeacon() {
 
@@ -76,15 +87,9 @@ public class AutoMethods {
             bm.recycle();
             beaconLeftColor = beaconColorDetection.getLeftColor();
         }
-
-        if(beaconLeftColor.equals(allianceColor)) {
-
-        }
-
     }
 
     public void alignToBeacon() {
-
         opMode.telemetry.addData("Auto Methods", "Attempting to align to beacon.");
         OpenGLMatrix lastLocation = vuforia.getNearestBeaconLocation();
         while(lastLocation == null) {
@@ -121,7 +126,6 @@ public class AutoMethods {
         drive.rotateDegrees(defaultTurnDirection, adjustmentAngle, Globals.MAX_MOTOR_POWER);
         opMode.sleep(5000);
     }
-
 
     public void driveToNextBeacon() {
         opMode.telemetry.addData("Auto Methods", "Driving to next "+allianceColor+" side beacon.");
@@ -200,11 +204,14 @@ public class AutoMethods {
         fireCannon();
         driveToNearBeacon();
         alignToBeacon();
-        pressBeacon();
-        driveToFarBeacon();
-        alignToBeacon();
-        pressBeacon();
-        driveToEndPosition();
+     }
 
+    public void ramBeacon(){
+        detectColor();
+        while(beaconLeftColor != allianceColor || beaconRightColor != allianceColor) {
+            drive.moveInches(Direction.BACKWARD, vuforia.getDistance() + 2, Globals.HALF_MOTOR_POWER);
+            drive.moveInches(Direction.FORWARD, 10, Globals.HALF_MOTOR_POWER);
+            detectColor();
+        }
     }
 }
