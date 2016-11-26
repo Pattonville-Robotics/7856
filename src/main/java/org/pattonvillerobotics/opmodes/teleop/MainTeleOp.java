@@ -11,8 +11,8 @@ import org.pattonvillerobotics.commoncode.robotclasses.gamepad.ListenableButton;
 import org.pattonvillerobotics.commoncode.robotclasses.gamepad.ListenableGamepad;
 import org.pattonvillerobotics.opmodes.CustomizedRobotParameters;
 import org.pattonvillerobotics.robotclasses.mechanisms.ArmMover;
-import org.pattonvillerobotics.robotclasses.mechanisms.Cannon;
 import org.pattonvillerobotics.robotclasses.mechanisms.Hopper;
+import org.pattonvillerobotics.robotclasses.mechanisms.Cannon;
 
 /**
  * Created by skaggsw on 10/4/16.
@@ -25,7 +25,7 @@ public class MainTeleOp extends LinearOpMode {
     private ListenableGamepad gamepad;
     private ArmMover armMover;
     private Hopper hopper;
-    private Cannon cannon;
+    private Cannon particleLauncher;
     private boolean hopperOn = false;
     private boolean particleLauncherOn = false;
     private Direction currentDirection;
@@ -37,7 +37,7 @@ public class MainTeleOp extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()) {
-            particle_Launcher.setValue(cannon.getCannon().getCurrentPosition());
+            particle_Launcher.setValue(particleLauncher.particleLauncher.getCurrentPosition());
             doLoop();
             idle();
         }
@@ -47,7 +47,7 @@ public class MainTeleOp extends LinearOpMode {
         drive = new EncoderDrive(hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS);
         gamepad = new ListenableGamepad();
         armMover = new ArmMover(hardwareMap, this);
-        cannon = new Cannon(hardwareMap, this);
+        particleLauncher = new Cannon(hardwareMap, this);
         hopper = new Hopper(hardwareMap, this);
         currentDirection = Direction.IN;
 
@@ -97,7 +97,7 @@ public class MainTeleOp extends LinearOpMode {
             public void run() {
 
                 particleLauncherOn = !particleLauncherOn;
-                //cannon.launchLauncher();
+                //particleLauncher.launchLauncher();
             }
         });
     }
@@ -117,7 +117,7 @@ public class MainTeleOp extends LinearOpMode {
     public void doLoop() {
         drive.moveFreely(gamepad1.left_stick_y, gamepad1.right_stick_y);
         gamepad.update(new GamepadData(gamepad1));
-        cannon.update(particleLauncherOn);
+        particleLauncher.update(particleLauncherOn);
         hopper.update(hopperOn, currentDirection);
         telemetry.update();
     }
