@@ -12,7 +12,7 @@ import org.pattonvillerobotics.commoncode.robotclasses.gamepad.ListenableGamepad
 import org.pattonvillerobotics.opmodes.CustomizedRobotParameters;
 import org.pattonvillerobotics.robotclasses.mechanisms.ArmMover;
 import org.pattonvillerobotics.robotclasses.mechanisms.Hopper;
-import org.pattonvillerobotics.robotclasses.mechanisms.ParticleLauncher;
+import org.pattonvillerobotics.robotclasses.mechanisms.Cannon;
 
 /**
  * Created by skaggsw on 10/4/16.
@@ -25,7 +25,7 @@ public class MainTeleOp extends LinearOpMode {
     private ListenableGamepad gamepad;
     private ArmMover armMover;
     private Hopper hopper;
-    private ParticleLauncher particleLauncher;
+    private Cannon particleLauncher;
     private boolean hopperOn = false;
     private boolean particleLauncherOn = false;
     private Direction currentDirection;
@@ -47,7 +47,7 @@ public class MainTeleOp extends LinearOpMode {
         drive = new EncoderDrive(hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS);
         gamepad = new ListenableGamepad();
         armMover = new ArmMover(hardwareMap, this);
-        particleLauncher = new ParticleLauncher(hardwareMap, this);
+        particleLauncher = new Cannon(hardwareMap, this);
         hopper = new Hopper(hardwareMap, this);
         currentDirection = Direction.IN;
 

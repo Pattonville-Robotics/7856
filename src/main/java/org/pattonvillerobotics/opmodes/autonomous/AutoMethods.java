@@ -68,6 +68,7 @@ public class AutoMethods {
     public void pressBeacon() {
 
         drive.moveInches(Direction.FORWARD, Globals.MINIMUM_DISTANCE_TO_BEACON, Globals.MAX_MOTOR_POWER);
+        drive.moveInches(Direction.BACKWARD, Globals.MINIMUM_DISTANCE_TO_BEACON, Globals.MAX_MOTOR_POWER);
 
         opMode.telemetry.addData("Auto Methods", "Detecting Colors...");
         Bitmap bm = vuforia.getImage();
@@ -77,8 +78,8 @@ public class AutoMethods {
             beaconLeftColor = beaconColorDetection.getLeftColor();
         }
 
-        if(beaconLeftColor.equals(allianceColor)) {
-
+        if(!beaconLeftColor.equals(allianceColor)) {
+            drive.moveInches(Direction.FORWARD, Globals.MINIMUM_DISTANCE_TO_BEACON, Globals.MAX_MOTOR_POWER);
         }
 
     }
