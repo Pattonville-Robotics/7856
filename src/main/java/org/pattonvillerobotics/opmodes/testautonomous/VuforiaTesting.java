@@ -1,7 +1,5 @@
 package org.pattonvillerobotics.opmodes.testautonomous;
 
-import android.graphics.Bitmap;
-
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
@@ -21,7 +19,6 @@ public class VuforiaTesting extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
 
         OpenGLMatrix lastUpdatedLocation;
-        Bitmap bm;
 
         initialize();
         waitForStart();
@@ -32,7 +29,7 @@ public class VuforiaTesting extends LinearOpMode {
             if (lastUpdatedLocation != null) {
                 telemetry.addData("Distance", vuforiaNav.getDistance());
                 telemetry.addData("x Position", vuforiaNav.getxPos());
-                telemetry.addData("Angle To Turn", vuforiaNav.getAngle());
+                telemetry.addData("Heading", vuforiaNav.getHeading());
             } else {
                 telemetry.addData("Position", "Unknown");
             }

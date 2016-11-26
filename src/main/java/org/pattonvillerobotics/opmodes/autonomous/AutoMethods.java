@@ -23,14 +23,15 @@ import org.pattonvillerobotics.robotclasses.mechanisms.Cannon;
  */
 
 public class AutoMethods {
+
     private final String TAG = "AutoMethods";
-    private final String ERROR_MESSAGE = "Alliance color must either be red or blue.";
+    private final String ERROR_MESSAGE = "Invalid parameter passed";
     private EncoderDrive drive;
     private AllianceColor allianceColor;
     private StartPosition startPosition;
     private EndPosition endPosition;
     private ArmMover armMover;
-    private AllianceColor beaconLeftColor, beaconRightColor;
+    private AllianceColor beaconLeftColor;
     private BeaconColorDetection beaconColorDetection;
     private Direction defaultTurnDirection;
     private VuforiaNav vuforia;
@@ -87,9 +88,15 @@ public class AutoMethods {
             bm.recycle();
             beaconLeftColor = beaconColorDetection.getLeftColor();
         }
+
+        if(beaconLeftColor.equals(allianceColor)) {
+
+        }
+
     }
 
     public void alignToBeacon() {
+
         opMode.telemetry.addData("Auto Methods", "Attempting to align to beacon.");
         OpenGLMatrix lastLocation = vuforia.getNearestBeaconLocation();
         while(lastLocation == null) {
@@ -112,20 +119,22 @@ public class AutoMethods {
         opMode.telemetry.addData("x", x);
         opMode.telemetry.addData("y", y);
         opMode.telemetry.update();
-        opMode.sleep(15000);
 
         if (angleToBeacon > 0) {
             drive.rotateDegrees(Direction.LEFT, angleToTurn, Globals.MAX_MOTOR_POWER);
-            opMode.sleep(5000);
         } else {
             drive.rotateDegrees(Direction.RIGHT, -angleToTurn, Globals.MAX_MOTOR_POWER);
-            opMode.sleep(5000);
         }
-        drive.moveInches(Direction.BACKWARD, d, Globals.MAX_MOTOR_POWER);
-        opMode.sleep(5000);
+        drive.moveInches(Direction.BACKWARD, d+9, Globals.MAX_MOTOR_POWER);
         drive.rotateDegrees(defaultTurnDirection, adjustmentAngle, Globals.MAX_MOTOR_POWER);
-        opMode.sleep(5000);
+        lastLocation = null;
+        while(lastLocation == null) {
+            lastLocation = vuforia.getNearestBeaconLocation();
+            Thread.yield();
+        }
+        drive.rotateDegrees(defaultTurnDirection, vuforia.getHeading(), Globals.MAX_MOTOR_POWER);
     }
+
 
     public void driveToNextBeacon() {
         opMode.telemetry.addData("Auto Methods", "Driving to next "+allianceColor+" side beacon.");

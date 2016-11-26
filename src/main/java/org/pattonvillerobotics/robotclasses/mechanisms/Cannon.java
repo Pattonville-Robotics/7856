@@ -14,9 +14,9 @@ import org.pattonvillerobotics.opmodes.autonomous.Globals;
 
 public class Cannon extends AbstractMechanism {
 
-    public DcMotor particleLauncher;
-    public boolean launcherPrimed = false;
-    public int targetPosition = 0;
+    private DcMotor particleLauncher;
+    private boolean launcherPrimed = false;
+    private int targetPosition = 0;
 
     public Cannon(HardwareMap hardwareMap, LinearOpMode linearOpMode) {
         super(hardwareMap, linearOpMode);
@@ -175,4 +175,7 @@ public class Cannon extends AbstractMechanism {
 
     }
 
+    public DcMotor getCannon() {
+        return particleLauncher;
+    }
 }
