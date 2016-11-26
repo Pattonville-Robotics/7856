@@ -29,8 +29,6 @@ public class Globals {
     public static final int DISTANCE2_TO_CAPBALL = 46;
     public static final int STRAIGHT_DISTANCE_TO_CAPBALL = 50;
     public static final int DISTANCE_TO_NEAR_BEACON = 40;
-    public static final int DISTANCE1_TO_BEACON = 60;
-    public static final int DISTANCE2_TO_BEACON = 10;
     public static final int DISTANCE_TO_NEXT_BEACON = 55;
     public static final int DISTANCE_TO_CORNER_VORTEX = 38;
     public static final int DISTANCE_TO_CLIMB_CORNER_VORTEX = 20;

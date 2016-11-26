@@ -15,7 +15,9 @@ import org.pattonvillerobotics.commoncode.robotclasses.drive.EncoderDrive;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.trailblazer.vuforia.VuforiaNav;
 import org.pattonvillerobotics.commoncode.vision.util.ScreenOrientation;
 import org.pattonvillerobotics.opmodes.CustomizedRobotParameters;
+import org.pattonvillerobotics.opmodes.teleop.MainTeleOp;
 import org.pattonvillerobotics.robotclasses.mechanisms.Cannon;
+import org.pattonvillerobotics.robotclasses.mechanisms.Hopper;
 
 /**
  * Created by murphyk01 on 10/1/16.
@@ -37,6 +39,7 @@ public class AutoMethods {
     private LinearOpMode opMode;
     private HardwareMap hardwareMap;
     private Cannon cannon;
+    private Hopper hopper;
 
     public AutoMethods(EncoderDrive newDrive, AllianceColor newAllianceColor, StartPosition newStartPosition, EndPosition newEndPosition, HardwareMap hardwareMap, LinearOpMode linearOpMode) {
         this.hardwareMap = hardwareMap;
@@ -49,6 +52,7 @@ public class AutoMethods {
         vuforia = new VuforiaNav(CustomizedRobotParameters.VUFORIA_PARAMETERS);
         vuforia.activate();
         cannon = new Cannon(hardwareMap, opMode);
+        hopper = new Hopper(hardwareMap, opMode);
         linearOpMode.telemetry.addData("Init", "Complete");
     }
 
@@ -118,7 +122,7 @@ public class AutoMethods {
         } else {
             drive.rotateDegrees(Direction.RIGHT, -angleToTurn, Globals.MAX_MOTOR_POWER);
         }
-        drive.moveInches(Direction.BACKWARD, d+9, Globals.MAX_MOTOR_POWER);
+        drive.moveInches(Direction.BACKWARD, d, Globals.MAX_MOTOR_POWER);
         drive.rotateDegrees(defaultTurnDirection, adjustmentAngle, Globals.MAX_MOTOR_POWER);
         lastLocation = null;
         while(lastLocation == null) {
@@ -148,31 +152,38 @@ public class AutoMethods {
     }
 
     public void driveToCornerVortex() {
-        drive.moveInches(Direction.FORWARD, Globals.BEACON_BACKUP_DISTANCE, Globals.MAX_MOTOR_POWER);
-        drive.rotateDegrees(defaultTurnDirection, Globals.RIGHT_TURN, Globals.MAX_MOTOR_POWER);
-        drive.moveInches(Direction.BACKWARD, Globals.DISTANCE_TO_CORNER_VORTEX, Globals.MAX_MOTOR_POWER);
-
         if(allianceColor.equals(AllianceColor.BLUE)) {
-            drive.rotateDegrees(Direction.LEFT, Globals.HALF_TURN, Globals.MAX_MOTOR_POWER);
+            drive.rotateDegrees(Direction.RIGHT, Globals.RIGHT_TURN, Globals.MAX_MOTOR_POWER);
         }
         else if(allianceColor.equals(AllianceColor.RED)) {
-            drive.rotateDegrees(Direction.RIGHT, Globals.HALF_TURN, Globals.MAX_MOTOR_POWER);
+            drive.rotateDegrees(Direction.LEFT, Globals.RIGHT_TURN, Globals.MAX_MOTOR_POWER);
         }
         else {
             Log.e(TAG, ERROR_MESSAGE);
         }
+        drive.moveInches(Direction.BACKWARD, 48, Globals.MAX_MOTOR_POWER);
     }
 
     public void driveToCenterVortex() {
-        // drive from far beacon to center
+        drive.moveInches(Direction.FORWARD, 36, Globals.MAX_MOTOR_POWER);
     }
 
     public void fireCannon() {
 
         opMode.telemetry.addData("Cannon", "Firing cannon.");
         cannon.update(true);
-        opMode.sleep(2000);
+        opMode.sleep(1200);
         cannon.update(false);
+    }
+
+    public void fireParticles() {
+
+        fireCannon();
+        hopper.update(true, MainTeleOp.Direction.IN);
+        opMode.sleep(2500);
+        hopper.update(false, MainTeleOp.Direction.IN);
+        fireCannon();
+
     }
 
     public void climbCornerVortex() {
@@ -181,8 +192,9 @@ public class AutoMethods {
 
     public void driveToNearBeacon() {
         opMode.telemetry.addData("Drive to Near Beacon", "Driving");
-        drive.rotateDegrees(defaultTurnDirection, Globals.HALF_TURN, Globals.MAX_MOTOR_POWER);
-        drive.moveInches(Direction.BACKWARD, Globals.DISTANCE_TO_NEAR_BEACON, Globals.MAX_MOTOR_POWER);
+        drive.moveInches(Direction.BACKWARD, 4, Globals.MAX_MOTOR_POWER);
+        drive.rotateDegrees(Direction.RIGHT, 40, Globals.HALF_MOTOR_POWER);
+        drive.moveInches(Direction.BACKWARD, 50, Globals.MAX_MOTOR_POWER);
     }
 
     public void driveToFarBeacon() {
@@ -191,7 +203,7 @@ public class AutoMethods {
 
     public void driveToEndPosition() {
         if(endPosition.equals(EndPosition.CENTER_VORTEX)) {
-            // drive from far beacon to center vortex
+            driveToCenterVortex();
         }
         else if(endPosition.equals(EndPosition.CORNER_VORTEX)) {
             driveToCornerVortex();
@@ -201,13 +213,6 @@ public class AutoMethods {
         }
     }
 
-    public void runAutonomousProcess() {
-
-        fireCannon();
-        driveToNearBeacon();
-        alignToBeacon();
-     }
-
     public void ramBeacon(){
         detectColor();
         while(beaconLeftColor != allianceColor || beaconRightColor != allianceColor) {
@@ -216,4 +221,14 @@ public class AutoMethods {
             detectColor();
         }
     }
+
+    public void runAutonomousProcess() {
+
+        fireParticles();
+        driveToNearBeacon();
+        alignToBeacon();
+        driveToEndPosition();
+
+    }
+
 }
