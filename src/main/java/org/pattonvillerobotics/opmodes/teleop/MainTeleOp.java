@@ -27,7 +27,6 @@ public class MainTeleOp extends LinearOpMode {
     private Hopper hopper;
     private ParticleLauncher particleLauncher;
     private boolean hopperOn = false;
-    private boolean particleLauncherOn = false;
     private Direction currentDirection;
 
     public void runOpMode() throws InterruptedException {
@@ -54,24 +53,24 @@ public class MainTeleOp extends LinearOpMode {
         telemetry.setMsTransmissionInterval(16);
         final Telemetry.Item particle_Launcher = telemetry.addData("Particle Launcher: ", "N/A").setRetained(true);
 
-        gamepad.getButton(GamepadData.Button.DPAD_LEFT).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
-            @Override
-            public void run() {
-                armMover.moveTo(ArmMover.Position.LEFT);
-            }
-        });
-        gamepad.getButton(GamepadData.Button.DPAD_RIGHT).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
-            @Override
-            public void run() {
-                armMover.moveTo(ArmMover.Position.RIGHT);
-            }
-        });
-        gamepad.getButton(GamepadData.Button.DPAD_DOWN).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
-            @Override
-            public void run() {
-                armMover.moveTo(ArmMover.Position.DOWN);
-            }
-        });
+//        gamepad.getButton(GamepadData.Button.DPAD_LEFT).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
+//            @Override
+//            public void run() {
+//                armMover.moveTo(ArmMover.Position.LEFT);
+//            }
+//        });
+//        gamepad.getButton(GamepadData.Button.DPAD_RIGHT).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
+//            @Override
+//            public void run() {
+//                armMover.moveTo(ArmMover.Position.RIGHT);
+//            }
+//        });
+//        gamepad.getButton(GamepadData.Button.DPAD_DOWN).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
+//            @Override
+//            public void run() {
+//                armMover.moveTo(ArmMover.Position.DOWN);
+//            }
+//        });
         gamepad.getButton(GamepadData.Button.X).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
             @Override
             public void run() {
@@ -92,14 +91,14 @@ public class MainTeleOp extends LinearOpMode {
                 }
             }
         });
-        gamepad.getButton(GamepadData.Button.A).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
+        gamepad.getButton(GamepadData.Button.B).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
             @Override
             public void run() {
 
                 particleLauncher.primeLauncher();
             }
         });
-        gamepad.getButton(GamepadData.Button.B).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
+        gamepad.getButton(GamepadData.Button.A).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
             @Override
             public void run() {
 
