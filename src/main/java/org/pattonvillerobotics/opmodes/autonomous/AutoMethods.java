@@ -32,6 +32,7 @@ public class AutoMethods {
     private EndPosition endPosition;
     private ArmMover armMover;
     private AllianceColor beaconLeftColor;
+    private AllianceColor beaconRightColor;
     private BeaconColorDetection beaconColorDetection;
     private Direction defaultTurnDirection;
     private VuforiaNav vuforia;
@@ -64,11 +65,7 @@ public class AutoMethods {
         opMode.telemetry.addData("Setup", "Setting default turn direction to:" + defaultTurnDirection);
     }
 
-
-    public void pressBeacon() {
-
-        drive.moveInches(Direction.FORWARD, Globals.MINIMUM_DISTANCE_TO_BEACON, Globals.MAX_MOTOR_POWER);
-        drive.moveInches(Direction.BACKWARD, Globals.MINIMUM_DISTANCE_TO_BEACON, Globals.MAX_MOTOR_POWER);
+    public void detectColor() {
 
         opMode.telemetry.addData("Auto Methods", "Detecting Colors...");
         Bitmap bm = vuforia.getImage();
@@ -76,13 +73,13 @@ public class AutoMethods {
             beaconColorDetection.analyzeFrame(bm, ScreenOrientation.LANDSCAPE_REVERSE);
             bm.recycle();
             beaconLeftColor = beaconColorDetection.getLeftColor();
-        }
-
-        if(!beaconLeftColor.equals(allianceColor)) {
-            drive.moveInches(Direction.FORWARD, Globals.MINIMUM_DISTANCE_TO_BEACON, Globals.MAX_MOTOR_POWER);
+            beaconRightColor = beaconColorDetection.getRightColor();
         }
 
     }
+
+
+
 
     public void alignToBeacon() {
 
@@ -99,11 +96,8 @@ public class AutoMethods {
         double Q = Globals.MINIMUM_DISTANCE_TO_BEACON;
         double d = Math.sqrt(Math.pow(x, 2) + Math.pow((y - Q), 2));
         double angleToTurn = FastMath.toDegrees(FastMath.atan(y/x) - FastMath.atan((y-Q)/x) );
-        double adjustmentAngle = FastMath.toDegrees(FastMath.atan( x/(y-Q) ));
-        //double adjustmentAngle = FastMath.toDegrees(FastMath.asin(x/d));
 
         opMode.telemetry.addData("Angle to Turn", angleToTurn);
-        opMode.telemetry.addData("Adjustment Angle", adjustmentAngle);
         opMode.telemetry.addData("d", d);
         opMode.telemetry.addData("x", x);
         opMode.telemetry.addData("y", y);
@@ -119,12 +113,15 @@ public class AutoMethods {
         }
         drive.moveInches(Direction.BACKWARD, d, Globals.MAX_MOTOR_POWER);
         opMode.sleep(5000);
+        double adjustmentAngle = vuforia.getHeading();
+        opMode.telemetry.addData("Adjustment Angle", adjustmentAngle);
         drive.rotateDegrees(defaultTurnDirection, adjustmentAngle, Globals.MAX_MOTOR_POWER);
         opMode.sleep(5000);
     }
 
 
     public void driveToNextBeacon() {
+
         opMode.telemetry.addData("Auto Methods", "Driving to next "+allianceColor+" side beacon.");
 
         drive.moveInches(Direction.FORWARD, Globals.BEACON_BACKUP_DISTANCE, Globals.MAX_MOTOR_POWER);
