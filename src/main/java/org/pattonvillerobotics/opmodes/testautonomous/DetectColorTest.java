@@ -11,24 +11,18 @@ import org.pattonvillerobotics.opmodes.autonomous.EndPosition;
 import org.pattonvillerobotics.opmodes.autonomous.StartPosition;
 
 /**
- * Created by bahrg on 11/1/16.
+ * Created by bahrg on 11/26/16.
  */
-@Autonomous(name="Alignment TEST")
-public class BeaconAlignTest extends LinearOpMode {
-    private AutoMethods autoMethods;
-
+@Autonomous(name="Test Ram Beacon")
+public class DetectColorTest extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
-        initialize();
+        AutoMethods autoMethods = new AutoMethods(new EncoderDrive(hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS), AllianceColor.BLUE, StartPosition.LINE, EndPosition.CENTER_VORTEX, hardwareMap, this);
         waitForStart();
 
-        autoMethods.alignToBeacon();
-        while(opModeIsActive()){
+        autoMethods.ramBeacon();
+        while(opModeIsActive()) {
             idle();
         }
-    }
-
-    private void initialize() {
-        autoMethods = new AutoMethods(new EncoderDrive(hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS), AllianceColor.BLUE, StartPosition.LINE, EndPosition.CENTER_VORTEX, hardwareMap, this);
     }
 }

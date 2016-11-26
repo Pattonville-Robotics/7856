@@ -31,11 +31,12 @@ public class BeaconColorTesting extends LinearOpMode {
             bm = vuforiaNav.getImage();
             if(bm != null) {
                 beaconColorDetection.analyzeFrame(bm, ScreenOrientation.LANDSCAPE_REVERSE);
-                telemetry.addData("Colors", beaconColorDetection.getLeftColor());
+                telemetry.addData("Colors", beaconColorDetection.getAnalysis().getColorString());
             }
 
             telemetry.update();
             idle();
+            sleep(1000);
         }
     }
 }

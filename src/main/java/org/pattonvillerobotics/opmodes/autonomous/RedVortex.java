@@ -9,33 +9,28 @@ import org.pattonvillerobotics.commoncode.robotclasses.drive.EncoderDrive;
 import org.pattonvillerobotics.opmodes.CustomizedRobotParameters;
 
 /**
- * Created by bahrg on 10/1/16.
+ * Created by pieperm on 10/18/16.
  */
-
-@Autonomous(name = "BlueLineCBV", group = OpModeGroups.MAIN)
-public class BlueLineCBV extends LinearOpMode {
+@Autonomous(name = "RedVortex", group = OpModeGroups.MAIN)
+public class RedVortex extends LinearOpMode {
 
     private AutoMethods autoMethods;
 
-    @Override
     public void runOpMode() throws InterruptedException {
+
         initialize();
         waitForStart();
-        autoMethods.runProcessCBV();
+
+        autoMethods.runAutonomousProcess();
 
         while(opModeIsActive()) {
             telemetry.update();
             idle();
         }
+
     }
 
     public void initialize() {
-        autoMethods = new AutoMethods(
-                new EncoderDrive(hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS),
-                AllianceColor.BLUE,
-                StartPosition.LINE,
-                hardwareMap,
-                this
-        );
+        autoMethods = new AutoMethods(new EncoderDrive(hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS), AllianceColor.RED, StartPosition.VORTEX, EndPosition.CENTER_VORTEX, hardwareMap, this);
     }
 }
