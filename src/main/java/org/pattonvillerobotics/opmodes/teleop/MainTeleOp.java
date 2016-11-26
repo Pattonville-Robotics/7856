@@ -37,7 +37,7 @@ public class MainTeleOp extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()) {
-            particle_Launcher.setValue(particleLauncher.particleLauncher.getCurrentPosition());
+            particle_Launcher.setValue(particleLauncher.getCannon().getCurrentPosition());
             doLoop();
             idle();
         }

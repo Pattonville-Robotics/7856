@@ -78,13 +78,17 @@ public class AutoMethods {
     public void detectColor() {
 
         opMode.telemetry.addData("Auto Methods", "Detecting Colors...");
-        Bitmap bm = vuforia.getImage();
-        if(bm != null) {
-            beaconColorDetection.analyzeFrame(bm, ScreenOrientation.LANDSCAPE_REVERSE);
-            bm.recycle();
-            beaconLeftColor = beaconColorDetection.getLeftColor();
-            beaconRightColor = beaconColorDetection.getRightColor();
+        Bitmap bm = null;
+        while(bm == null) {
+            bm = vuforia.getImage();
         }
+        beaconColorDetection.analyzeFrame(bm, ScreenOrientation.LANDSCAPE_REVERSE);
+        bm.recycle();
+        beaconLeftColor = beaconColorDetection.getLeftColor();
+        beaconRightColor = beaconColorDetection.getRightColor();
+        opMode.telemetry.addData("Color", beaconColorDetection.getAnalysis().getColorString());
+        opMode.telemetry.update();
+        opMode.sleep(5000);
 
     }
 
@@ -210,9 +214,14 @@ public class AutoMethods {
 
     public void ramBeacon(){
         detectColor();
+        OpenGLMatrix lastLocation = vuforia.getNearestBeaconLocation();
+        while(lastLocation == null) {
+            lastLocation = vuforia.getNearestBeaconLocation();
+            Thread.yield();
+        }
         while(beaconLeftColor != allianceColor || beaconRightColor != allianceColor) {
-            drive.moveInches(Direction.BACKWARD, vuforia.getDistance() + 2, Globals.HALF_MOTOR_POWER);
-            drive.moveInches(Direction.FORWARD, 10, Globals.HALF_MOTOR_POWER);
+            drive.moveInches(Direction.BACKWARD, vuforia.getDistance(), Globals.HALF_MOTOR_POWER);
+            drive.moveInches(Direction.FORWARD, 24, Globals.HALF_MOTOR_POWER);
             detectColor();
         }
     }
