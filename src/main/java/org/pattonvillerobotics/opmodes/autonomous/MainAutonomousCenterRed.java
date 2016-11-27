@@ -1,19 +1,16 @@
 package org.pattonvillerobotics.opmodes.autonomous;
 
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.pattonvillerobotics.commoncode.enums.AllianceColor;
-import org.pattonvillerobotics.commoncode.opmodes.OpModeGroups;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.EncoderDrive;
 import org.pattonvillerobotics.opmodes.CustomizedRobotParameters;
 
 /**
- * Created by pieperm on 10/18/16.
+ * Created by pieperm on 11/26/16.
  */
-@Deprecated
-@Autonomous(name = "BlueVortex", group = OpModeGroups.MAIN)
-public class BlueVortex extends LinearOpMode {
+
+public class MainAutonomousCenterRed extends LinearOpMode {
 
     private AutoMethods autoMethods;
 
@@ -33,7 +30,7 @@ public class BlueVortex extends LinearOpMode {
     }
 
     public void initialize() {
-        autoMethods = new AutoMethods(new EncoderDrive(hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS), AllianceColor.BLUE, EndPosition.CENTER_VORTEX, hardwareMap, this);
-
+        autoMethods = new AutoMethods(new EncoderDrive(hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS), AllianceColor.RED, EndPosition.CENTER_VORTEX, hardwareMap, this);
     }
+
 }

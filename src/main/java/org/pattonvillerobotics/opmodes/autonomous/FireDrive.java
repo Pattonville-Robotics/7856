@@ -22,7 +22,7 @@ public class FireDrive extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
 
         drive = new EncoderDrive(hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS);
-        autoMethods = new AutoMethods(drive, AllianceColor.BLUE, StartPosition.LINE, EndPosition.CENTER_VORTEX, hardwareMap, this);
+        autoMethods = new AutoMethods(drive, AllianceColor.BLUE, EndPosition.CENTER_VORTEX, hardwareMap, this);
         waitForStart();
 
         autoMethods.fireCannon();

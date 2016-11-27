@@ -12,6 +12,7 @@ import org.pattonvillerobotics.opmodes.CustomizedRobotParameters;
  * Created by bahrg on 10/1/16.
  */
 
+@Deprecated
 @Autonomous(name = "BlueLine", group = OpModeGroups.MAIN)
 public class BlueLine extends LinearOpMode {
 
@@ -33,7 +34,6 @@ public class BlueLine extends LinearOpMode {
         autoMethods = new AutoMethods(
                 new EncoderDrive(hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS),
                 AllianceColor.BLUE,
-                StartPosition.LINE,
                 EndPosition.CENTER_VORTEX,
                 hardwareMap,
                 this

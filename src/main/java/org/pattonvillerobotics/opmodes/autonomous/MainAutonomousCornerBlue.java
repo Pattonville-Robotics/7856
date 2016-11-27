@@ -9,11 +9,10 @@ import org.pattonvillerobotics.commoncode.robotclasses.drive.EncoderDrive;
 import org.pattonvillerobotics.opmodes.CustomizedRobotParameters;
 
 /**
- * Created by pieperm on 10/18/16.
+ * Created by pieperm on 11/26/16.
  */
-@Deprecated
-@Autonomous(name = "BlueVortex", group = OpModeGroups.MAIN)
-public class BlueVortex extends LinearOpMode {
+@Autonomous(name = "MainAutonomousCornerBlue", group = OpModeGroups.MAIN)
+public class MainAutonomousCornerBlue extends LinearOpMode {
 
     private AutoMethods autoMethods;
 
@@ -33,7 +32,7 @@ public class BlueVortex extends LinearOpMode {
     }
 
     public void initialize() {
-        autoMethods = new AutoMethods(new EncoderDrive(hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS), AllianceColor.BLUE, EndPosition.CENTER_VORTEX, hardwareMap, this);
+        autoMethods = new AutoMethods(new EncoderDrive(hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS), AllianceColor.BLUE, EndPosition.CORNER_VORTEX, hardwareMap, this);
 
     }
 }

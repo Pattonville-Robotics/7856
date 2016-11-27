@@ -29,7 +29,6 @@ public class AutoMethods {
     private final String ERROR_MESSAGE = "Invalid parameter passed";
     private EncoderDrive drive;
     private AllianceColor allianceColor;
-    private StartPosition startPosition;
     private EndPosition endPosition;
     private AllianceColor beaconLeftColor;
     private AllianceColor beaconRightColor;
@@ -41,12 +40,11 @@ public class AutoMethods {
     private Cannon cannon;
     private Hopper hopper;
 
-    public AutoMethods(EncoderDrive newDrive, AllianceColor newAllianceColor, StartPosition newStartPosition, EndPosition newEndPosition, HardwareMap hardwareMap, LinearOpMode linearOpMode) {
+    public AutoMethods(EncoderDrive newDrive, AllianceColor newAllianceColor, EndPosition newEndPosition, HardwareMap hardwareMap, LinearOpMode linearOpMode) {
         this.hardwareMap = hardwareMap;
         opMode = linearOpMode;
         setAllianceColor(newAllianceColor);
         drive = newDrive;
-        startPosition = newStartPosition;
         endPosition = newEndPosition;
         beaconColorDetection = new BeaconColorDetection(hardwareMap);
         vuforia = new VuforiaNav(CustomizedRobotParameters.VUFORIA_PARAMETERS);
@@ -55,6 +53,7 @@ public class AutoMethods {
         hopper = new Hopper(hardwareMap, opMode);
         linearOpMode.telemetry.addData("Init", "Complete");
     }
+
 
     private void setAllianceColor(AllianceColor newAllianceColor) {
         allianceColor = newAllianceColor;
@@ -66,18 +65,6 @@ public class AutoMethods {
         opMode.telemetry.addData("Setup", "Setting default turn direction to:" + defaultTurnDirection);
     }
 
-    public void driveToCapball() {
-        opMode.telemetry.addData("Auto Methods", "Driving to the first capball");
-        if(startPosition == StartPosition.LINE) {
-            drive.moveInches(Direction.BACKWARD, Globals.DISTANCE1_TO_CAPBALL, Globals.MAX_MOTOR_POWER);
-            drive.rotateDegrees(defaultTurnDirection, Globals.HALF_TURN, Globals.MAX_MOTOR_POWER);
-            drive.moveInches(Direction.BACKWARD, Globals.DISTANCE2_TO_CAPBALL, Globals.MAX_MOTOR_POWER);
-        } else if(startPosition == StartPosition.VORTEX) {
-            drive.moveInches(Direction.BACKWARD, Globals.STRAIGHT_DISTANCE_TO_CAPBALL, Globals.MAX_MOTOR_POWER);
-        } else {
-            Log.e(TAG, ERROR_MESSAGE);
-        }
-    }
 
     public void detectColor() {
 
@@ -95,6 +82,7 @@ public class AutoMethods {
         opMode.sleep(5000);
 
     }
+
 
     public void alignToBeacon() {
 
@@ -137,7 +125,7 @@ public class AutoMethods {
     }
 
 
-    public void driveToNextBeacon() {
+    public void driveToFarBeacon() {
         opMode.telemetry.addData("Auto Methods", "Driving to next "+allianceColor+" side beacon.");
 
         drive.moveInches(Direction.FORWARD, Globals.BEACON_BACKUP_DISTANCE, Globals.MAX_MOTOR_POWER);
@@ -155,6 +143,7 @@ public class AutoMethods {
         }
     }
 
+
     public void driveToCornerVortex() {
         if(allianceColor.equals(AllianceColor.BLUE)) {
             drive.rotateDegrees(Direction.RIGHT, Globals.RIGHT_TURN, Globals.MAX_MOTOR_POWER);
@@ -168,9 +157,13 @@ public class AutoMethods {
         drive.moveInches(Direction.BACKWARD, 48, Globals.MAX_MOTOR_POWER);
     }
 
+
     public void driveToCenterVortex() {
-        drive.moveInches(Direction.FORWARD, 36, Globals.MAX_MOTOR_POWER);
+        drive.moveInches(Direction.FORWARD, 15, Globals.MAX_MOTOR_POWER);
+        opMode.sleep(2000);
+        drive.moveInches(Direction.FORWARD, 5, Globals.MAX_MOTOR_POWER);
     }
+
 
     public void fireCannon() {
 
@@ -179,6 +172,7 @@ public class AutoMethods {
         opMode.sleep(1200);
         cannon.update(false);
     }
+
 
     public void fireParticles() {
 
@@ -190,9 +184,6 @@ public class AutoMethods {
 
     }
 
-    public void climbCornerVortex() {
-        drive.moveInches(Direction.BACKWARD, Globals.DISTANCE_TO_CLIMB_CORNER_VORTEX, Globals.MAX_MOTOR_POWER);
-    }
 
     public void driveToNearBeacon() {
         opMode.telemetry.addData("Drive to Near Beacon", "Driving");
@@ -201,9 +192,6 @@ public class AutoMethods {
         drive.moveInches(Direction.BACKWARD, 50, Globals.MAX_MOTOR_POWER);
     }
 
-    public void driveToFarBeacon() {
-        // drive to far beacon
-    }
 
     public void driveToEndPosition() {
         if(endPosition.equals(EndPosition.CENTER_VORTEX)) {
@@ -216,6 +204,7 @@ public class AutoMethods {
             Log.e(TAG, ERROR_MESSAGE);
         }
     }
+
 
     public void ramBeacon(){
         detectColor();
@@ -231,11 +220,13 @@ public class AutoMethods {
         }
     }
 
+
     public void runAutonomousProcess() {
 
         fireParticles();
         driveToNearBeacon();
         alignToBeacon();
+        //ramBeacon();
         driveToEndPosition();
 
     }

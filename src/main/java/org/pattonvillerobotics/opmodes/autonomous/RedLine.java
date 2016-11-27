@@ -11,6 +11,7 @@ import org.pattonvillerobotics.opmodes.CustomizedRobotParameters;
 /**
  * Created by pieperm on 10/18/16.
  */
+@Deprecated
 @Autonomous(name = "RedLine", group = OpModeGroups.MAIN)
 public class RedLine extends LinearOpMode {
 
@@ -32,6 +33,6 @@ public class RedLine extends LinearOpMode {
     }
 
     public void initialize() {
-        autoMethods = new AutoMethods(new EncoderDrive(hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS), AllianceColor.RED, StartPosition.LINE, EndPosition.CENTER_VORTEX, hardwareMap, this);
+        autoMethods = new AutoMethods(new EncoderDrive(hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS), AllianceColor.RED, EndPosition.CENTER_VORTEX, hardwareMap, this);
     }
 }
