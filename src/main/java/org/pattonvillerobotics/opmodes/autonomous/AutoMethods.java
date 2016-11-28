@@ -15,9 +15,10 @@ import org.pattonvillerobotics.commoncode.robotclasses.drive.EncoderDrive;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.trailblazer.vuforia.VuforiaNav;
 import org.pattonvillerobotics.commoncode.vision.util.ScreenOrientation;
 import org.pattonvillerobotics.opmodes.CustomizedRobotParameters;
-import org.pattonvillerobotics.opmodes.teleop.MainTeleOp;
 import org.pattonvillerobotics.robotclasses.mechanisms.Cannon;
 import org.pattonvillerobotics.robotclasses.mechanisms.Hopper;
+import org.pattonvillerobotics.opmodes.teleop.MainTeleOp;
+
 
 /**
  * Created by murphyk01 on 10/1/16.
@@ -159,8 +160,8 @@ public class AutoMethods {
 
 
     public void driveToCenterVortex() {
-        drive.moveInches(Direction.FORWARD, 15, Globals.MAX_MOTOR_POWER);
-        opMode.sleep(2000);
+        drive.moveInches(Direction.FORWARD, 25, Globals.MAX_MOTOR_POWER);
+        opMode.sleep(3000);
         drive.moveInches(Direction.FORWARD, 5, Globals.MAX_MOTOR_POWER);
     }
 
@@ -214,8 +215,9 @@ public class AutoMethods {
             Thread.yield();
         }
         while(beaconLeftColor != allianceColor || beaconRightColor != allianceColor) {
-            drive.moveInches(Direction.BACKWARD, vuforia.getDistance(), Globals.HALF_MOTOR_POWER);
+            drive.moveInches(Direction.BACKWARD, vuforia.getDistance() + .5, Globals.HALF_MOTOR_POWER);
             drive.moveInches(Direction.FORWARD, 24, Globals.HALF_MOTOR_POWER);
+
             detectColor();
         }
     }
