@@ -8,7 +8,6 @@ import org.pattonvillerobotics.commoncode.robotclasses.drive.EncoderDrive;
 import org.pattonvillerobotics.opmodes.CustomizedRobotParameters;
 import org.pattonvillerobotics.opmodes.autonomous.AutoMethods;
 import org.pattonvillerobotics.opmodes.autonomous.EndPosition;
-import org.pattonvillerobotics.opmodes.autonomous.StartPosition;
 
 /**
  * Created by bahrg on 11/1/16.
@@ -29,6 +28,6 @@ public class BeaconAlignTest extends LinearOpMode {
     }
 
     private void initialize() {
-        autoMethods = new AutoMethods(new EncoderDrive(hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS), AllianceColor.BLUE, StartPosition.LINE, EndPosition.CENTER_VORTEX, hardwareMap, this);
+        autoMethods = new AutoMethods(new EncoderDrive(hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS), AllianceColor.BLUE, EndPosition.CENTER_VORTEX, hardwareMap, this);
     }
 }

@@ -8,7 +8,6 @@ import org.pattonvillerobotics.commoncode.robotclasses.drive.EncoderDrive;
 import org.pattonvillerobotics.opmodes.CustomizedRobotParameters;
 import org.pattonvillerobotics.opmodes.autonomous.AutoMethods;
 import org.pattonvillerobotics.opmodes.autonomous.EndPosition;
-import org.pattonvillerobotics.opmodes.autonomous.StartPosition;
 
 /**
  * Created by bahrg on 11/26/16.
@@ -17,7 +16,7 @@ import org.pattonvillerobotics.opmodes.autonomous.StartPosition;
 public class DetectColorTest extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
-        AutoMethods autoMethods = new AutoMethods(new EncoderDrive(hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS), AllianceColor.BLUE, StartPosition.LINE, EndPosition.CENTER_VORTEX, hardwareMap, this);
+        AutoMethods autoMethods = new AutoMethods(new EncoderDrive(hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS), AllianceColor.BLUE, EndPosition.CENTER_VORTEX, hardwareMap, this);
         waitForStart();
 
         autoMethods.ramBeacon();
