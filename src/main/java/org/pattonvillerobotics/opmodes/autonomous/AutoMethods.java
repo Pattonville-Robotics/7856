@@ -80,7 +80,7 @@ public class AutoMethods {
         bm.recycle();
         beaconLeftColor = beaconColorDetection.getLeftColor();
         beaconRightColor = beaconColorDetection.getRightColor();
-        opMode.telemetry.addData("Color", beaconColorDetection.getAnalysis().getColorString());
+        opMode.telemetry.addData("Color", beaconLeftColor + " " + beaconRightColor);
         opMode.telemetry.update();
 
     }
@@ -142,6 +142,12 @@ public class AutoMethods {
         while(lastLocation == null) {
             lastLocation = vuforia.getNearestBeaconLocation();
             Thread.yield();
+        }
+        double heading = vuforia.getHeading();
+        if(heading > 10) {
+            drive.rotateDegrees(oppositeTurnDirection, heading, Globals.MAX_MOTOR_POWER);
+        } else  if(heading < -10) {
+            drive.rotateDegrees(defaultTurnDirection, heading, Globals.MAX_MOTOR_POWER);
         }
         //drive.rotateDegrees(defaultTurnDirection, vuforia.getHeading(), Globals.MAX_MOTOR_POWER);
     }
@@ -239,9 +245,9 @@ public class AutoMethods {
             lastLocation = vuforia.getNearestBeaconLocation();
             Thread.yield();
         }
-        drive.rotateDegrees(Direction.LEFT, Globals.HALF_TURN, Globals.HALF_MOTOR_POWER);
+        drive.rotateDegrees(Direction.LEFT, Globals.RIGHT_TURN, Globals.HALF_MOTOR_POWER);
         drive.moveInches(Direction.BACKWARD, 4, Globals.HALF_MOTOR_POWER);
-        drive.rotateDegrees(Direction.RIGHT, Globals.HALF_TURN, Globals.HALF_MOTOR_POWER);
+        drive.rotateDegrees(Direction.RIGHT, Globals.RIGHT_TURN, Globals.HALF_MOTOR_POWER);
         drive.moveInches(Direction.BACKWARD, vuforia.getDistance(), Globals.HALF_MOTOR_POWER);
     }
 
@@ -251,9 +257,9 @@ public class AutoMethods {
             lastLocation = vuforia.getNearestBeaconLocation();
             Thread.yield();
         }
-        drive.rotateDegrees(Direction.RIGHT, Globals.HALF_TURN, Globals.HALF_MOTOR_POWER);
+        drive.rotateDegrees(Direction.RIGHT, Globals.RIGHT_TURN, Globals.HALF_MOTOR_POWER);
         drive.moveInches(Direction.BACKWARD, 4, Globals.HALF_MOTOR_POWER);
-        drive.rotateDegrees(Direction.LEFT, Globals.HALF_TURN, Globals.HALF_MOTOR_POWER);
+        drive.rotateDegrees(Direction.LEFT, Globals.RIGHT_TURN, Globals.HALF_MOTOR_POWER);
         drive.moveInches(Direction.BACKWARD, vuforia.getDistance(), Globals.HALF_MOTOR_POWER);
     }
 
@@ -293,7 +299,6 @@ public class AutoMethods {
 
 
     public void runAutonomousProcess() {
-
         fireParticles();
         opMode.sleep(500);
         driveToNearBeacon();

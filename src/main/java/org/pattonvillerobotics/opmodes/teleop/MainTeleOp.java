@@ -24,6 +24,7 @@ public class MainTeleOp extends LinearOpMode {
     private EncoderDrive drive;
     private ListenableGamepad gamepad;
     private ArmMover armMover;
+    private boolean cannonOn = false;
     private Hopper hopper;
     private Cannon particleLauncher;
     private boolean hopperOn = false;
@@ -95,14 +96,14 @@ public class MainTeleOp extends LinearOpMode {
             @Override
             public void run() {
 
-                particleLauncher.primeLauncher();
+                cannonOn = !cannonOn;
             }
         });
         gamepad.getButton(GamepadData.Button.A).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
             @Override
             public void run() {
 
-                particleLauncher.releaseLauncher();
+                //particleLauncher.releaseLauncher();
             }
         });
     }
@@ -119,10 +120,12 @@ public class MainTeleOp extends LinearOpMode {
 //            }
 //        });
 //    }
+
     public void doLoop() {
         drive.moveFreely(gamepad1.left_stick_y, gamepad1.right_stick_y);
         gamepad.update(new GamepadData(gamepad1));
         hopper.update(hopperOn, currentDirection);
+        particleLauncher.update(cannonOn);
         telemetry.update();
     }
 

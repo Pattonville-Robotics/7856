@@ -12,14 +12,14 @@ import org.pattonvillerobotics.opmodes.autonomous.EndPosition;
 /**
  * Created by bahrg on 11/26/16.
  */
-@Autonomous(name="Test Ram Beacon")
+@Autonomous(name="DetectColor Test Beacon")
 public class DetectColorTest extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         AutoMethods autoMethods = new AutoMethods(new EncoderDrive(hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS), AllianceColor.BLUE, EndPosition.CENTER_VORTEX, hardwareMap, this);
         waitForStart();
 
-        autoMethods.ramBeacon();
+        autoMethods.detectColor();
         while(opModeIsActive()) {
             idle();
         }
