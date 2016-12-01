@@ -111,21 +111,21 @@ public class AutoMethods {
         opMode.telemetry.addData("y", y);
         opMode.telemetry.update();
 
-        detectColor();
-
-        if(allianceColor == beaconLeftColor) {
-            angleToTurn -= 10;
-            adjustmentAngle += 10;
-            opMode.telemetry.addData("Beacon", "Moving left");
-        }
-        else if(allianceColor == beaconRightColor) {
-            angleToTurn += 10;
-            adjustmentAngle -= 10;
-            opMode.telemetry.addData("Beacon", "Moving right");
-        }
-        else {
-            opMode.telemetry.addData("Color detection", "Neither side detected");
-        }
+//        detectColor();
+//
+//        if(allianceColor == beaconLeftColor) {
+//            angleToTurn -= 10;
+//            adjustmentAngle += 10;
+//            opMode.telemetry.addData("Beacon", "Moving left");
+//        }
+//        else if(allianceColor == beaconRightColor) {
+//            angleToTurn += 10;
+//            adjustmentAngle -= 10;
+//            opMode.telemetry.addData("Beacon", "Moving right");
+//        }
+//        else {
+//            opMode.telemetry.addData("Color detection", "Neither side detected");
+//        }
 
 
 
@@ -143,13 +143,7 @@ public class AutoMethods {
             lastLocation = vuforia.getNearestBeaconLocation();
             Thread.yield();
         }
-        double heading = vuforia.getHeading();
-        if(heading > 10) {
-            drive.rotateDegrees(oppositeTurnDirection, heading, Globals.MAX_MOTOR_POWER);
-        } else  if(heading < -10) {
-            drive.rotateDegrees(defaultTurnDirection, heading, Globals.MAX_MOTOR_POWER);
-        }
-        //drive.rotateDegrees(defaultTurnDirection, vuforia.getHeading(), Globals.MAX_MOTOR_POWER);
+
     }
 
 
@@ -240,43 +234,36 @@ public class AutoMethods {
     }
 
     public void moveLeft() {
-        OpenGLMatrix lastLocation = vuforia.getNearestBeaconLocation();
-        while(lastLocation == null) {
-            lastLocation = vuforia.getNearestBeaconLocation();
-            Thread.yield();
-        }
-        drive.rotateDegrees(Direction.LEFT, Globals.RIGHT_TURN, Globals.HALF_MOTOR_POWER);
-        drive.moveInches(Direction.BACKWARD, 4, Globals.HALF_MOTOR_POWER);
-        drive.rotateDegrees(Direction.RIGHT, Globals.RIGHT_TURN, Globals.HALF_MOTOR_POWER);
-        drive.moveInches(Direction.BACKWARD, vuforia.getDistance(), Globals.HALF_MOTOR_POWER);
+        drive.rotateDegrees(Direction.LEFT, Globals.RIGHT_TURN, Globals.MAX_MOTOR_POWER);
+        drive.moveInches(Direction.BACKWARD, 4, Globals.MAX_MOTOR_POWER);
+        drive.rotateDegrees(Direction.RIGHT, Globals.RIGHT_TURN, Globals.MAX_MOTOR_POWER);
+        drive.moveInches(Direction.BACKWARD, Globals.MINIMUM_DISTANCE_TO_BEACON, Globals.MAX_MOTOR_POWER);
     }
 
     public void moveRight() {
-        OpenGLMatrix lastLocation = vuforia.getNearestBeaconLocation();
-        while(lastLocation == null) {
-            lastLocation = vuforia.getNearestBeaconLocation();
-            Thread.yield();
-        }
-        drive.rotateDegrees(Direction.RIGHT, Globals.RIGHT_TURN, Globals.HALF_MOTOR_POWER);
-        drive.moveInches(Direction.BACKWARD, 4, Globals.HALF_MOTOR_POWER);
-        drive.rotateDegrees(Direction.LEFT, Globals.RIGHT_TURN, Globals.HALF_MOTOR_POWER);
-        drive.moveInches(Direction.BACKWARD, vuforia.getDistance(), Globals.HALF_MOTOR_POWER);
+        drive.rotateDegrees(Direction.RIGHT, Globals.RIGHT_TURN, Globals.MAX_MOTOR_POWER);
+        drive.moveInches(Direction.BACKWARD, 4, Globals.MAX_MOTOR_POWER);
+        drive.rotateDegrees(Direction.LEFT, Globals.RIGHT_TURN, Globals.MAX_MOTOR_POWER);
+        drive.moveInches(Direction.BACKWARD, Globals.MINIMUM_DISTANCE_TO_BEACON, Globals.MAX_MOTOR_POWER);
     }
 
     public void pressBeacon() {
         detectColor();
         if(beaconLeftColor.equals(allianceColor)) {
-            moveLeft();
             opMode.telemetry.addData("Press beacon", "Pressing left side...");
+            opMode.telemetry.update();
+            moveLeft();
+
         }
         else if(beaconRightColor.equals(allianceColor)) {
-            moveRight();
             opMode.telemetry.addData("Press beacon", "Pressing right side...");
+            opMode.telemetry.update();
+            moveRight();
         }
         else {
             opMode.telemetry.addData("Press beacon", "Error detected");
+            opMode.telemetry.update();
         }
-        opMode.telemetry.update();
     }
 
     public void ramBeacon(){
@@ -305,8 +292,8 @@ public class AutoMethods {
         opMode.sleep(1000);
         alignToBeacon();
         opMode.sleep(1000);
-        //pressBeacon();
-        ramBeacon();
+        pressBeacon();
+        //ramBeacon();
         opMode.sleep(1000);
         driveToEndPosition();
 
