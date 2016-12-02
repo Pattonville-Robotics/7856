@@ -104,6 +104,7 @@ public class AutoMethods {
         double adjustmentAngle = FastMath.toDegrees(FastMath.atan( x/(y-Q) ));
         //double adjustmentAngle = FastMath.toDegrees(FastMath.asin(x/d));
 
+        opMode.telemetry.addData("Angle to Beacon", angleToBeacon).setRetained(true);
         opMode.telemetry.addData("Angle to Turn", angleToTurn).setRetained(true);
         opMode.telemetry.addData("Adjustment Angle", adjustmentAngle).setRetained(true);
         opMode.telemetry.addData("d", d).setRetained(true);
@@ -200,7 +201,7 @@ public class AutoMethods {
     public void driveToNearBeacon() {
         opMode.telemetry.addData("Drive", "Driving to near beacon").setRetained(true);
         drive.moveInches(Direction.BACKWARD, 4, Globals.MAX_MOTOR_POWER);
-        drive.rotateDegrees(defaultTurnDirection, 35, Globals.HALF_MOTOR_POWER);
+        drive.rotateDegrees(defaultTurnDirection, 35, Globals.MAX_MOTOR_POWER);
         drive.moveInches(Direction.BACKWARD, 50, Globals.MAX_MOTOR_POWER);
     }
 
@@ -272,6 +273,9 @@ public class AutoMethods {
     public void runAutonomousProcess() {
         fireParticles();
         opMode.sleep(500);
+        drive.moveInches(Direction.BACKWARD, Globals.DISTANCE2_TO_CAPBALL, Globals.MAX_MOTOR_POWER);
+        drive.rotateDegrees(defaultTurnDirection, 60, Globals.MAX_MOTOR_POWER);
+/*
         driveToNearBeacon();
         opMode.sleep(1000);
         alignToBeacon();
@@ -280,7 +284,7 @@ public class AutoMethods {
         //ramBeacon();
         opMode.sleep(1000);
         driveToEndPosition();
+*/
 
     }
-
 }
