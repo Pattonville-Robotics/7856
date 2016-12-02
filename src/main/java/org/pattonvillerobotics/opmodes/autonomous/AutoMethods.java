@@ -52,7 +52,7 @@ public class AutoMethods {
         vuforia.activate();
         cannon = new Cannon(hardwareMap, opMode);
         hopper = new Hopper(hardwareMap, opMode);
-        linearOpMode.telemetry.addData("Init", "Complete");
+        linearOpMode.telemetry.addData("Init", "Complete").setRetained(true);
     }
 
 
@@ -132,7 +132,7 @@ public class AutoMethods {
 
 
     public void driveToFarBeacon() {
-        opMode.telemetry.addData("Auto Methods", "Driving to next "+allianceColor+" side beacon.");
+        opMode.telemetry.addData("Auto Methods", "Driving to next "+allianceColor+" side beacon.").setRetained(true);
 
         drive.moveInches(Direction.FORWARD, Globals.BEACON_BACKUP_DISTANCE, Globals.MAX_MOTOR_POWER);
         drive.rotateDegrees(defaultTurnDirection, Globals.RIGHT_TURN, Globals.MAX_MOTOR_POWER);
@@ -151,7 +151,7 @@ public class AutoMethods {
 
 
     public void driveToCornerVortex() {
-        opMode.telemetry.addData("Drive", "Driving to corner vortex");
+        opMode.telemetry.addData("Drive", "Driving to corner vortex").setRetained(true);
 
         if(allianceColor.equals(AllianceColor.BLUE)) {
             drive.rotateDegrees(Direction.RIGHT, Globals.RIGHT_TURN, Globals.MAX_MOTOR_POWER);
@@ -167,7 +167,7 @@ public class AutoMethods {
 
 
     public void driveToCenterVortex() {
-        opMode.telemetry.addData("Drive", "Driving to center vortex");
+        opMode.telemetry.addData("Drive", "Driving to center vortex").setRetained(true);
 
         drive.moveInches(Direction.FORWARD, 25, Globals.MAX_MOTOR_POWER);
         opMode.sleep(3000);
@@ -177,7 +177,7 @@ public class AutoMethods {
 
     public void fireCannon() {
 
-        opMode.telemetry.addData("Cannon", "Firing cannon.");
+        opMode.telemetry.addData("Cannon", "Firing cannon.").setRetained(true);
         cannon.update(true);
         opMode.sleep(1200);
         cannon.update(false);
@@ -186,7 +186,7 @@ public class AutoMethods {
 
     public void fireParticles() {
 
-        opMode.telemetry.addData("Cannon", "Firing particles");
+        opMode.telemetry.addData("Cannon", "Firing particles").setRetained(true);
         drive.moveInches(Direction.BACKWARD, 7.5, Globals.MAX_MOTOR_POWER);
         fireCannon();
         hopper.update(true, MainTeleOp.Direction.IN);
@@ -234,25 +234,25 @@ public class AutoMethods {
     public void pressBeacon() {
         detectColor();
         if(beaconLeftColor.equals(allianceColor)) {
-            opMode.telemetry.addData("Press beacon", "Pressing left side...");
+            opMode.telemetry.addData("Press beacon", "Pressing left side...").setRetained(true);
             opMode.telemetry.update();
             moveLeft();
 
         }
         else if(beaconRightColor.equals(allianceColor)) {
-            opMode.telemetry.addData("Press beacon", "Pressing right side...");
+            opMode.telemetry.addData("Press beacon", "Pressing right side...").setRetained(true);
             opMode.telemetry.update();
             moveRight();
         }
         else {
-            opMode.telemetry.addData("Press beacon", "Error detected");
+            opMode.telemetry.addData("Press beacon", "Error detected").setRetained(true);
             opMode.telemetry.update();
         }
     }
 
     public void ramBeacon(){
 
-        opMode.telemetry.addData("Driving", "Attempting to press button");
+        opMode.telemetry.addData("Driving", "Attempting to press button").setRetained(true);
         OpenGLMatrix lastLocation = vuforia.getNearestBeaconLocation();
         while(lastLocation == null) {
             lastLocation = vuforia.getNearestBeaconLocation();
