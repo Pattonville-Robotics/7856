@@ -11,8 +11,8 @@ import org.pattonvillerobotics.commoncode.robotclasses.gamepad.ListenableButton;
 import org.pattonvillerobotics.commoncode.robotclasses.gamepad.ListenableGamepad;
 import org.pattonvillerobotics.opmodes.CustomizedRobotParameters;
 import org.pattonvillerobotics.robotclasses.mechanisms.ArmMover;
-import org.pattonvillerobotics.robotclasses.mechanisms.Hopper;
 import org.pattonvillerobotics.robotclasses.mechanisms.Cannon;
+import org.pattonvillerobotics.robotclasses.mechanisms.Hopper;
 
 /**
  * Created by skaggsw on 10/4/16.
@@ -96,7 +96,8 @@ public class MainTeleOp extends LinearOpMode {
             @Override
             public void run() {
 
-                cannonOn = !cannonOn;
+                //cannonOn = !cannonOn;
+                particleLauncher.launchLauncher();
             }
         });
         gamepad.getButton(GamepadData.Button.A).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
