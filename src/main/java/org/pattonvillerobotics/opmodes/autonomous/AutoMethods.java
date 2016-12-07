@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.apache.commons.math3.util.FastMath;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.pattonvillerobotics.commoncode.enums.AllianceColor;
+import org.pattonvillerobotics.commoncode.enums.ColorSensorColor;
 import org.pattonvillerobotics.commoncode.enums.Direction;
 import org.pattonvillerobotics.commoncode.robotclasses.colordetection.BeaconColorDetection;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.EncoderDrive;
@@ -30,8 +31,8 @@ public class AutoMethods {
     private EncoderDrive drive;
     private AllianceColor allianceColor;
     private EndPosition endPosition;
-    private AllianceColor beaconLeftColor;
-    private AllianceColor beaconRightColor;
+    private ColorSensorColor beaconLeftColor;
+    private ColorSensorColor beaconRightColor;
     private BeaconColorDetection beaconColorDetection;
     private Direction defaultTurnDirection;
     private Direction oppositeTurnDirection;
@@ -47,7 +48,7 @@ public class AutoMethods {
         setAllianceColor(newAllianceColor);
         drive = newDrive;
         endPosition = newEndPosition;
-        beaconColorDetection = new BeaconColorDetection(hardwareMap);
+        beaconColorDetection = new BeaconColorDetection(hardwareMap, true);
         vuforia = new VuforiaNav(CustomizedRobotParameters.VUFORIA_PARAMETERS);
         vuforia.activate();
         cannon = new Cannon(hardwareMap, opMode);
@@ -218,32 +219,15 @@ public class AutoMethods {
         }
     }
 
-    public void moveLeft() {
-        drive.rotateDegrees(Direction.LEFT, Globals.RIGHT_TURN, Globals.MAX_MOTOR_POWER);
-        drive.moveInches(Direction.BACKWARD, 4, Globals.MAX_MOTOR_POWER);
-        drive.rotateDegrees(Direction.RIGHT, Globals.RIGHT_TURN, Globals.MAX_MOTOR_POWER);
-        drive.moveInches(Direction.BACKWARD, 29, Globals.MAX_MOTOR_POWER);
-    }
-
-    public void moveRight() {
-        drive.rotateDegrees(Direction.RIGHT, Globals.RIGHT_TURN, Globals.MAX_MOTOR_POWER);
-        drive.moveInches(Direction.BACKWARD, 4, Globals.MAX_MOTOR_POWER);
-        drive.rotateDegrees(Direction.LEFT, Globals.RIGHT_TURN, Globals.MAX_MOTOR_POWER);
-        drive.moveInches(Direction.BACKWARD, 29, Globals.MAX_MOTOR_POWER);
-    }
-
     public void pressBeacon() {
         detectColor();
-        if(beaconLeftColor.equals(allianceColor)) {
+        if(beaconLeftColor.equals(toColorSensorColor(allianceColor))) {
             opMode.telemetry.addData("Press beacon", "Pressing left side...").setRetained(true);
             opMode.telemetry.update();
-            moveLeft();
-
         }
-        else if(beaconRightColor.equals(allianceColor)) {
+        else if(beaconRightColor.equals(toColorSensorColor(allianceColor))) {
             opMode.telemetry.addData("Press beacon", "Pressing right side...").setRetained(true);
             opMode.telemetry.update();
-            moveRight();
         }
         else {
             opMode.telemetry.addData("Press beacon", "Error detected").setRetained(true);
@@ -273,8 +257,11 @@ public class AutoMethods {
     public void runAutonomousProcess() {
         fireParticles();
         opMode.sleep(500);
-        drive.moveInches(Direction.BACKWARD, Globals.DISTANCE2_TO_CAPBALL, Globals.MAX_MOTOR_POWER);
-        drive.rotateDegrees(defaultTurnDirection, 60, Globals.MAX_MOTOR_POWER);
+        drive.rotateDegrees(Direction.LEFT, 150, Globals.MAX_MOTOR_POWER);
+        hopper.update(true, MainTeleOp.Direction.OUT);
+        drive.moveInches(Direction.FORWARD, Globals.DISTANCE2_TO_CAPBALL, Globals.MAX_MOTOR_POWER);
+        opMode.sleep(500);
+        hopper.update(false, MainTeleOp.Direction.OUT);
 /*
         driveToNearBeacon();
         opMode.sleep(1000);
@@ -287,4 +274,15 @@ public class AutoMethods {
 */
 
     }
+    private ColorSensorColor toColorSensorColor(AllianceColor allianceColor) {
+        switch (allianceColor) {
+            case BLUE:
+                return ColorSensorColor.BLUE;
+            case RED:
+                return ColorSensorColor.RED;
+            default:
+                return ColorSensorColor.GREEN;
+        }
+    }
+
 }
