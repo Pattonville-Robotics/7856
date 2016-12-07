@@ -104,7 +104,7 @@ public class MainTeleOp extends LinearOpMode {
             @Override
             public void run() {
 
-                //particleLauncher.releaseLauncher();
+                cannonOn = !cannonOn;
             }
         });
     }

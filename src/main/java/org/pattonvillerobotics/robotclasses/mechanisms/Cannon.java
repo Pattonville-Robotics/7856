@@ -37,7 +37,7 @@ public class Cannon extends AbstractMechanism {
         particleLauncher.setDirection(DcMotorSimple.Direction.FORWARD);
 
         particleLauncher.setPower(Globals.CANNON_POWER);
-        while (java.lang.Math.abs(particleLauncher.getCurrentPosition() - targetPosition) > 5) {
+        while (java.lang.Math.abs(particleLauncher.getCurrentPosition() - targetPosition) > 10) {
             if (linearOpMode.isStopRequested())
                 break;
         }
