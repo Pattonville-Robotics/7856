@@ -23,7 +23,7 @@ public class BeaconColorTesting extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         vuforiaNav = new VuforiaNav(CustomizedRobotParameters.VUFORIA_PARAMETERS);
-        beaconColorDetection = new BeaconColorDetection(hardwareMap);
+        beaconColorDetection = new BeaconColorDetection(hardwareMap, true);
         Bitmap bm;
         waitForStart();
         vuforiaNav.activate();
