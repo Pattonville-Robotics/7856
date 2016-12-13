@@ -16,9 +16,10 @@ import org.pattonvillerobotics.commoncode.robotclasses.drive.EncoderDrive;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.trailblazer.vuforia.VuforiaNav;
 import org.pattonvillerobotics.commoncode.vision.util.ScreenOrientation;
 import org.pattonvillerobotics.opmodes.CustomizedRobotParameters;
-import org.pattonvillerobotics.opmodes.teleop.MainTeleOp;
 import org.pattonvillerobotics.robotclasses.mechanisms.Cannon;
 import org.pattonvillerobotics.robotclasses.mechanisms.Hopper;
+import org.pattonvillerobotics.opmodes.teleop.MainTeleOp;
+
 
 /**
  * Created by murphyk01 on 10/1/16.
@@ -270,6 +271,8 @@ public class AutoMethods {
         pressBeacon();
         //ramBeacon();
         opMode.sleep(1000);
+        ramBeacon();
+        detectColor();
         driveToEndPosition();
 */
 
