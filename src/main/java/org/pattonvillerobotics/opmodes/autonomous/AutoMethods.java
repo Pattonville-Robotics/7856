@@ -128,7 +128,7 @@ public class AutoMethods {
             drive.rotateDegrees(defaultTurnDirection, vuforia.getHeading(), Globals.MAX_MOTOR_POWER);
         }
         else if(vuforia.getHeading() < -5) {
-            drive.rotateDegrees(oppositeTurnDirection, vuforia.getHeading(), Globals.MAX_MOTOR_POWER);
+            drive.rotateDegrees(oppositeTurnDirection, -vuforia.getHeading(), Globals.MAX_MOTOR_POWER);
         }
 
     }
