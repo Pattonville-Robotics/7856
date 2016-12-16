@@ -242,31 +242,31 @@ public class AutoMethods {
         }
     }
 
-    public void pressBeacon() {
-
-        opMode.telemetry.addData("pressBeacon", "Detecting colors...");
-
-        beaconLeftColor = beaconColorDetection.getLeftColor();
-        beaconRightColor = beaconColorDetection.getRightColor();
-
-        opMode.telemetry.addData("pressBeacon", "Detecting colors...");
-        if(beaconLeftColor == allianceColor) {
-            opMode.telemetry.addData("pressBeacon", "Moving left arm");
-            // Move left arm
-        }
-        else if(beaconRightColor == allianceColor) {
-            opMode.telemetry.addData("pressBeacon", "Moving right arm");
-            // Move right arm
-        }
-
-        while(beaconLeftColor != allianceColor && beaconRightColor != allianceColor) {
-            drive.moveInches(Direction.BACKWARD, 12, Globals.MAX_MOTOR_POWER);
-            drive.moveInches(Direction.FORWARD, 12, Globals.MAX_MOTOR_POWER);
-        }
-
-        opMode.telemetry.update();
-
-    }
+//    public void pressBeacon() {
+//
+//        opMode.telemetry.addData("pressBeacon", "Detecting colors...");
+//
+//        beaconLeftColor = beaconColorDetection.getLeftColor();
+//        beaconRightColor = beaconColorDetection.getRightColor();
+//
+//        opMode.telemetry.addData("pressBeacon", "Detecting colors...");
+//        if(beaconLeftColor == allianceColor) {
+//            opMode.telemetry.addData("pressBeacon", "Moving left arm");
+//            // Move left arm
+//        }
+//        else if(beaconRightColor == allianceColor) {
+//            opMode.telemetry.addData("pressBeacon", "Moving right arm");
+//            // Move right arm
+//        }
+//
+//        while(beaconLeftColor != allianceColor && beaconRightColor != allianceColor) {
+//            drive.moveInches(Direction.BACKWARD, 12, Globals.MAX_MOTOR_POWER);
+//            drive.moveInches(Direction.FORWARD, 12, Globals.MAX_MOTOR_POWER);
+//        }
+//
+//        opMode.telemetry.update();
+//
+//    }
 
 
     public void runAutonomousProcess() {
@@ -277,13 +277,13 @@ public class AutoMethods {
         opMode.sleep(500);
         alignToBeacon();
         opMode.sleep(500);
-        pressBeacon();
+        //pressBeacon();
         opMode.sleep(500);
         driveToFarBeacon();
         opMode.sleep(500);
         alignToBeacon();
         opMode.sleep(500);
-        pressBeacon();
+        //pressBeacon();
         //driveToEndPosition();
 
     }
