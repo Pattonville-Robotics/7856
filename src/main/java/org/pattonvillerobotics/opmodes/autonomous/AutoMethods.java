@@ -1,6 +1,5 @@
 package org.pattonvillerobotics.opmodes.autonomous;
 
-import android.graphics.Bitmap;
 import android.util.Log;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -9,17 +8,14 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.apache.commons.math3.util.FastMath;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.pattonvillerobotics.commoncode.enums.AllianceColor;
-import org.pattonvillerobotics.commoncode.enums.ColorSensorColor;
 import org.pattonvillerobotics.commoncode.enums.Direction;
 import org.pattonvillerobotics.commoncode.robotclasses.colordetection.BeaconColorDetection;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.EncoderDrive;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.trailblazer.vuforia.VuforiaNav;
-import org.pattonvillerobotics.commoncode.vision.util.ScreenOrientation;
 import org.pattonvillerobotics.opmodes.CustomizedRobotParameters;
+import org.pattonvillerobotics.opmodes.teleop.MainTeleOp;
 import org.pattonvillerobotics.robotclasses.mechanisms.Cannon;
 import org.pattonvillerobotics.robotclasses.mechanisms.Hopper;
-import org.pattonvillerobotics.opmodes.teleop.MainTeleOp;
-
 
 /**
  * Created by murphyk01 on 10/1/16.
@@ -32,8 +28,8 @@ public class AutoMethods {
     private EncoderDrive drive;
     private AllianceColor allianceColor;
     private EndPosition endPosition;
-    private ColorSensorColor beaconLeftColor;
-    private ColorSensorColor beaconRightColor;
+    private AllianceColor beaconLeftColor;
+    private AllianceColor beaconRightColor;
     private BeaconColorDetection beaconColorDetection;
     private Direction defaultTurnDirection;
     private Direction oppositeTurnDirection;
@@ -42,6 +38,8 @@ public class AutoMethods {
     private HardwareMap hardwareMap;
     private Cannon cannon;
     private Hopper hopper;
+    private double motorPowerLeft;
+    private double motorPowerRight;
 
     public AutoMethods(EncoderDrive newDrive, AllianceColor newAllianceColor, EndPosition newEndPosition, HardwareMap hardwareMap, LinearOpMode linearOpMode) {
         this.hardwareMap = hardwareMap;
@@ -49,7 +47,7 @@ public class AutoMethods {
         setAllianceColor(newAllianceColor);
         drive = newDrive;
         endPosition = newEndPosition;
-        beaconColorDetection = new BeaconColorDetection(hardwareMap, true);
+        beaconColorDetection = new BeaconColorDetection(hardwareMap);
         vuforia = new VuforiaNav(CustomizedRobotParameters.VUFORIA_PARAMETERS);
         vuforia.activate();
         cannon = new Cannon(hardwareMap, opMode);
@@ -68,23 +66,6 @@ public class AutoMethods {
             oppositeTurnDirection = Direction.RIGHT;
         }
         opMode.telemetry.addData("Setup", "Setting default turn direction to:" + defaultTurnDirection).setRetained(true);
-    }
-
-
-    public void detectColor() {
-
-        opMode.telemetry.addData("Auto Methods", "Detecting Colors...").setRetained(true);
-        Bitmap bm = null;
-        while(bm == null) {
-            bm = vuforia.getImage();
-        }
-        beaconColorDetection.analyzeFrame(bm, ScreenOrientation.LANDSCAPE_REVERSE);
-        bm.recycle();
-        beaconLeftColor = beaconColorDetection.getLeftColor();
-        beaconRightColor = beaconColorDetection.getRightColor();
-        opMode.telemetry.addData("Color", beaconLeftColor + " " + beaconRightColor).setRetained(true);
-        opMode.telemetry.update();
-
     }
 
 
@@ -129,6 +110,47 @@ public class AutoMethods {
         }
         else if(vuforia.getHeading() < -5) {
             drive.rotateDegrees(oppositeTurnDirection, vuforia.getHeading(), Globals.MAX_MOTOR_POWER);
+        }
+
+    }
+
+    public void alignToBeaconTest() {
+
+        opMode.telemetry.addData("Drive", "Attempting to align to beacon.").setRetained(true);
+        OpenGLMatrix lastLocation = vuforia.getNearestBeaconLocation();
+        while(lastLocation == null) {
+            lastLocation = vuforia.getNearestBeaconLocation();
+            Thread.yield();
+        }
+
+        while(vuforia.getDistance() > 12 || vuforia.getxPos() > 5 || vuforia.getHeading() > 5) {
+
+            double y = vuforia.getDistance();
+            double x = vuforia.getxPos();
+            double W = Globals.BEACON_HALF_WIDTH;
+
+            opMode.telemetry.addData("x", x);
+            opMode.telemetry.addData("y", y);
+
+            double MPLnumerator = -2 * Math.sqrt(Math.pow(x,4) + 2*Math.pow(x,3)*W + Math.pow(W,2)*Math.pow(x,2));
+            double MPLdenominator = 4*Math.pow(x,3) + 6*W*Math.pow(x,2) + 2*Math.pow(W,2)*x;
+            double MPRnumerator = -2 * Math.sqrt(Math.pow(x,4)/4);
+            double MPRdenominator = Math.pow(x,3);
+
+            double rawMotorPowerLeft = MPLnumerator / MPLdenominator;
+            double rawMotorPowerRight = MPRnumerator / MPRdenominator;
+
+            double powerRatio = rawMotorPowerLeft / rawMotorPowerRight;
+
+            motorPowerLeft = (rawMotorPowerLeft * powerRatio) / 2;
+            motorPowerRight = 1 / 2;
+
+            opMode.telemetry.addData("motorPowerLeft", motorPowerLeft);
+            opMode.telemetry.addData("motorPowerRight", motorPowerRight);
+
+            drive.leftDriveMotor.setPower(motorPowerLeft);
+            drive.rightDriveMotor.setPower(motorPowerRight);
+
         }
 
     }
@@ -220,72 +242,49 @@ public class AutoMethods {
         }
     }
 
-    public void pressBeacon() {
-        detectColor();
-        if(beaconLeftColor.equals(toColorSensorColor(allianceColor))) {
-            opMode.telemetry.addData("Press beacon", "Pressing left side...").setRetained(true);
-            opMode.telemetry.update();
-        }
-        else if(beaconRightColor.equals(toColorSensorColor(allianceColor))) {
-            opMode.telemetry.addData("Press beacon", "Pressing right side...").setRetained(true);
-            opMode.telemetry.update();
-        }
-        else {
-            opMode.telemetry.addData("Press beacon", "Error detected").setRetained(true);
-            opMode.telemetry.update();
-        }
-    }
-
-    public void ramBeacon(){
-
-        opMode.telemetry.addData("Driving", "Attempting to press button").setRetained(true);
-        OpenGLMatrix lastLocation = vuforia.getNearestBeaconLocation();
-        while(lastLocation == null) {
-            lastLocation = vuforia.getNearestBeaconLocation();
-            Thread.yield();
-        }
-//        while(beaconLeftColor != allianceColor || beaconRightColor != allianceColor) {
-//            drive.moveInches(Direction.BACKWARD, vuforia.getDistance(), Globals.HALF_MOTOR_POWER);
-//            drive.moveInches(Direction.FORWARD, 24, Globals.HALF_MOTOR_POWER);
-//            detectColor();
+//    public void pressBeacon() {
+//
+//        opMode.telemetry.addData("pressBeacon", "Detecting colors...");
+//
+//        beaconLeftColor = beaconColorDetection.getLeftColor();
+//        beaconRightColor = beaconColorDetection.getRightColor();
+//
+//        opMode.telemetry.addData("pressBeacon", "Detecting colors...");
+//        if(beaconLeftColor == allianceColor) {
+//            opMode.telemetry.addData("pressBeacon", "Moving left arm");
+//            // Move left arm
 //        }
-        drive.moveInches(Direction.BACKWARD, vuforia.getDistance(), 0.2);
-        opMode.sleep(1000);
-        drive.moveInches(Direction.FORWARD, Globals.MINIMUM_DISTANCE_TO_BEACON, Globals.HALF_MOTOR_POWER);
-    }
+//        else if(beaconRightColor == allianceColor) {
+//            opMode.telemetry.addData("pressBeacon", "Moving right arm");
+//            // Move right arm
+//        }
+//
+//        while(beaconLeftColor != allianceColor && beaconRightColor != allianceColor) {
+//            drive.moveInches(Direction.BACKWARD, 12, Globals.MAX_MOTOR_POWER);
+//            drive.moveInches(Direction.FORWARD, 12, Globals.MAX_MOTOR_POWER);
+//        }
+//
+//        opMode.telemetry.update();
+//
+//    }
 
 
     public void runAutonomousProcess() {
+
         fireParticles();
         opMode.sleep(500);
-        drive.rotateDegrees(Direction.LEFT, 150, Globals.MAX_MOTOR_POWER);
-        hopper.update(true, MainTeleOp.Direction.OUT);
-        drive.moveInches(Direction.FORWARD, Globals.DISTANCE2_TO_CAPBALL, Globals.MAX_MOTOR_POWER);
-        opMode.sleep(500);
-        hopper.update(false, MainTeleOp.Direction.OUT);
-/*
         driveToNearBeacon();
-        opMode.sleep(1000);
+        opMode.sleep(500);
         alignToBeacon();
-        opMode.sleep(1000);
-        pressBeacon();
-        //ramBeacon();
-        opMode.sleep(1000);
-        ramBeacon();
-        detectColor();
-        driveToEndPosition();
-*/
+        opMode.sleep(500);
+        //pressBeacon();
+        opMode.sleep(500);
+        driveToFarBeacon();
+        opMode.sleep(500);
+        alignToBeacon();
+        opMode.sleep(500);
+        //pressBeacon();
+        //driveToEndPosition();
 
     }
-    private ColorSensorColor toColorSensorColor(AllianceColor allianceColor) {
-        switch (allianceColor) {
-            case BLUE:
-                return ColorSensorColor.BLUE;
-            case RED:
-                return ColorSensorColor.RED;
-            default:
-                return ColorSensorColor.GREEN;
-        }
-    }
-
 }

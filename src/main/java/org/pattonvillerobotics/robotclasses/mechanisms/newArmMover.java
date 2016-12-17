@@ -5,7 +5,6 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.pattonvillerobotics.opmodes.autonomous.Globals;
-import org.pattonvillerobotics.opmodes.teleop.TeleOpTest;
 
 /**
  * Created by murphyk01 on 12/6/16.
@@ -23,7 +22,7 @@ public class newArmMover extends AbstractMechanism {
 
     }
 
-    public void update(boolean toggle, TeleOpTest.Position position) {
+    public void update(boolean toggle, ArmMover.Position position) {
         switch(position) {
             case RIGHT:
                 if (toggle) {
