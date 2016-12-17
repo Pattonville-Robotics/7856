@@ -10,7 +10,7 @@ import org.pattonvillerobotics.commoncode.robotclasses.gamepad.GamepadData;
 import org.pattonvillerobotics.commoncode.robotclasses.gamepad.ListenableButton;
 import org.pattonvillerobotics.commoncode.robotclasses.gamepad.ListenableGamepad;
 import org.pattonvillerobotics.opmodes.CustomizedRobotParameters;
-import org.pattonvillerobotics.robotclasses.mechanisms.ArmMover;
+import org.pattonvillerobotics.robotclasses.mechanisms.newArmMover;
 import org.pattonvillerobotics.robotclasses.mechanisms.Cannon;
 import org.pattonvillerobotics.robotclasses.mechanisms.Hopper;
 
@@ -23,10 +23,10 @@ public class MainTeleOp extends LinearOpMode {
 
     private EncoderDrive drive;
     private ListenableGamepad gamepad;
-    private ArmMover armMover;
+    //private newArmMover armMover;
     private boolean cannonOn = false;
     private Hopper hopper;
-    private Cannon particleLauncher;
+    private Cannon cannon;
     private boolean hopperOn = false;
     private Direction currentDirection;
 
@@ -37,7 +37,7 @@ public class MainTeleOp extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()) {
-            particle_Launcher.setValue(particleLauncher.getCannon().getCurrentPosition());
+            particle_Launcher.setValue(cannon.getCannon().getCurrentPosition());
             doLoop();
             idle();
         }
@@ -46,32 +46,14 @@ public class MainTeleOp extends LinearOpMode {
     public void initialize() {
         drive = new EncoderDrive(hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS);
         gamepad = new ListenableGamepad();
-        armMover = new ArmMover(hardwareMap, this);
-        particleLauncher = new Cannon(hardwareMap, this);
+        //armMover = new newArmMover(hardwareMap, this);
+        cannon = new Cannon(hardwareMap, this);
         hopper = new Hopper(hardwareMap, this);
         currentDirection = Direction.IN;
 
         telemetry.setMsTransmissionInterval(16);
         final Telemetry.Item particle_Launcher = telemetry.addData("Particle Launcher: ", "N/A").setRetained(true);
 
-//        gamepad.getButton(GamepadData.Button.DPAD_LEFT).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
-//            @Override
-//            public void run() {
-//                armMover.moveTo(ArmMover.Position.LEFT);
-//            }
-//        });
-//        gamepad.getButton(GamepadData.Button.DPAD_RIGHT).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
-//            @Override
-//            public void run() {
-//                armMover.moveTo(ArmMover.Position.RIGHT);
-//            }
-//        });
-//        gamepad.getButton(GamepadData.Button.DPAD_DOWN).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
-//            @Override
-//            public void run() {
-//                armMover.moveTo(ArmMover.Position.DOWN);
-//            }
-//        });
         gamepad.getButton(GamepadData.Button.X).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
             @Override
             public void run() {
@@ -96,8 +78,7 @@ public class MainTeleOp extends LinearOpMode {
             @Override
             public void run() {
 
-                //cannonOn = !cannonOn;
-                particleLauncher.launchLauncher();
+                cannon.primeLauncher();
             }
         });
         gamepad.getButton(GamepadData.Button.A).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
@@ -108,7 +89,8 @@ public class MainTeleOp extends LinearOpMode {
             }
         });
     }
-//        gamepad.getButton(GamepadData.Button.LEFT_BUMPER).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
+
+//      gamepad.getButton(GamepadData.Button.LEFT_BUMPER).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
 //            @Override
 //            public void run() {
 //                armMover.decrementPosition();
@@ -126,7 +108,7 @@ public class MainTeleOp extends LinearOpMode {
         drive.moveFreely(gamepad1.left_stick_y, gamepad1.right_stick_y);
         gamepad.update(new GamepadData(gamepad1));
         hopper.update(hopperOn, currentDirection);
-        particleLauncher.update(cannonOn);
+        cannon.update(cannonOn);
         telemetry.update();
     }
 
