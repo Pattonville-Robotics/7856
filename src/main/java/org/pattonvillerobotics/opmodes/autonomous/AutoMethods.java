@@ -117,13 +117,20 @@ public class AutoMethods {
     public void alignToBeaconTest() {
 
         opMode.telemetry.addData("Drive", "Attempting to align to beacon.").setRetained(true);
+        opMode.telemetry.update();
         OpenGLMatrix lastLocation = vuforia.getNearestBeaconLocation();
         while(lastLocation == null) {
             lastLocation = vuforia.getNearestBeaconLocation();
             Thread.yield();
         }
 
-        while(vuforia.getDistance() > 12 || vuforia.getxPos() > 5 || vuforia.getHeading() > 5) {
+        while(vuforia.getDistance() > 12 || vuforia.getxPos() > 5) {
+
+            lastLocation = null;
+            while(lastLocation == null) {
+                lastLocation = vuforia.getNearestBeaconLocation();
+                Thread.yield();
+            }
 
             double y = vuforia.getDistance();
             double x = vuforia.getxPos();
@@ -131,6 +138,7 @@ public class AutoMethods {
 
             opMode.telemetry.addData("x", x);
             opMode.telemetry.addData("y", y);
+            opMode.telemetry.update();
 
             double MPLnumerator = -2 * Math.sqrt(Math.pow(x,4) + 2*Math.pow(x,3)*W + Math.pow(W,2)*Math.pow(x,2));
             double MPLdenominator = 4*Math.pow(x,3) + 6*W*Math.pow(x,2) + 2*Math.pow(W,2)*x;
@@ -142,16 +150,20 @@ public class AutoMethods {
 
             double powerRatio = rawMotorPowerLeft / rawMotorPowerRight;
 
-            motorPowerLeft = (rawMotorPowerLeft * powerRatio) / 2;
-            motorPowerRight = 1 / 2;
+            motorPowerLeft = -.1 + (motorPowerLeft * powerRatio);
+            motorPowerRight = -.1;
 
             opMode.telemetry.addData("motorPowerLeft", motorPowerLeft);
             opMode.telemetry.addData("motorPowerRight", motorPowerRight);
 
-            drive.leftDriveMotor.setPower(motorPowerLeft);
-            drive.rightDriveMotor.setPower(motorPowerRight);
+            opMode.telemetry.addData("rawMotorPowerLeft", rawMotorPowerLeft);
+            opMode.telemetry.addData("rawMotorPowerRight", rawMotorPowerRight);
+            opMode.telemetry.update();
 
+            drive.moveFreely(motorPowerLeft, motorPowerRight);
         }
+
+        opMode.telemetry.addData("Angle", vuforia.getHeading());
 
     }
 
@@ -225,7 +237,7 @@ public class AutoMethods {
     public void driveToNearBeacon() {
         opMode.telemetry.addData("Drive", "Driving to near beacon").setRetained(true);
         drive.moveInches(Direction.BACKWARD, 4, Globals.MAX_MOTOR_POWER);
-        drive.rotateDegrees(defaultTurnDirection, 35, Globals.MAX_MOTOR_POWER);
+        drive.rotateDegrees(oppositeTurnDirection, 35, Globals.MAX_MOTOR_POWER);
         drive.moveInches(Direction.BACKWARD, 50, Globals.MAX_MOTOR_POWER);
     }
 
