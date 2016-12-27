@@ -83,7 +83,7 @@ public class AutoMethods {
         double y = vuforia.getDistance();
         double Q = Globals.MINIMUM_DISTANCE_TO_BEACON;
         double d = Math.sqrt(Math.pow(x, 2) + Math.pow((y - Q), 2));
-        double angleToTurn = FastMath.toDegrees(FastMath.atan(y/x) - FastMath.atan((y-Q)/x));
+        double angleToTurn = (FastMath.toDegrees(FastMath.atan(y/x) - FastMath.atan((y-Q)/x)))/2;
         double adjustmentAngle = FastMath.toDegrees(FastMath.atan( x/(y-Q) ));
         //double adjustmentAngle = FastMath.toDegrees(FastMath.asin(x/d));
 
@@ -96,20 +96,32 @@ public class AutoMethods {
         opMode.telemetry.update();
 
         if (angleToBeacon > 0) {
-            drive.rotateDegrees(oppositeTurnDirection, angleToTurn, Globals.MAX_MOTOR_POWER);
+            drive.rotateDegrees(oppositeTurnDirection, angleToTurn, Globals.ALIGN_MOTOR_POWER);
+            opMode.sleep(5000);
         }
         else {
-            drive.rotateDegrees(defaultTurnDirection, -angleToTurn, Globals.MAX_MOTOR_POWER);
+            drive.rotateDegrees(defaultTurnDirection, -angleToTurn, Globals.ALIGN_MOTOR_POWER);
+            opMode.sleep(5000);
         }
 
-        drive.moveInches(Direction.BACKWARD, d + 5.5, Globals.MAX_MOTOR_POWER);
-        drive.rotateDegrees(defaultTurnDirection, adjustmentAngle, Globals.MAX_MOTOR_POWER);
+        drive.moveInches(Direction.BACKWARD, d + 5.5, Globals.ALIGN_MOTOR_POWER);
+        opMode.sleep(5000);
+        drive.rotateDegrees(defaultTurnDirection, adjustmentAngle, Globals.ALIGN_MOTOR_POWER);
+        opMode.sleep(5000);
 
-        if(vuforia.getHeading() > 5) {
-            drive.rotateDegrees(defaultTurnDirection, vuforia.getHeading(), Globals.MAX_MOTOR_POWER);
+        lastLocation = null;
+        while(lastLocation == null) {
+            lastLocation = vuforia.getNearestBeaconLocation();
+            Thread.yield();
         }
-        else if(vuforia.getHeading() < -5) {
-            drive.rotateDegrees(oppositeTurnDirection, vuforia.getHeading(), Globals.MAX_MOTOR_POWER);
+
+        opMode.telemetry.addData("Heading", vuforia.getHeading()).setRetained(true);
+
+        if(vuforia.getHeading() > 10) {
+            drive.rotateDegrees(defaultTurnDirection, vuforia.getHeading(), Globals.ALIGN_MOTOR_POWER);
+        }
+        else if(vuforia.getHeading() < -10) {
+            drive.rotateDegrees(oppositeTurnDirection, -vuforia.getHeading(), Globals.ALIGN_MOTOR_POWER);
         }
 
     }
@@ -291,9 +303,9 @@ public class AutoMethods {
         opMode.sleep(500);
         //pressBeacon();
         opMode.sleep(500);
-        driveToFarBeacon();
+        //driveToFarBeacon();
         opMode.sleep(500);
-        alignToBeacon();
+        //alignToBeacon();
         opMode.sleep(500);
         //pressBeacon();
         //driveToEndPosition();

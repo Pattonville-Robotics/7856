@@ -26,7 +26,6 @@ public class AlignTest extends LinearOpMode {
         autoMethods.alignToBeacon();
 
         while(opModeIsActive()) {
-            telemetry.update();
             idle();
         }
 

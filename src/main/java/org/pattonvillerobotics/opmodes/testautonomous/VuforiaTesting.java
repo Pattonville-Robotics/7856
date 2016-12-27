@@ -30,6 +30,7 @@ public class VuforiaTesting extends LinearOpMode {
                 telemetry.addData("Distance", vuforiaNav.getDistance());
                 telemetry.addData("x Position", vuforiaNav.getxPos());
                 telemetry.addData("Heading", vuforiaNav.getHeading());
+                telemetry.addData("AngleToBeacon", vuforiaNav.getAngle());
             } else {
                 telemetry.addData("Position", "Unknown");
             }
