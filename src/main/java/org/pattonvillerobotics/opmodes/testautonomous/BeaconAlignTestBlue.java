@@ -12,8 +12,8 @@ import org.pattonvillerobotics.opmodes.autonomous.EndPosition;
 /**
  * Created by bahrg on 11/1/16.
  */
-@Autonomous(name="Alignment TEST")
-public class BeaconAlignTest extends LinearOpMode {
+@Autonomous(name="Alignment TEST BLUE")
+public class BeaconAlignTestBlue extends LinearOpMode {
     private AutoMethods autoMethods;
 
     @Override
@@ -23,6 +23,7 @@ public class BeaconAlignTest extends LinearOpMode {
 
         autoMethods.alignToBeacon();
         while(opModeIsActive()){
+            telemetry.update();
             idle();
         }
     }

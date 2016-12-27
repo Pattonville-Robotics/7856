@@ -10,7 +10,6 @@ import org.pattonvillerobotics.commoncode.robotclasses.gamepad.GamepadData;
 import org.pattonvillerobotics.commoncode.robotclasses.gamepad.ListenableButton;
 import org.pattonvillerobotics.commoncode.robotclasses.gamepad.ListenableGamepad;
 import org.pattonvillerobotics.opmodes.CustomizedRobotParameters;
-import org.pattonvillerobotics.robotclasses.mechanisms.newArmMover;
 import org.pattonvillerobotics.robotclasses.mechanisms.Cannon;
 import org.pattonvillerobotics.robotclasses.mechanisms.Hopper;
 
@@ -105,7 +104,7 @@ public class MainTeleOp extends LinearOpMode {
 //    }
 
     public void doLoop() {
-        drive.moveFreely(gamepad1.left_stick_y, gamepad1.right_stick_y);
+        drive.moveFreely(gamepad1.left_stick_y/2, gamepad1.right_stick_y/2);
         gamepad.update(new GamepadData(gamepad1));
         hopper.update(hopperOn, currentDirection);
         cannon.update(cannonOn);

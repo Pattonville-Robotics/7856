@@ -77,7 +77,6 @@ public class AutoMethods {
             lastLocation = vuforia.getNearestBeaconLocation();
             Thread.yield();
         }
-        double angleToBeacon = vuforia.getAngle();
 
         double x = vuforia.getxPos();
         double y = vuforia.getDistance();
@@ -87,7 +86,6 @@ public class AutoMethods {
         double adjustmentAngle = FastMath.toDegrees(FastMath.atan( x/(y-Q) ));
         //double adjustmentAngle = FastMath.toDegrees(FastMath.asin(x/d));
 
-        opMode.telemetry.addData("Angle to Beacon", angleToBeacon).setRetained(true);
         opMode.telemetry.addData("Angle to Turn", angleToTurn).setRetained(true);
         opMode.telemetry.addData("Adjustment Angle", adjustmentAngle).setRetained(true);
         opMode.telemetry.addData("d", d).setRetained(true);
@@ -95,19 +93,12 @@ public class AutoMethods {
         opMode.telemetry.addData("y", y).setRetained(true);
         opMode.telemetry.update();
 
-        if (angleToBeacon > 0) {
-            drive.rotateDegrees(oppositeTurnDirection, angleToTurn, Globals.ALIGN_MOTOR_POWER);
-            opMode.sleep(5000);
-        }
-        else {
-            drive.rotateDegrees(defaultTurnDirection, -angleToTurn, Globals.ALIGN_MOTOR_POWER);
-            opMode.sleep(5000);
-        }
+        drive.rotateDegrees(oppositeTurnDirection, angleToTurn, Globals.ALIGN_MOTOR_POWER);
 
-        drive.moveInches(Direction.BACKWARD, d + 5.5, Globals.ALIGN_MOTOR_POWER);
-        opMode.sleep(5000);
-        drive.rotateDegrees(defaultTurnDirection, adjustmentAngle, Globals.ALIGN_MOTOR_POWER);
-        opMode.sleep(5000);
+        drive.moveInches(Direction.BACKWARD, d + 7.2, Globals.ALIGN_MOTOR_POWER);
+
+        drive.rotateDegrees(oppositeTurnDirection, FastMath.abs(adjustmentAngle), Globals.ALIGN_MOTOR_POWER);
+        opMode.sleep(1000);
 
         lastLocation = null;
         while(lastLocation == null) {
@@ -117,12 +108,13 @@ public class AutoMethods {
 
         opMode.telemetry.addData("Heading", vuforia.getHeading()).setRetained(true);
 
-        if(vuforia.getHeading() > 10) {
-            drive.rotateDegrees(defaultTurnDirection, vuforia.getHeading(), Globals.ALIGN_MOTOR_POWER);
+        if(vuforia.getHeading() > 1) {
+            drive.rotateDegrees(defaultTurnDirection, vuforia.getHeading(), .7);
         }
-        else if(vuforia.getHeading() < -10) {
-            drive.rotateDegrees(oppositeTurnDirection, -vuforia.getHeading(), Globals.ALIGN_MOTOR_POWER);
+        else if(vuforia.getHeading() < -1) {
+            drive.rotateDegrees(oppositeTurnDirection, -vuforia.getHeading(), .7);
         }
+        drive.moveInches(Direction.BACKWARD, 25, .15);
 
     }
 
