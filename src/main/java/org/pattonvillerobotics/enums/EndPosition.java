@@ -1,4 +1,4 @@
-package org.pattonvillerobotics.opmodes.autonomous;
+package org.pattonvillerobotics.enums;
 
 /**
  * Created by pieperm on 11/22/16.

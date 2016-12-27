@@ -25,10 +25,6 @@ public class Globals {
     public static final double BUTTON_PRESSER_DOWN_POSITION = 0.5;
     public static final double BUTTON_PRESSER_UP_POSITION = 0;
 
-    //NEW SERVO STUFFS
-    public static final double BUTTON_PRESSOR_OUT_POSITION = 1;
-    public static final double BUTTON_PRESSOR_IN_POSITION = 0;
-
     // Distances
     public static final int DISTANCE1_TO_CAPBALL = 10;
     public static final int DISTANCE2_TO_CAPBALL = 46;

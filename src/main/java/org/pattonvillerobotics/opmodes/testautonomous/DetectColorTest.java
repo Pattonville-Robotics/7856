@@ -7,7 +7,7 @@ import org.pattonvillerobotics.commoncode.enums.AllianceColor;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.EncoderDrive;
 import org.pattonvillerobotics.opmodes.CustomizedRobotParameters;
 import org.pattonvillerobotics.opmodes.autonomous.AutoMethods;
-import org.pattonvillerobotics.opmodes.autonomous.EndPosition;
+import org.pattonvillerobotics.enums.EndPosition;
 
 /**
  * Created by bahrg on 11/26/16.

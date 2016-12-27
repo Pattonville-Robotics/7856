@@ -22,7 +22,7 @@ public class MainTeleOp extends LinearOpMode {
 
     private EncoderDrive drive;
     private ListenableGamepad gamepad;
-    //private newArmMover armMover;
+    //private ArmMover armMover;
     private boolean cannonOn = false;
     private Hopper hopper;
     private Cannon cannon;
@@ -45,7 +45,7 @@ public class MainTeleOp extends LinearOpMode {
     public void initialize() {
         drive = new EncoderDrive(hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS);
         gamepad = new ListenableGamepad();
-        //armMover = new newArmMover(hardwareMap, this);
+        //armMover = new ArmMover(hardwareMap, this);
         cannon = new Cannon(hardwareMap, this);
         hopper = new Hopper(hardwareMap, this);
         currentDirection = Direction.IN;

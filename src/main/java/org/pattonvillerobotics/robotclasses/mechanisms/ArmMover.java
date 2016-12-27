@@ -4,50 +4,33 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.pattonvillerobotics.opmodes.autonomous.Globals;
+import org.pattonvillerobotics.enums.ArmPosition;
 
 /**
- * Created by skaggsw on 10/18/16.
+ * Created by murphyk01 on 12/6/16.
  */
 
 public class ArmMover extends AbstractMechanism {
 
-    private Servo armMover;
+    private Servo armMoverRight;
+    private Servo armMoverLeft;
 
     public ArmMover(HardwareMap hardwareMap, LinearOpMode linearOpMode) {
         super(hardwareMap, linearOpMode);
-        armMover = hardwareMap.servo.get("arm_mover");
-    }
-
-    public void moveTo(Position position) {
-        switch (position) {
-            case DOWN:
-                armMover.setPosition(Globals.BUTTON_PRESSER_DOWN_POSITION);
-                break;
-            case LEFT:
-                armMover.setPosition(Globals.BUTTON_PRESSER_LEFT_POSITION);
-                break;
-            case UP:
-                armMover.setPosition(Globals.BUTTON_PRESSER_UP_POSITION);
-            case RIGHT:
-                armMover.setPosition(Globals.BUTTON_PRESSER_RIGHT_POSITION);
-                break;
-        }
-    }
-
-    // Two methods for testing purposes
-    public void incrementPosition() {
-        armMover.setPosition(Math.max(1, armMover.getPosition()));
-        linearOpMode.telemetry.addData("Arm position", armMover.getPosition());
+        armMoverLeft = hardwareMap.servo.get("arm_left");
+        armMoverRight = hardwareMap.servo.get("arm_right");
 
     }
-    public void decrementPosition() {
-        armMover.setPosition(Math.min(0, armMover.getPosition()));
-        linearOpMode.telemetry.addData("Arm position", armMover.getPosition());
+
+    public void setPosition(Servo arm, ArmPosition position) {
+        arm.setPosition(position.getValue());
     }
 
-    public enum Position {
-        DOWN, LEFT, UP, RIGHT
+    public Servo getArmMoverRight() {
+        return armMoverRight;
     }
 
+    public Servo getArmMoverLeft() {
+        return armMoverLeft;
+    }
 }
