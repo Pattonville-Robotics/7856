@@ -9,11 +9,14 @@ import org.apache.commons.math3.util.FastMath;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.pattonvillerobotics.commoncode.enums.AllianceColor;
 import org.pattonvillerobotics.commoncode.enums.Direction;
+import org.pattonvillerobotics.commoncode.robotclasses.BeaconColorSensor;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.EncoderDrive;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.trailblazer.vuforia.VuforiaNav;
+import org.pattonvillerobotics.enums.ArmPosition;
 import org.pattonvillerobotics.enums.EndPosition;
 import org.pattonvillerobotics.opmodes.CustomizedRobotParameters;
 import org.pattonvillerobotics.opmodes.teleop.MainTeleOp;
+import org.pattonvillerobotics.robotclasses.mechanisms.ArmMover;
 import org.pattonvillerobotics.robotclasses.mechanisms.Cannon;
 import org.pattonvillerobotics.robotclasses.mechanisms.Hopper;
 
@@ -28,8 +31,8 @@ public class AutoMethods {
     private EncoderDrive drive;
     private AllianceColor allianceColor;
     private EndPosition endPosition;
-    private AllianceColor beaconLeftColor;
-    private AllianceColor beaconRightColor;
+    private BeaconColorSensor beaconColorSensor;
+    private AllianceColor beaconColor;
     private Direction defaultTurnDirection;
     private Direction oppositeTurnDirection;
     private VuforiaNav vuforia;
@@ -37,6 +40,7 @@ public class AutoMethods {
     private HardwareMap hardwareMap;
     private Cannon cannon;
     private Hopper hopper;
+    private ArmMover armMover;
     private double motorPowerLeft;
     private double motorPowerRight;
 
@@ -50,6 +54,7 @@ public class AutoMethods {
         vuforia.activate();
         cannon = new Cannon(hardwareMap, opMode);
         hopper = new Hopper(hardwareMap, opMode);
+        armMover = new ArmMover(hardwareMap, opMode);
         linearOpMode.telemetry.addData("Init", "Complete").setRetained(true);
     }
 
@@ -255,31 +260,29 @@ public class AutoMethods {
         }
     }
 
-//    public void pressBeacon() {
-//
-//        opMode.telemetry.addData("pressBeacon", "Detecting colors...");
-//
-//        beaconLeftColor = beaconColorDetection.getLeftColor();
-//        beaconRightColor = beaconColorDetection.getRightColor();
-//
-//        opMode.telemetry.addData("pressBeacon", "Detecting colors...");
-//        if(beaconLeftColor == allianceColor) {
-//            opMode.telemetry.addData("pressBeacon", "Moving left arm");
-//            // Move left arm
-//        }
-//        else if(beaconRightColor == allianceColor) {
-//            opMode.telemetry.addData("pressBeacon", "Moving right arm");
-//            // Move right arm
-//        }
-//
-//        while(beaconLeftColor != allianceColor && beaconRightColor != allianceColor) {
-//            drive.moveInches(Direction.BACKWARD, 12, Globals.MAX_MOTOR_POWER);
-//            drive.moveInches(Direction.FORWARD, 12, Globals.MAX_MOTOR_POWER);
-//        }
-//
-//        opMode.telemetry.update();
-//
-//    }
+    public void pressBeacon() {
+
+        opMode.telemetry.addData("pressBeacon", "Detecting colors...");
+
+        beaconColor = beaconColorSensor.toAllianceColor(beaconColorSensor.dominantColor());
+
+        if(beaconColor == allianceColor) {
+            armMover.setPosition(armMover.getArmMoverLeft(), ArmPosition.OUT);
+        }
+        else {
+            armMover.setPosition(armMover.getArmMoverRight(), ArmPosition.OUT);
+        }
+
+        drive.moveInches(Direction.BACKWARD, Globals.MINIMUM_DISTANCE_TO_BEACON, Globals.HALF_MOTOR_POWER);
+        opMode.sleep(1000);
+        drive.moveInches(Direction.FORWARD, Globals.MINIMUM_DISTANCE_TO_BEACON, Globals.HALF_MOTOR_POWER);
+
+        armMover.setPosition(armMover.getArmMoverLeft(), ArmPosition.IN);
+        armMover.setPosition(armMover.getArmMoverRight(), ArmPosition.IN);
+
+        opMode.telemetry.update();
+
+    }
 
 
     public void runAutonomousProcess() {
@@ -288,5 +291,8 @@ public class AutoMethods {
         driveToNearBeacon();
         opMode.sleep(500);
         alignToBeacon();
+        opMode.sleep(500);
+        pressBeacon();
     }
+
 }
