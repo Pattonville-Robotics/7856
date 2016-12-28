@@ -12,7 +12,6 @@ import org.pattonvillerobotics.commoncode.enums.Direction;
 import org.pattonvillerobotics.commoncode.robotclasses.BeaconColorSensor;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.EncoderDrive;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.trailblazer.vuforia.VuforiaNav;
-import org.pattonvillerobotics.enums.ArmPosition;
 import org.pattonvillerobotics.enums.EndPosition;
 import org.pattonvillerobotics.opmodes.CustomizedRobotParameters;
 import org.pattonvillerobotics.opmodes.teleop.MainTeleOp;
@@ -81,13 +80,13 @@ public class AutoMethods {
             Thread.yield();
         }
 
+        // Vuforia calculations documented in notebook
         double x = vuforia.getxPos();
         double y = vuforia.getDistance();
         double Q = Globals.MINIMUM_DISTANCE_TO_BEACON;
         double d = Math.sqrt(Math.pow(x, 2) + Math.pow((y - Q), 2));
         double angleToTurn = (FastMath.toDegrees(FastMath.atan(y/x) - FastMath.atan((y-Q)/x)))/2;
         double adjustmentAngle = FastMath.toDegrees(FastMath.atan( x/(y-Q) ));
-        //double adjustmentAngle = FastMath.toDegrees(FastMath.asin(x/d));
 
         opMode.telemetry.addData("Angle to Turn", angleToTurn).setRetained(true);
         opMode.telemetry.addData("Adjustment Angle", adjustmentAngle).setRetained(true);
@@ -262,26 +261,36 @@ public class AutoMethods {
 
     public void pressBeacon() {
 
-        opMode.telemetry.addData("pressBeacon", "Detecting colors...");
+        telemetry("pressBeacon", "Detecting colors...");
 
         beaconColor = beaconColorSensor.toAllianceColor(beaconColorSensor.dominantColor());
+        telemetry("beaconColorSensor", beaconColorSensor);
+        telemetry("beaconColor", beaconColor);
 
         if(beaconColor == allianceColor) {
-            armMover.setPosition(armMover.getArmMoverLeft(), ArmPosition.OUT);
+            telemetry("ArmMover", "Moving left arm");
+            armMover.setLeftOut();
         }
         else {
-            armMover.setPosition(armMover.getArmMoverRight(), ArmPosition.OUT);
+            telemetry("ArmMover", "Moving right arm");
+            armMover.setRightOut();
         }
 
         drive.moveInches(Direction.BACKWARD, Globals.MINIMUM_DISTANCE_TO_BEACON, Globals.HALF_MOTOR_POWER);
         opMode.sleep(1000);
         drive.moveInches(Direction.FORWARD, Globals.MINIMUM_DISTANCE_TO_BEACON, Globals.HALF_MOTOR_POWER);
 
-        armMover.setPosition(armMover.getArmMoverLeft(), ArmPosition.IN);
-        armMover.setPosition(armMover.getArmMoverRight(), ArmPosition.IN);
+        // Reset both arms
+        armMover.setLeftIn();
+        armMover.setRightIn();
 
+        telemetry("pressBeacon", "Done");
+
+    }
+
+    public void telemetry(String caption, Object value) {
+        opMode.telemetry.addData(caption, value).setRetained(true);
         opMode.telemetry.update();
-
     }
 
 
