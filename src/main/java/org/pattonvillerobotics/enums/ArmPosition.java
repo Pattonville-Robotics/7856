@@ -7,13 +7,13 @@ package org.pattonvillerobotics.enums;
 public enum ArmPosition {
     IN(0), OUT(1);
 
-    private int value;
+    private double value;
 
-    ArmPosition(int value) {
+    ArmPosition(double value) {
         this.value = value;
     }
 
-    public int getValue() {
+    public double getValue() {
         return value;
     }
 }

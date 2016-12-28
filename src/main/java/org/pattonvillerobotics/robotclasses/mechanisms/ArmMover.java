@@ -19,11 +19,21 @@ public class ArmMover extends AbstractMechanism {
         super(hardwareMap, linearOpMode);
         armMoverLeft = hardwareMap.servo.get("arm_left");
         armMoverRight = hardwareMap.servo.get("arm_right");
+        setPosition(armMoverLeft, ArmPosition.OUT);
+        setPosition(armMoverRight, ArmPosition.OUT);
 
     }
 
     public void setPosition(Servo arm, ArmPosition position) {
         arm.setPosition(position.getValue());
+    }
+
+    public void toggle(Servo arm) {
+        if(arm.getPosition() == ArmPosition.OUT.getValue()) {
+            setPosition(arm, ArmPosition.IN);
+        } else {
+            setPosition(arm, ArmPosition.OUT);
+        }
     }
 
     public Servo getArmMoverRight() {

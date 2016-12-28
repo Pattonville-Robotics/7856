@@ -10,6 +10,7 @@ import org.pattonvillerobotics.commoncode.robotclasses.gamepad.GamepadData;
 import org.pattonvillerobotics.commoncode.robotclasses.gamepad.ListenableButton;
 import org.pattonvillerobotics.commoncode.robotclasses.gamepad.ListenableGamepad;
 import org.pattonvillerobotics.opmodes.CustomizedRobotParameters;
+import org.pattonvillerobotics.robotclasses.mechanisms.ArmMover;
 import org.pattonvillerobotics.robotclasses.mechanisms.Cannon;
 import org.pattonvillerobotics.robotclasses.mechanisms.Hopper;
 
@@ -22,7 +23,7 @@ public class MainTeleOp extends LinearOpMode {
 
     private EncoderDrive drive;
     private ListenableGamepad gamepad;
-    //private ArmMover armMover;
+    private ArmMover armMover;
     private boolean cannonOn = false;
     private Hopper hopper;
     private Cannon cannon;
@@ -45,7 +46,7 @@ public class MainTeleOp extends LinearOpMode {
     public void initialize() {
         drive = new EncoderDrive(hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS);
         gamepad = new ListenableGamepad();
-        //armMover = new ArmMover(hardwareMap, this);
+        armMover = new ArmMover(hardwareMap, this);
         cannon = new Cannon(hardwareMap, this);
         hopper = new Hopper(hardwareMap, this);
         currentDirection = Direction.IN;
@@ -76,7 +77,6 @@ public class MainTeleOp extends LinearOpMode {
         gamepad.getButton(GamepadData.Button.B).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
             @Override
             public void run() {
-
                 cannon.primeLauncher();
             }
         });
@@ -87,21 +87,23 @@ public class MainTeleOp extends LinearOpMode {
                 cannonOn = !cannonOn;
             }
         });
+
+        gamepad.getButton(GamepadData.Button.LEFT_BUMPER).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
+            @Override
+            public void run() {
+                armMover.toggle(armMover.getArmMoverLeft());
+            }
+        });
+        gamepad.getButton(GamepadData.Button.RIGHT_BUMPER).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
+            @Override
+            public void run() {
+                armMover.toggle(armMover.getArmMoverRight());
+            }
+        });
     }
 
-//      gamepad.getButton(GamepadData.Button.LEFT_BUMPER).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
-//            @Override
-//            public void run() {
-//                armMover.decrementPosition();
-//            }
-//        });
-//        gamepad.getButton(GamepadData.Button.RIGHT_BUMPER).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
-//            @Override
-//            public void run() {
-//                armMover.incrementPosition();
-//            }
-//        });
-//    }
+
+
 
     public void doLoop() {
         drive.moveFreely(gamepad1.left_stick_y/2, gamepad1.right_stick_y/2);

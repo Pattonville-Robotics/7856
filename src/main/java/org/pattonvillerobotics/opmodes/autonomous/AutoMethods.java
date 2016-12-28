@@ -116,6 +116,7 @@ public class AutoMethods {
 
     }
 
+
     public void alignToBeaconTest() {
 
         opMode.telemetry.addData("Drive", "Attempting to align to beacon.").setRetained(true);
@@ -284,21 +285,10 @@ public class AutoMethods {
 
 
     public void runAutonomousProcess() {
-
         fireParticles();
         opMode.sleep(500);
         driveToNearBeacon();
         opMode.sleep(500);
         alignToBeacon();
-        opMode.sleep(500);
-        //pressBeacon();
-        opMode.sleep(500);
-        //driveToFarBeacon();
-        opMode.sleep(500);
-        //alignToBeacon();
-        opMode.sleep(500);
-        //pressBeacon();
-        //driveToEndPosition();
-
     }
 }
