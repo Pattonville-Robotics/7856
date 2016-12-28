@@ -92,11 +92,13 @@ public class AutoMethods {
         opMode.telemetry.update();
 
         drive.rotateDegrees(oppositeTurnDirection, angleToTurn, Globals.ALIGN_MOTOR_POWER);
+        opMode.sleep(5000);
 
         drive.moveInches(Direction.BACKWARD, d + 7.2, Globals.ALIGN_MOTOR_POWER);
+        opMode.sleep(5000);
 
         drive.rotateDegrees(oppositeTurnDirection, FastMath.abs(adjustmentAngle), Globals.ALIGN_MOTOR_POWER);
-        opMode.sleep(1000);
+        opMode.sleep(5000);
 
         lastLocation = null;
         while(lastLocation == null) {
@@ -106,13 +108,18 @@ public class AutoMethods {
 
         opMode.telemetry.addData("Heading", vuforia.getHeading()).setRetained(true);
 
-        if(vuforia.getHeading() > 1) {
-            drive.rotateDegrees(defaultTurnDirection, vuforia.getHeading(), .7);
-        }
-        else if(vuforia.getHeading() < -1) {
-            drive.rotateDegrees(oppositeTurnDirection, -vuforia.getHeading(), .7);
-        }
-        drive.moveInches(Direction.BACKWARD, 25, .15);
+        drive.rotateDegrees(defaultTurnDirection, vuforia.getHeading(), Globals.MAX_MOTOR_POWER);
+        opMode.sleep(5000);
+
+//        if(vuforia.getHeading() > 1) {
+//            drive.rotateDegrees(defaultTurnDirection, vuforia.getHeading(), Globals.MAX_MOTOR_POWER);
+//            opMode.sleep(1000);
+//        }
+//        else if(vuforia.getHeading() < -1) {
+//            drive.rotateDegrees(oppositeTurnDirection, -vuforia.getHeading(), Globals.MAX_MOTOR_POWER);
+//            opMode.sleep(1000);
+//        }
+//        drive.moveInches(Direction.BACKWARD, 25, .15);
 
     }
 
@@ -219,7 +226,7 @@ public class AutoMethods {
 
         opMode.telemetry.addData("Cannon", "Firing cannon.").setRetained(true);
         cannon.update(true);
-        opMode.sleep(1200);
+        opMode.sleep(800);
         cannon.update(false);
     }
 
@@ -227,7 +234,7 @@ public class AutoMethods {
     public void fireParticles() {
 
         opMode.telemetry.addData("Cannon", "Firing particles").setRetained(true);
-        drive.moveInches(Direction.BACKWARD, 7.5, Globals.MAX_MOTOR_POWER);
+        drive.moveInches(Direction.BACKWARD, 7.5, Globals.HALF_MOTOR_POWER);
         fireCannon();
         hopper.update(true, MainTeleOp.Direction.IN);
         opMode.sleep(3500);

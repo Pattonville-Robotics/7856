@@ -106,7 +106,7 @@ public class MainTeleOp extends LinearOpMode {
 
 
     public void doLoop() {
-        drive.moveFreely(gamepad1.left_stick_y/2, gamepad1.right_stick_y/2);
+        drive.moveFreely(gamepad1.left_stick_y, gamepad1.right_stick_y);
         gamepad.update(new GamepadData(gamepad1));
         hopper.update(hopperOn, currentDirection);
         cannon.update(cannonOn);

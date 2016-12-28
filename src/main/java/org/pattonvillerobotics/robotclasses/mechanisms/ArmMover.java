@@ -19,7 +19,7 @@ public class ArmMover extends AbstractMechanism {
         super(hardwareMap, linearOpMode);
         armMoverLeft = hardwareMap.servo.get("arm_left");
         armMoverRight = hardwareMap.servo.get("arm_right");
-        setPosition(armMoverLeft, ArmPosition.OUT);
+        setPosition(armMoverLeft, ArmPosition.IN);
         setPosition(armMoverRight, ArmPosition.OUT);
 
     }
@@ -34,6 +34,26 @@ public class ArmMover extends AbstractMechanism {
         } else {
             setPosition(arm, ArmPosition.OUT);
         }
+    }
+
+    public ArmMover setLeftOut() {
+        setPosition(armMoverLeft, ArmPosition.IN);
+        return this;
+    }
+
+    public ArmMover setLeftIn() {
+        setPosition(armMoverLeft, ArmPosition.OUT);
+        return this;
+    }
+
+    public ArmMover setRightOut() {
+        setPosition(armMoverRight, ArmPosition.OUT);
+        return this;
+    }
+
+    public ArmMover setRightIn() {
+        setPosition(armMoverRight, ArmPosition.IN);
+        return this;
     }
 
     public Servo getArmMoverRight() {
