@@ -110,16 +110,7 @@ public class AutoMethods {
 
         drive.rotateDegrees(defaultTurnDirection, vuforia.getHeading(), Globals.MAX_MOTOR_POWER);
         opMode.sleep(5000);
-
-//        if(vuforia.getHeading() > 1) {
-//            drive.rotateDegrees(defaultTurnDirection, vuforia.getHeading(), Globals.MAX_MOTOR_POWER);
-//            opMode.sleep(1000);
-//        }
-//        else if(vuforia.getHeading() < -1) {
-//            drive.rotateDegrees(oppositeTurnDirection, -vuforia.getHeading(), Globals.MAX_MOTOR_POWER);
-//            opMode.sleep(1000);
-//        }
-//        drive.moveInches(Direction.BACKWARD, 25, .15);
+        drive.moveInches(Direction.BACKWARD, Globals.MINIMUM_DISTANCE_TO_BEACON + 1, .15);
 
     }
 
