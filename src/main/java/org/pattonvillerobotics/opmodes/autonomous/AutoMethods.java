@@ -98,7 +98,7 @@ public class AutoMethods {
         drive.rotateDegrees(oppositeTurnDirection, angleToTurn, Globals.ALIGN_MOTOR_POWER);
         opMode.sleep(5000);
 
-        drive.moveInches(Direction.BACKWARD, d + 7.2, Globals.ALIGN_MOTOR_POWER);
+        drive.moveInches(Direction.BACKWARD, d + 7.3, Globals.ALIGN_MOTOR_POWER);
         opMode.sleep(5000);
 
         drive.rotateDegrees(oppositeTurnDirection, FastMath.abs(adjustmentAngle), Globals.ALIGN_MOTOR_POWER);
@@ -112,10 +112,14 @@ public class AutoMethods {
 
         opMode.telemetry.addData("Heading", vuforia.getHeading()).setRetained(true);
 
-        drive.rotateDegrees(defaultTurnDirection, vuforia.getHeading(), Globals.MAX_MOTOR_POWER);
-        opMode.sleep(5000);
-        drive.moveInches(Direction.BACKWARD, Globals.MINIMUM_DISTANCE_TO_BEACON + 1, .15);
 
+        if(vuforia.getHeading() > 0) {
+            drive.rotateDegrees(oppositeTurnDirection, vuforia.getHeading(), Globals.MAX_MOTOR_POWER);
+            opMode.sleep(1000);
+        } else {
+            drive.rotateDegrees(defaultTurnDirection, -vuforia.getHeading(), Globals.MAX_MOTOR_POWER);
+            opMode.sleep(1000);
+        }
     }
 
 
@@ -218,10 +222,9 @@ public class AutoMethods {
 
 
     public void fireCannon() {
-
         opMode.telemetry.addData("Cannon", "Firing cannon.").setRetained(true);
         cannon.update(true);
-        opMode.sleep(800);
+        opMode.sleep(500);
         cannon.update(false);
     }
 
@@ -229,21 +232,20 @@ public class AutoMethods {
     public void fireParticles() {
 
         opMode.telemetry.addData("Cannon", "Firing particles").setRetained(true);
-        drive.moveInches(Direction.BACKWARD, 7.5, Globals.HALF_MOTOR_POWER);
+        drive.moveInches(Direction.BACKWARD, 8.5, Globals.HALF_MOTOR_POWER);
         fireCannon();
         hopper.update(true, MainTeleOp.Direction.IN);
         opMode.sleep(3500);
         hopper.update(false, MainTeleOp.Direction.IN);
         fireCannon();
-
     }
 
 
     public void driveToNearBeacon() {
         opMode.telemetry.addData("Drive", "Driving to near beacon").setRetained(true);
-        drive.moveInches(Direction.BACKWARD, 4, Globals.MAX_MOTOR_POWER);
-        drive.rotateDegrees(oppositeTurnDirection, 35, Globals.MAX_MOTOR_POWER);
-        drive.moveInches(Direction.BACKWARD, 50, Globals.MAX_MOTOR_POWER);
+        drive.moveInches(Direction.BACKWARD, 4, Globals.HALF_MOTOR_POWER);
+        drive.rotateDegrees(oppositeTurnDirection, 40, Globals.MAX_MOTOR_POWER);
+        drive.moveInches(Direction.BACKWARD, 48, Globals.HALF_MOTOR_POWER);
     }
 
 
@@ -276,9 +278,9 @@ public class AutoMethods {
             armMover.setRightOut();
         }
 
-        drive.moveInches(Direction.BACKWARD, Globals.MINIMUM_DISTANCE_TO_BEACON, Globals.HALF_MOTOR_POWER);
+        drive.moveInches(Direction.BACKWARD, Globals.MINIMUM_DISTANCE_TO_BEACON + 1, Globals.HALF_MOTOR_POWER);
         opMode.sleep(1000);
-        drive.moveInches(Direction.FORWARD, Globals.MINIMUM_DISTANCE_TO_BEACON, Globals.HALF_MOTOR_POWER);
+        drive.moveInches(Direction.FORWARD, Globals.MINIMUM_DISTANCE_TO_BEACON + 1, Globals.HALF_MOTOR_POWER);
 
         // Reset both arms
         armMover.setLeftIn();
@@ -288,6 +290,12 @@ public class AutoMethods {
 
     }
 
+    public void driveFarBeacon() {
+        drive.rotateDegrees(Direction.LEFT, 90, Globals.MAX_MOTOR_POWER);
+        drive.moveInches(Direction.BACKWARD, 48, Globals.HALF_MOTOR_POWER);
+        drive.rotateDegrees(Direction.RIGHT, 90, Globals.MAX_MOTOR_POWER);
+    }
+
     public void telemetry(String caption, Object value) {
         opMode.telemetry.addData(caption, value).setRetained(true);
         opMode.telemetry.update();
@@ -295,11 +303,17 @@ public class AutoMethods {
 
 
     public void runAutonomousProcess() {
+        armMover.setLeftIn();
+        armMover.setRightIn();
         fireParticles();
         opMode.sleep(500);
         driveToNearBeacon();
         opMode.sleep(500);
         alignToBeacon();
+        opMode.sleep(500);
+        pressBeacon();
+        opMode.sleep(500);
+        driveFarBeacon();
         opMode.sleep(500);
         pressBeacon();
     }
