@@ -51,6 +51,7 @@ public class AutoMethods {
         endPosition = newEndPosition;
         vuforia = new VuforiaNav(CustomizedRobotParameters.VUFORIA_PARAMETERS);
         vuforia.activate();
+        beaconColorSensor = new BeaconColorSensor(hardwareMap.colorSensor.get("color_sensor"));
         cannon = new Cannon(hardwareMap, opMode);
         hopper = new Hopper(hardwareMap, opMode);
         armMover = new ArmMover(hardwareMap, opMode);
