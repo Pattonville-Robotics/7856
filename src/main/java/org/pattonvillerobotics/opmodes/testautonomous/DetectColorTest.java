@@ -19,7 +19,8 @@ public class DetectColorTest extends LinearOpMode {
         AutoMethods autoMethods = new AutoMethods(new EncoderDrive(hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS), AllianceColor.BLUE, EndPosition.CENTER_VORTEX, hardwareMap, this);
         waitForStart();
 
-        //autoMethods.detectColor();
+        autoMethods.pressBeacon();
+
         while(opModeIsActive()) {
             idle();
         }
