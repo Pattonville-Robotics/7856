@@ -55,7 +55,7 @@ public class AutoMethods {
         cannon = new Cannon(hardwareMap, opMode);
         hopper = new Hopper(hardwareMap, opMode);
         armMover = new ArmMover(hardwareMap, opMode);
-        linearOpMode.telemetry.addData("Init", "Complete").setRetained(true);
+        telemetry("INIT", "Completed");
     }
 
 
@@ -98,7 +98,7 @@ public class AutoMethods {
         opMode.telemetry.addData("angle", FastMath.toDegrees(FastMath.atan(x/y))).setRetained(true);
         opMode.telemetry.update();
 
-        if(FastMath.abs(vuforia.getHeading()) > 38) {
+        if(FastMath.abs(vuforia.getHeading()) > FastMath.toDegrees(FastMath.atan(x/y))) {
             drive.rotateDegrees(oppositeTurnDirection, angleToTurn, Globals.ALIGN_MOTOR_POWER);
         } else {
             angleToTurn = (FastMath.toDegrees((FastMath.atan(y/x)+FastMath.toRadians(vuforia.getHeading())) - FastMath.atan((y-Q)/x)))/2;
@@ -119,11 +119,16 @@ public class AutoMethods {
             lastLocation = vuforia.getNearestBeaconLocation();
             Thread.yield();
         }
+        double correctionAngle = FastMath.toDegrees(FastMath.atan(vuforia.getxPos()/vuforia.getDistance()));
+        opMode.telemetry.addData("Correction Angle", correctionAngle).setRetained(true);
 
-        opMode.telemetry.addData("Heading", vuforia.getHeading()).setRetained(true);
+        if(correctionAngle < 0) {
+            correctionAngle -= 4;
+        } else {
+            correctionAngle += 4;
+        }
 
-
-        drive.rotateDegrees(defaultTurnDirection, FastMath.abs(vuforia.getHeading()) + 2, Globals.MAX_MOTOR_POWER);
+        drive.rotateDegrees(defaultTurnDirection, correctionAngle, Globals.MAX_MOTOR_POWER);
 
 //        if(vuforia.getHeading() > 0) {
 //            drive.rotateDegrees(oppositeTurnDirection, vuforia.getHeading(), Globals.MAX_MOTOR_POWER);
@@ -236,7 +241,7 @@ public class AutoMethods {
     public void fireCannon() {
         opMode.telemetry.addData("Cannon", "Firing cannon.").setRetained(true);
         cannon.update(true);
-        opMode.sleep(500);
+        opMode.sleep(800);
         cannon.update(false);
     }
 
@@ -245,11 +250,11 @@ public class AutoMethods {
 
         opMode.telemetry.addData("Cannon", "Firing particles").setRetained(true);
         drive.moveInches(Direction.BACKWARD, 8, Globals.HALF_MOTOR_POWER);
-        fireCannon();
+        //fireCannon();
         hopper.update(true, MainTeleOp.Direction.IN);
         opMode.sleep(2500);
         hopper.update(false, MainTeleOp.Direction.IN);
-        fireCannon();
+        //fireCannon();
     }
 
 
@@ -257,10 +262,10 @@ public class AutoMethods {
         opMode.telemetry.addData("Drive", "Driving to near beacon").setRetained(true);
         drive.moveInches(Direction.BACKWARD, 3.5, Globals.HALF_MOTOR_POWER);
         if(allianceColor == AllianceColor.BLUE) {
-            drive.rotateDegrees(oppositeTurnDirection, 55, Globals.MAX_MOTOR_POWER);
+            drive.rotateDegrees(oppositeTurnDirection, 45, Globals.HALF_MOTOR_POWER);
             drive.moveInches(Direction.BACKWARD, 46, Globals.HALF_MOTOR_POWER);
         } else {
-            drive.rotateDegrees(oppositeTurnDirection, 25, Globals.MAX_MOTOR_POWER);
+            drive.rotateDegrees(oppositeTurnDirection, 25, Globals.HALF_MOTOR_POWER);
             drive.moveInches(Direction.BACKWARD, 36, Globals.HALF_MOTOR_POWER);
         }
 
@@ -301,12 +306,12 @@ public class AutoMethods {
         }, new Runnable() {
             @Override
             public void run() {
-                drive.moveInches(Direction.BACKWARD, 2, Globals.HALF_MOTOR_POWER);
+                drive.moveInches(Direction.BACKWARD, 3, Globals.HALF_MOTOR_POWER);
                 pressBeacon();
             }
         });
         opMode.sleep(1000);
-        drive.moveInches(Direction.BACKWARD, 10, Globals.HALF_MOTOR_POWER);
+        drive.moveInches(Direction.BACKWARD, 9, Globals.HALF_MOTOR_POWER);
 
         telemetry("pressBeacon", "Done");
 
@@ -315,9 +320,16 @@ public class AutoMethods {
     public void driveFarBeacon() {
         opMode.sleep(1000);
         drive.moveInches(Direction.FORWARD, Globals.MINIMUM_DISTANCE_TO_BEACON + 1, .2);
-        drive.rotateDegrees(oppositeTurnDirection, 90, Globals.MAX_MOTOR_POWER);
-        drive.moveInches(Direction.FORWARD, 48, Globals.HALF_MOTOR_POWER);
-        drive.rotateDegrees(defaultTurnDirection, 90, Globals.MAX_MOTOR_POWER);
+        drive.rotateDegrees(oppositeTurnDirection, 90, Globals.HALF_MOTOR_POWER);
+        drive.moveInches(Direction.FORWARD, 53, Globals.HALF_MOTOR_POWER);
+        drive.rotateDegrees(defaultTurnDirection, 90, Globals.HALF_MOTOR_POWER);
+        OpenGLMatrix lastLocation = null;
+        while(lastLocation == null) {
+            lastLocation = vuforia.getNearestBeaconLocation();
+            Thread.yield();
+        }
+        telemetry("Drive Far Beacon", "Turning " + vuforia.getHeading());
+        drive.rotateDegrees(defaultTurnDirection, vuforia.getHeading(), Globals.HALF_MOTOR_POWER);
     }
 
     public void telemetry(String caption, Object value) {
@@ -325,23 +337,16 @@ public class AutoMethods {
         opMode.telemetry.update();
     }
 
-
     public void runAutonomousProcess() {
         armMover.setLeftIn();
         armMover.setRightIn();
         fireParticles();
-        opMode.sleep(500);
         driveToNearBeacon();
-        opMode.sleep(500);
         alignToBeacon();
-        opMode.sleep(500);
         drive.moveInches(Direction.BACKWARD, Globals.MINIMUM_DISTANCE_TO_BEACON/3, Globals.HALF_MOTOR_POWER);
         pressBeacon();
-        opMode.sleep(500);
         driveFarBeacon();
-        opMode.sleep(500);
         pressBeacon();
-        opMode.sleep(500);
         drive.moveInches(Direction.FORWARD, 5, Globals.HALF_MOTOR_POWER);
     }
 }
