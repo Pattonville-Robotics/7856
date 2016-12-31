@@ -98,12 +98,23 @@ public class AutoMethods {
         opMode.telemetry.addData("angle", FastMath.toDegrees(FastMath.atan(x/y))).setRetained(true);
         opMode.telemetry.update();
 
-        if(FastMath.abs(vuforia.getHeading()) > FastMath.toDegrees(FastMath.atan(x/y))) {
-            drive.rotateDegrees(oppositeTurnDirection, angleToTurn, Globals.ALIGN_MOTOR_POWER);
+        if(allianceColor == AllianceColor.BLUE) {
+
+            if (FastMath.abs(vuforia.getHeading()) > FastMath.toDegrees(FastMath.atan(x / y))) {
+                drive.rotateDegrees(oppositeTurnDirection, angleToTurn, Globals.ALIGN_MOTOR_POWER);
+            } else {
+                angleToTurn = (FastMath.toDegrees((FastMath.atan(y / x) + FastMath.toRadians(vuforia.getHeading())) - FastMath.atan((y - Q) / x))) / 2;
+                opMode.telemetry.addData("New Angle to Turn", angleToTurn).setRetained(true);
+                drive.rotateDegrees(defaultTurnDirection, angleToTurn, Globals.ALIGN_MOTOR_POWER);
+            }
         } else {
-            angleToTurn = (FastMath.toDegrees((FastMath.atan(y/x)+FastMath.toRadians(vuforia.getHeading())) - FastMath.atan((y-Q)/x)))/2;
-            opMode.telemetry.addData("New Angle to Turn", angleToTurn).setRetained(true);
-            drive.rotateDegrees(defaultTurnDirection, angleToTurn, Globals.ALIGN_MOTOR_POWER);
+            if (FastMath.abs(vuforia.getHeading()) > 38) {
+                drive.rotateDegrees(oppositeTurnDirection, angleToTurn, Globals.ALIGN_MOTOR_POWER);
+            } else {
+                angleToTurn = (FastMath.toDegrees((FastMath.atan(y / x) + FastMath.toRadians(vuforia.getHeading())) - FastMath.atan((y - Q) / x))) / 2;
+                opMode.telemetry.addData("New Angle to Turn", angleToTurn).setRetained(true);
+                drive.rotateDegrees(defaultTurnDirection, angleToTurn, Globals.ALIGN_MOTOR_POWER);
+            }
         }
 
         if(allianceColor == AllianceColor.BLUE) {
@@ -127,8 +138,11 @@ public class AutoMethods {
         } else {
             correctionAngle += 4;
         }
-
-        drive.rotateDegrees(defaultTurnDirection, correctionAngle, Globals.MAX_MOTOR_POWER);
+        if(allianceColor == AllianceColor.BLUE) {
+            drive.rotateDegrees(defaultTurnDirection, correctionAngle, Globals.HALF_MOTOR_POWER);
+        } else {
+            drive.rotateDegrees(defaultTurnDirection, -correctionAngle, Globals.HALF_MOTOR_POWER);
+        }
 
 //        if(vuforia.getHeading() > 0) {
 //            drive.rotateDegrees(oppositeTurnDirection, vuforia.getHeading(), Globals.MAX_MOTOR_POWER);
@@ -328,8 +342,19 @@ public class AutoMethods {
             lastLocation = vuforia.getNearestBeaconLocation();
             Thread.yield();
         }
-        telemetry("Drive Far Beacon", "Turning " + vuforia.getHeading());
-        drive.rotateDegrees(defaultTurnDirection, vuforia.getHeading(), Globals.HALF_MOTOR_POWER);
+        double correctionAngle = FastMath.toDegrees(FastMath.atan(vuforia.getxPos()/vuforia.getDistance()));
+        opMode.telemetry.addData("Correction Angle", correctionAngle).setRetained(true);
+
+        if(correctionAngle < 0) {
+            correctionAngle -= 4;
+        } else {
+            correctionAngle += 4;
+        }
+        if(allianceColor == AllianceColor.BLUE) {
+            drive.rotateDegrees(defaultTurnDirection, correctionAngle, Globals.HALF_MOTOR_POWER);
+        } else {
+            drive.rotateDegrees(defaultTurnDirection, -correctionAngle, Globals.HALF_MOTOR_POWER);
+        }
     }
 
     public void telemetry(String caption, Object value) {
