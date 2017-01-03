@@ -2,6 +2,7 @@ package org.pattonvillerobotics.opmodes.teleop;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.pattonvillerobotics.commoncode.opmodes.OpModeGroups;
@@ -10,6 +11,7 @@ import org.pattonvillerobotics.commoncode.robotclasses.gamepad.GamepadData;
 import org.pattonvillerobotics.commoncode.robotclasses.gamepad.ListenableButton;
 import org.pattonvillerobotics.commoncode.robotclasses.gamepad.ListenableGamepad;
 import org.pattonvillerobotics.opmodes.CustomizedRobotParameters;
+import org.pattonvillerobotics.opmodes.autonomous.Globals;
 import org.pattonvillerobotics.robotclasses.mechanisms.ArmMover;
 import org.pattonvillerobotics.robotclasses.mechanisms.Cannon;
 import org.pattonvillerobotics.robotclasses.mechanisms.Hopper;
@@ -106,7 +108,7 @@ public class MainTeleOp extends LinearOpMode {
 
 
     public void doLoop() {
-        drive.moveFreely(gamepad1.left_stick_y, gamepad1.right_stick_y);
+        drive.moveFreely(Range.clip(gamepad1.left_stick_y, 0, Globals.MAX_MOTOR_POWER), Range.clip(gamepad1.right_stick_y, 0, Globals.MAX_MOTOR_POWER));
         gamepad.update(new GamepadData(gamepad1));
         hopper.update(hopperOn, currentDirection);
         cannon.update(cannonOn);
