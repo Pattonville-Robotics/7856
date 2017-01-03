@@ -16,10 +16,25 @@ import org.pattonvillerobotics.commoncode.robotclasses.drive.RobotParameters;
 
 public class ComplexEncoderDrive extends EncoderDrive {
 
+    /**
+     * sets up Drive object with custom RobotParameters useful for doing calculations with encoders
+     *
+     * @param hardwareMap     a hardwaremap
+     * @param linearOpMode    a linearopmode
+     * @param robotParameters a RobotParameters containing robot specific calculations for
+     *                        wheel radius and wheel base radius
+     */
     public ComplexEncoderDrive(HardwareMap hardwareMap, LinearOpMode linearOpMode, RobotParameters robotParameters) {
         super(hardwareMap, linearOpMode, robotParameters);
     }
 
+    /**
+     * drives a specific number of inches in a given direction and slows down as it reaches the destination
+     *
+     * @param direction the direction (forward or backward) to drive in
+     * @param inches    the number of inches to drive
+     * @param power     the power with which to drive
+     */
     @Override
     public void moveInches(Direction direction, double inches, double power) {
 
@@ -81,6 +96,13 @@ public class ComplexEncoderDrive extends EncoderDrive {
 
     }
 
+    /**
+     * turns the robot a certain number of degrees in a given direction and slows down as it reaches the destination
+     *
+     * @param direction the direction (left or right) to turn in
+     * @param degrees   the number of degrees to turn
+     * @param power     the motor power at which to turn
+     */
     @Override
     public void rotateDegrees(Direction direction, double degrees, double power) {
 
