@@ -12,8 +12,8 @@ import org.pattonvillerobotics.opmodes.CustomizedRobotParameters;
 /**
  * Created by pieperm on 11/26/16.
  */
-@Autonomous(name = "MainAutonomousCenterBlue", group = OpModeGroups.MAIN)
-public class MainAutonomousCenterBlue extends LinearOpMode {
+@Autonomous(name = "MainAutonomousRed", group = OpModeGroups.MAIN)
+public class MainAutonomousRed extends LinearOpMode {
 
     private AutoMethods autoMethods;
 
@@ -33,7 +33,7 @@ public class MainAutonomousCenterBlue extends LinearOpMode {
     }
 
     public void initialize() {
-        autoMethods = new AutoMethods(new EncoderDrive(hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS), AllianceColor.BLUE, EndPosition.CENTER_VORTEX, hardwareMap, this);
+        autoMethods = new AutoMethods(new EncoderDrive(hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS), AllianceColor.RED, EndPosition.CENTER_VORTEX, hardwareMap, this);
     }
 
 }

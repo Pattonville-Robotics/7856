@@ -1,4 +1,4 @@
-package org.pattonvillerobotics.robotclasses.Drive;
+package org.pattonvillerobotics.robotclasses.drive;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
