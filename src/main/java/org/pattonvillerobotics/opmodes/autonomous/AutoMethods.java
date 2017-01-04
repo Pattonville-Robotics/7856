@@ -43,6 +43,15 @@ public class AutoMethods {
     private double motorPowerLeft;
     private double motorPowerRight;
 
+    /**
+     * sets up an AutoMethods object for performing various autonomous processes
+     *
+     * @param newDrive         an {@see EncoderDrive}
+     * @param newAllianceColor an {@see AllianceColor}
+     * @param newEndPosition   an {@see EndPosition}
+     * @param hardwareMap      a hardwaremap
+     * @param linearOpMode     a linearopmode
+     */
     public AutoMethods(EncoderDrive newDrive, AllianceColor newAllianceColor, EndPosition newEndPosition, HardwareMap hardwareMap, LinearOpMode linearOpMode) {
         this.hardwareMap = hardwareMap;
         opMode = linearOpMode;
@@ -202,7 +211,9 @@ public class AutoMethods {
 
             drive.moveFreely(motorPowerLeft, motorPowerRight);
         }
+
         opMode.telemetry.addData("Angle", vuforia.getHeading());
+
     }
 
 
@@ -262,11 +273,11 @@ public class AutoMethods {
 
         opMode.telemetry.addData("Cannon", "Firing particles").setRetained(true);
         drive.moveInches(Direction.BACKWARD, 8, Globals.HALF_MOTOR_POWER);
-        fireCannon();
+        //fireCannon();
         hopper.update(true, MainTeleOp.Direction.IN);
         opMode.sleep(2500);
         hopper.update(false, MainTeleOp.Direction.IN);
-        fireCannon();
+        //fireCannon();
     }
 
 
@@ -294,6 +305,30 @@ public class AutoMethods {
         else {
             Log.e(TAG, ERROR_MESSAGE);
         }
+    }
+
+    public void checkBeaconColor() {
+
+        beaconColorSensor.determineColor(allianceColor, new Runnable() {
+            @Override
+            public void run() {
+                telemetry("Color Detection", "Found AllianceColor On Left");
+            }
+        }, new Runnable() {
+            @Override
+            public void run() {
+                telemetry("Color Detection", "Found AllianceColor on Right");
+                armMover.setRightOut();
+                armMover.setLeftOut();
+            }
+        }, new Runnable() {
+            @Override
+            public void run() {
+                drive.moveInches(Direction.BACKWARD, 3, Globals.HALF_MOTOR_POWER);
+                checkBeaconColor();
+            }
+        });
+
     }
 
     public void pressBeacon() {
