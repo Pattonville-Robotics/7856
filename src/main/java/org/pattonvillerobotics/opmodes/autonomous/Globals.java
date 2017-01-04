@@ -10,9 +10,9 @@ public class Globals {
 
     // Motors
     public static final double MAX_MOTOR_POWER = 0.7;
-    public static final double HALF_MOTOR_POWER = .28;
+    public static final double HALF_MOTOR_POWER = .3;
     public static final double CANNON_POWER = 0.7;
-    public static final double ALIGN_MOTOR_POWER = .35;
+    public static final double ALIGN_MOTOR_POWER = .3;
 
     // Turning
     public static final int RIGHT_TURN = 90;

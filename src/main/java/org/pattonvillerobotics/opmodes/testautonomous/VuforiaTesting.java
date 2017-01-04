@@ -3,6 +3,7 @@ package org.pattonvillerobotics.opmodes.testautonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
+import org.apache.commons.math3.util.FastMath;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.pattonvillerobotics.commoncode.opmodes.OpModeGroups;
 import org.pattonvillerobotics.commoncode.robotclasses.colordetection.BeaconColorDetection;
@@ -12,7 +13,7 @@ import org.pattonvillerobotics.opmodes.CustomizedRobotParameters;
 @Autonomous(name = "VuforiaTest", group = OpModeGroups.TESTING)
 public class VuforiaTesting extends LinearOpMode {
 
-    private VuforiaNav vuforiaNav;
+    private VuforiaNav vuforia;
     private BeaconColorDetection beaconColorDetection;
 
     @Override
@@ -22,15 +23,16 @@ public class VuforiaTesting extends LinearOpMode {
 
         initialize();
         waitForStart();
-        vuforiaNav.activate();
+        vuforia.activate();
 
         while (opModeIsActive()) {
-            lastUpdatedLocation = vuforiaNav.getNearestBeaconLocation();
+            lastUpdatedLocation = vuforia.getNearestBeaconLocation();
             if (lastUpdatedLocation != null) {
-                telemetry.addData("Distance", vuforiaNav.getDistance());
-                telemetry.addData("x Position", vuforiaNav.getxPos());
-                telemetry.addData("Heading", vuforiaNav.getHeading());
-                telemetry.addData("AngleToBeacon", vuforiaNav.getAngle());
+                telemetry.addData("Distance", vuforia.getDistance());
+                telemetry.addData("x Position", vuforia.getxPos());
+                telemetry.addData("Heading", vuforia.getHeading());
+                telemetry.addData("AngleToBeacon", vuforia.getAngle());
+                telemetry.addData("Correction Angle", FastMath.toDegrees(FastMath.atan(vuforia.getxPos()/vuforia.getDistance())));
             } else {
                 telemetry.addData("Position", "Unknown");
             }
@@ -42,7 +44,7 @@ public class VuforiaTesting extends LinearOpMode {
     }
 
     public void initialize() {
-        vuforiaNav = new VuforiaNav(CustomizedRobotParameters.VUFORIA_PARAMETERS);
+        vuforia = new VuforiaNav(CustomizedRobotParameters.VUFORIA_PARAMETERS);
         beaconColorDetection = new BeaconColorDetection(hardwareMap);
         telemetry.addData("Initialization", "Complete");
         telemetry.update();

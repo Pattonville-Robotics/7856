@@ -82,7 +82,7 @@ public class ComplexEncoderDrive extends EncoderDrive {
             if (linearOpMode.isStopRequested())
                 break;
             double t = leftDriveMotor.getCurrentPosition();
-            if(t >= t - inchesToTicks(1)) { // greater than or equal to m
+            if(t >= targetPositionLeft - inchesToTicks(1)) { // greater than or equal to m
                 power = ((-power * t) / (inchesToTicks(1))) + ((t * inchesToTicks(1)) / (power));
             }
             move(Direction.FORWARD, power);

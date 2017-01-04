@@ -108,10 +108,12 @@ public class MainTeleOp extends LinearOpMode {
 
 
     public void doLoop() {
-        drive.moveFreely(Range.clip(gamepad1.left_stick_y, 0, Globals.MAX_MOTOR_POWER), Range.clip(gamepad1.right_stick_y, 0, Globals.MAX_MOTOR_POWER));
+        drive.moveFreely(Range.clip(gamepad1.left_stick_y, -Globals.MAX_MOTOR_POWER, Globals.MAX_MOTOR_POWER), Range.clip(gamepad1.right_stick_y, -Globals.MAX_MOTOR_POWER, Globals.MAX_MOTOR_POWER));
         gamepad.update(new GamepadData(gamepad1));
         hopper.update(hopperOn, currentDirection);
         cannon.update(cannonOn);
+        telemetry.addData("Left Motor Power", drive.leftDriveMotor.getPower());
+        telemetry.addData("Right Motor Power", drive.rightDriveMotor.getPower());
         telemetry.update();
     }
 

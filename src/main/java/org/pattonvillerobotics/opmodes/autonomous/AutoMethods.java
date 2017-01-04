@@ -99,7 +99,6 @@ public class AutoMethods {
         opMode.telemetry.update();
 
         if(allianceColor == AllianceColor.BLUE) {
-
             if (FastMath.abs(vuforia.getHeading()) > FastMath.toDegrees(FastMath.atan(x / y))) {
                 drive.rotateDegrees(oppositeTurnDirection, angleToTurn, Globals.ALIGN_MOTOR_POWER);
             } else {
@@ -108,6 +107,7 @@ public class AutoMethods {
                 drive.rotateDegrees(defaultTurnDirection, angleToTurn, Globals.ALIGN_MOTOR_POWER);
             }
         } else {
+            adjustmentAngle -= 10;
             if (FastMath.abs(vuforia.getHeading()) > 38) {
                 drive.rotateDegrees(oppositeTurnDirection, angleToTurn, Globals.ALIGN_MOTOR_POWER);
             } else {
@@ -202,9 +202,7 @@ public class AutoMethods {
 
             drive.moveFreely(motorPowerLeft, motorPowerRight);
         }
-
         opMode.telemetry.addData("Angle", vuforia.getHeading());
-
     }
 
 
@@ -264,11 +262,11 @@ public class AutoMethods {
 
         opMode.telemetry.addData("Cannon", "Firing particles").setRetained(true);
         drive.moveInches(Direction.BACKWARD, 8, Globals.HALF_MOTOR_POWER);
-        //fireCannon();
+        fireCannon();
         hopper.update(true, MainTeleOp.Direction.IN);
         opMode.sleep(2500);
         hopper.update(false, MainTeleOp.Direction.IN);
-        //fireCannon();
+        fireCannon();
     }
 
 
