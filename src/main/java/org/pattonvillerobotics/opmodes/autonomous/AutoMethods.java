@@ -398,7 +398,8 @@ public class AutoMethods {
     public void runAutonomousProcess() {
         armMover.setLeftIn();
         armMover.setRightIn();
-        fireParticles();
+        //fireParticles();
+        drive.moveInches(Direction.BACKWARD, 8, Globals.HALF_MOTOR_POWER);
         driveToNearBeacon();
         alignToBeacon();
         drive.moveInches(Direction.BACKWARD, Globals.MINIMUM_DISTANCE_TO_BEACON/3, Globals.HALF_MOTOR_POWER);
