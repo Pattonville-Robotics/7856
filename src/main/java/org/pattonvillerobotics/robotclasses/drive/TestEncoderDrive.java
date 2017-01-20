@@ -117,9 +117,9 @@ public class TestEncoderDrive extends EncoderDrive {
                     rightDriveMotor.setPower(power);
                 }
                 else {
-                    stallCountLeft = 0;
+                    stallCountRight = 0;
                 }
-                prevPosLeft = currentPosLeft;
+                prevPosRight = currentPosRight;
             }
 
             distance.setValue("DistanceL: " + leftDriveMotor.getCurrentPosition() + " DistanceR: " + rightDriveMotor.getCurrentPosition());
@@ -187,8 +187,41 @@ public class TestEncoderDrive extends EncoderDrive {
         Telemetry.Item distance = items[4];
 
         move(Direction.FORWARD, speed); // To keep speed in [0.0, 1.0]. Encoders control direction
+
+        int stallCountLeft = 0;
+        int stallCountRight = 0;
+        int prevPosLeft = 0;
+        int prevPosRight = 0;
         while (!reachedTarget(leftDriveMotor.getCurrentPosition(), targetPositionLeft, rightDriveMotor.getCurrentPosition(), targetPositionRight) && !linearOpMode.isStopRequested()) {
             Thread.yield();
+
+            int currentPosLeft = leftDriveMotor.getCurrentPosition();
+            if(currentPosLeft == prevPosLeft) {
+                stallCountLeft++;
+                if(stallCountLeft > MAX_STALL_COUNT) {
+                    leftDriveMotor.setTargetPosition(targetPositionLeft);
+                    leftDriveMotor.setPower(speed);
+                }
+                else {
+                    stallCountLeft = 0;
+                }
+                prevPosLeft = currentPosLeft;
+            }
+
+            int currentPosRight = rightDriveMotor.getCurrentPosition();
+            if(currentPosRight == prevPosRight) {
+                stallCountRight++;
+                if(stallCountRight > MAX_STALL_COUNT) {
+                    rightDriveMotor.setTargetPosition(targetPositionRight);
+                    rightDriveMotor.setPower(speed);
+                }
+                else {
+                    stallCountRight = 0;
+                }
+                prevPosRight = currentPosRight;
+            }
+
+
             distance.setValue("DistanceL: " + leftDriveMotor.getCurrentPosition() + " DistanceR: " + rightDriveMotor.getCurrentPosition());
             linearOpMode.telemetry.update();
         }
