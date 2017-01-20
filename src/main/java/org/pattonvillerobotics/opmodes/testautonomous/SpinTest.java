@@ -22,7 +22,7 @@ public class SpinTest extends LinearOpMode {
 
         drive = new EncoderDrive(hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS);
         waitForStart();
-        drive.rotateDegrees(Direction.RIGHT, 360, .3);
+        drive.rotateDegrees(Direction.RIGHT, 360, .25);
 
     }
 }

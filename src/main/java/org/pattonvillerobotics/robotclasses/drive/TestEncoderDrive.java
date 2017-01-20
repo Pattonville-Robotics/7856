@@ -100,8 +100,9 @@ public class TestEncoderDrive extends EncoderDrive {
             if(currentPosLeft == prevPosLeft) {
                 stallCountLeft++;
                 if(stallCountLeft > MAX_STALL_COUNT) {
+                    linearOpMode.telemetry.addData("EncoderDrive", "Stalling.");
                     leftDriveMotor.setTargetPosition(targetPositionLeft);
-                    leftDriveMotor.setPower(power);
+                    leftDriveMotor.setPower(1);
                 }
                 else {
                     stallCountLeft = 0;
@@ -113,8 +114,9 @@ public class TestEncoderDrive extends EncoderDrive {
             if(currentPosRight == prevPosRight) {
                 stallCountRight++;
                 if(stallCountRight > MAX_STALL_COUNT) {
+                    linearOpMode.telemetry.addData("EncoderDrive", "Stalling.");
                     rightDriveMotor.setTargetPosition(targetPositionRight);
-                    rightDriveMotor.setPower(power);
+                    rightDriveMotor.setPower(1);
                 }
                 else {
                     stallCountRight = 0;
