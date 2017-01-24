@@ -37,129 +37,12 @@ public class Cannon extends AbstractMechanism {
         particleLauncher.setDirection(DcMotorSimple.Direction.FORWARD);
 
         particleLauncher.setPower(Globals.CANNON_POWER);
-        while (java.lang.Math.abs(particleLauncher.getCurrentPosition() - targetPosition) > 10) {
-            if (linearOpMode.isStopRequested())
-                break;
-        }
-        particleLauncher.setPower(0);
-
-
-    }
-
-    public void primeLauncher() {
-        //Pull the launcher bottom back
-
-        if (!launcherPrimed) {
-
-            targetPosition = particleLauncher.getCurrentPosition() + 1000;
-
-            particleLauncher.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-            particleLauncher.setTargetPosition(targetPosition);
-
-            particleLauncher.setDirection(DcMotorSimple.Direction.FORWARD);
-
-            particleLauncher.setPower(Globals.CANNON_POWER);
-            while (java.lang.Math.abs(particleLauncher.getCurrentPosition() - targetPosition) > 20) {
-                if (linearOpMode.isStopRequested())
-                    break;
-            }
-            particleLauncher.setPower(0);
-
-            launcherPrimed = true;
-        }
-    }
-
-    public void releaseLauncher() {
-
-        if (launcherPrimed) {
-
-            targetPosition = particleLauncher.getCurrentPosition() + 440;
-
-            particleLauncher.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-            particleLauncher.setTargetPosition(targetPosition);
-
-            particleLauncher.setDirection(DcMotorSimple.Direction.FORWARD);
-
-            particleLauncher.setPower(Globals.CANNON_POWER);
-            while (java.lang.Math.abs(particleLauncher.getCurrentPosition() - targetPosition) > 20) {
-                if (linearOpMode.isStopRequested())
-                    break;
-            }
-            particleLauncher.setPower(0);
-
-            launcherPrimed = false;
-        }
-    }
-
-    public void holdPrime() {
-
-        if (launcherPrimed && (java.lang.Math.abs(particleLauncher.getCurrentPosition() - targetPosition) > 20)) {
-            particleLauncher.setPower(Globals.CANNON_POWER);
-            while (particleLauncher.getCurrentPosition() < targetPosition) {
-                if (linearOpMode.isStopRequested()) {
-                    break;
-                }
-            }
-            particleLauncher.setPower(0);
-        }
-    }
-
-    public void returntozero() {
-
-        targetPosition = 0;
-
-        particleLauncher.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-        particleLauncher.setTargetPosition(targetPosition);
-
-        particleLauncher.setDirection(DcMotorSimple.Direction.FORWARD);
-
-        particleLauncher.setPower(Globals.CANNON_POWER);
         while (java.lang.Math.abs(particleLauncher.getCurrentPosition() - targetPosition) > 20) {
             if (linearOpMode.isStopRequested())
                 break;
         }
         particleLauncher.setPower(0);
 
-    }
-
-    public void turnmotorleft() {
-
-        targetPosition = particleLauncher.getCurrentPosition() + 20;
-
-        particleLauncher.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-        particleLauncher.setTargetPosition(targetPosition);
-
-        particleLauncher.setDirection(DcMotorSimple.Direction.FORWARD);
-
-        particleLauncher.setPower(Globals.CANNON_POWER);
-        while (java.lang.Math.abs(particleLauncher.getCurrentPosition() - targetPosition) > 10) {
-            if (linearOpMode.isStopRequested())
-                break;
-        }
-        particleLauncher.setPower(0);
-
-    }
-
-    public void turnmotorright() {
-
-        targetPosition = particleLauncher.getCurrentPosition() - 20;
-
-        particleLauncher.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-        particleLauncher.setTargetPosition(targetPosition);
-
-        particleLauncher.setDirection(DcMotorSimple.Direction.REVERSE);
-
-        particleLauncher.setPower(Globals.CANNON_POWER);
-        while (java.lang.Math.abs(particleLauncher.getCurrentPosition() - targetPosition) > 10) {
-            if (linearOpMode.isStopRequested())
-                break;
-        }
-        particleLauncher.setPower(0);
 
     }
 
