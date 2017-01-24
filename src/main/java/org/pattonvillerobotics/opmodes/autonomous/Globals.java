@@ -11,7 +11,7 @@ public class Globals {
     // Motors
     public static final double MAX_MOTOR_POWER = 0.7;
     public static final double HALF_MOTOR_POWER = .25;
-    public static final double CANNON_POWER = 0.7;
+    public static final double CANNON_POWER = .9;
     public static final double ALIGN_MOTOR_POWER = .25;
 
     // Turning

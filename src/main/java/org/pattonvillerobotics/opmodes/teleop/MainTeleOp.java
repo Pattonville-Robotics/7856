@@ -86,7 +86,7 @@ public class MainTeleOp extends LinearOpMode {
             @Override
             public void run() {
 
-                //        cannonOn = !cannonOn;
+                cannonOn = !cannonOn;
             }
         });
 
