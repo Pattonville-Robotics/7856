@@ -5,15 +5,15 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.pattonvillerobotics.commoncode.enums.AllianceColor;
 import org.pattonvillerobotics.commoncode.opmodes.OpModeGroups;
-import org.pattonvillerobotics.commoncode.robotclasses.drive.EncoderDrive;
 import org.pattonvillerobotics.enums.EndPosition;
 import org.pattonvillerobotics.opmodes.CustomizedRobotParameters;
+import org.pattonvillerobotics.robotclasses.drive.TestEncoderDrive;
 
 /**
  * Created by pieperm on 11/26/16.
  */
-@Autonomous(name = "MainAutonomousRed", group = OpModeGroups.MAIN)
-public class MainAutonomousRed extends LinearOpMode {
+@Autonomous(name = "VuforiaAutonomousBlue", group = OpModeGroups.MAIN)
+public class VuforiaAutonomousBlue extends LinearOpMode {
 
     private AutoMethods autoMethods;
 
@@ -33,7 +33,7 @@ public class MainAutonomousRed extends LinearOpMode {
     }
 
     public void initialize() {
-        autoMethods = new AutoMethods(new EncoderDrive(hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS), AllianceColor.RED, EndPosition.CENTER_VORTEX, hardwareMap, this);
+        autoMethods = new AutoMethods(new TestEncoderDrive(hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS), AllianceColor.BLUE, EndPosition.CENTER_VORTEX, hardwareMap, this);
     }
 
 }

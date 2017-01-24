@@ -16,6 +16,8 @@ import org.pattonvillerobotics.commoncode.robotclasses.drive.RobotParameters;
 
 public class ComplexEncoderDrive extends EncoderDrive {
 
+    private static final int inchMargin = 1;
+
     /**
      * sets up Drive object with custom RobotParameters useful for doing calculations with encoders
      *
@@ -82,8 +84,11 @@ public class ComplexEncoderDrive extends EncoderDrive {
             if (linearOpMode.isStopRequested())
                 break;
             double t = leftDriveMotor.getCurrentPosition();
-            if(t >= targetPositionLeft - inchesToTicks(1)) { // greater than or equal to m
-                power = ((-power * t) / (inchesToTicks(1))) + ((t * inchesToTicks(1)) / (power));
+            telemetry("CurrentPosition: " + t);
+            telemetry("PositionMargin: " + (targetPositionLeft - inchesToTicks(inchMargin)));
+            if(t >= targetPositionLeft - inchesToTicks(inchMargin)) { // greater than or equal to m
+                power = ((-power * t) / (inchesToTicks(inchMargin))) + ((t * inchesToTicks(inchMargin)) / (power));
+                telemetry("AdjustedPower: " + power);
             }
             move(Direction.FORWARD, power);
             distance.setValue("DistanceL: " + leftDriveMotor.getCurrentPosition() + " DistanceR: " + rightDriveMotor.getCurrentPosition());
@@ -149,6 +154,8 @@ public class ComplexEncoderDrive extends EncoderDrive {
         Telemetry.Item distance = items[4];
 
         move(Direction.FORWARD, power); // To keep speed in [0.0, 1.0]. Encoders control direction
+        leftDriveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightDriveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         while (!reachedTarget(leftDriveMotor.getCurrentPosition(), targetPositionLeft, rightDriveMotor.getCurrentPosition(), targetPositionRight)) {
             Thread.yield();
             if (linearOpMode.isStopRequested())
