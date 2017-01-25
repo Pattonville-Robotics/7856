@@ -229,12 +229,13 @@ public class AutoMethods {
     public void driveToNearBeacon() {
         opMode.telemetry.addData("Drive", "Driving to near "+allianceColor+" side beacon.\"").setRetained(true);
         drive.moveInches(Direction.BACKWARD, 4.5, Globals.HALF_MOTOR_POWER);
+        opMode.sleep(250);
         if(allianceColor == AllianceColor.BLUE) {
             drive.rotateDegrees(oppositeTurnDirection, 35, Globals.HALF_MOTOR_POWER);
             opMode.sleep(1000);
             drive.moveInches(Direction.BACKWARD, 90, Globals.HALF_MOTOR_POWER);
             opMode.sleep(1000);
-            drive.rotateDegrees(oppositeTurnDirection, 30, Globals.HALF_MOTOR_POWER);
+            drive.rotateDegrees(oppositeTurnDirection, 35, Globals.HALF_MOTOR_POWER);
 
         } else {
             drive.rotateDegrees(oppositeTurnDirection, 33, Globals.HALF_MOTOR_POWER);
@@ -305,8 +306,8 @@ public class AutoMethods {
             @Override
             public void run() {
                 telemetry("Color Detection", "Color not detected");
-                //drive.moveInches(Direction.FORWARD, 5, Globals.HALF_MOTOR_POWER);
-                //detectBeaconColor();
+                drive.moveInches(Direction.FORWARD, 1, Globals.HALF_MOTOR_POWER);
+                detectBeaconColor();
             }
         });
     }
@@ -388,7 +389,7 @@ public class AutoMethods {
         opMode.sleep(1000);
         turnCorrection(); // correct angle
         pressBeacon(); // read color, extend arm, press beacon
-        telemetry("Autnomous", "Done");
+        telemetry("Autonomous", "Done");
     }
 
 }
