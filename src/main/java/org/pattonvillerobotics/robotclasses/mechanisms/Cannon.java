@@ -47,6 +47,27 @@ public class Cannon extends AbstractMechanism {
 
     }
 
+    public void reverselaunch() {
+
+
+        particleLauncher.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        particleLauncher.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        targetPosition = particleLauncher.getCurrentPosition() + 1440;
+
+        particleLauncher.setTargetPosition(targetPosition);
+
+        particleLauncher.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        particleLauncher.setPower(Globals.CANNON_POWER);
+        while (java.lang.Math.abs(particleLauncher.getCurrentPosition() - targetPosition) > 10) {
+            if (linearOpMode.isStopRequested())
+                break;
+        }
+        particleLauncher.setPower(0);
+
+
+    }
+
     public void update(boolean toggle) {
 
         particleLauncher.setDirection(DcMotorSimple.Direction.REVERSE);
