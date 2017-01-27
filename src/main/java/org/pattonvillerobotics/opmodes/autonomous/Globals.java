@@ -10,7 +10,7 @@ public class Globals {
 
     // Motors
     public static final double MAX_MOTOR_POWER = 0.7;
-    public static final double HALF_MOTOR_POWER = .25;
+    public static final double HALF_MOTOR_POWER = .2;
     public static final double CANNON_POWER = .9;
     public static final double ALIGN_MOTOR_POWER = .25;
 
@@ -39,4 +39,5 @@ public class Globals {
     public static final int BEACON_BACKUP_DISTANCE = 24;
     public static final double BEACON_HALF_WIDTH = 4.75;
 
+    public static final double TURNING_SPEED = .1;
 }

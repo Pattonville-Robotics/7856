@@ -102,6 +102,20 @@ public class MainTeleOp extends LinearOpMode {
                 armMover.toggle(armMover.getArmMoverRight());
             }
         });
+
+        gamepad.getButton(GamepadData.Button.DPAD_UP).addListener(ListenableButton.ButtonState.BEING_PRESSED, new ListenableButton.ButtonListener() {
+            @Override
+            public void run() {
+                drive.move(org.pattonvillerobotics.commoncode.enums.Direction.BACKWARD, Globals.MAX_MOTOR_POWER);
+            }
+        });
+
+        gamepad.getButton(GamepadData.Button.DPAD_DOWN).addListener(ListenableButton.ButtonState.BEING_PRESSED, new ListenableButton.ButtonListener() {
+            @Override
+            public void run() {
+                drive.move(org.pattonvillerobotics.commoncode.enums.Direction.FORWARD, Globals.MAX_MOTOR_POWER);
+            }
+        });
     }
 
 

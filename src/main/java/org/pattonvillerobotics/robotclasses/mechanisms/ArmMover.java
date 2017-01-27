@@ -47,12 +47,12 @@ public class ArmMover extends AbstractMechanism {
     }
 
     public ArmMover setRightOut() {
-        setPosition(armMoverRight, ArmPosition.OUT);
+        setPosition(armMoverRight, ArmPosition.IN);
         return this;
     }
 
     public ArmMover setRightIn() {
-        setPosition(armMoverRight, ArmPosition.IN);
+        setPosition(armMoverRight, ArmPosition.OUT);
         return this;
     }
 

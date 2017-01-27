@@ -13,7 +13,6 @@ import org.pattonvillerobotics.commoncode.robotclasses.BeaconColorSensor;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.EncoderDrive;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.trailblazer.vuforia.VuforiaNav;
 import org.pattonvillerobotics.enums.EndPosition;
-import org.pattonvillerobotics.opmodes.CustomizedRobotParameters;
 import org.pattonvillerobotics.opmodes.teleop.MainTeleOp;
 import org.pattonvillerobotics.robotclasses.mechanisms.ArmMover;
 import org.pattonvillerobotics.robotclasses.mechanisms.Cannon;
@@ -58,8 +57,8 @@ public class AutoMethods {
         setAllianceColor(newAllianceColor);
         drive = newDrive;
         endPosition = newEndPosition;
-        vuforia = new VuforiaNav(CustomizedRobotParameters.VUFORIA_PARAMETERS);
-        vuforia.activate();
+        //vuforia = new VuforiaNav(CustomizedRobotParameters.VUFORIA_PARAMETERS);
+        //vuforia.activate();
         beaconColorSensor = new BeaconColorSensor(hardwareMap.colorSensor.get("color_sensor"));
         cannon = new Cannon(hardwareMap, opMode);
         hopper = new Hopper(hardwareMap, opMode);
@@ -209,7 +208,7 @@ public class AutoMethods {
     public void fireCannon() {
         opMode.telemetry.addData("Cannon", "Firing cannon.").setRetained(true);
         cannon.update(true);
-        opMode.sleep(800);
+        opMode.sleep(1500);
         cannon.update(false);
     }
 
@@ -217,7 +216,6 @@ public class AutoMethods {
     public void fireParticles() {
 
         opMode.telemetry.addData("Cannon", "Firing particles").setRetained(true);
-        drive.moveInches(Direction.BACKWARD, 8, Globals.HALF_MOTOR_POWER);
         fireCannon();
         hopper.update(true, MainTeleOp.Direction.IN);
         opMode.sleep(2500);
@@ -228,19 +226,20 @@ public class AutoMethods {
 
     public void driveToNearBeacon() {
         opMode.telemetry.addData("Drive", "Driving to near "+allianceColor+" side beacon.\"").setRetained(true);
-        drive.moveInches(Direction.BACKWARD, 4.5, Globals.HALF_MOTOR_POWER);
         opMode.sleep(250);
         if(allianceColor == AllianceColor.BLUE) {
-            drive.rotateDegrees(oppositeTurnDirection, 35, Globals.HALF_MOTOR_POWER);
-            opMode.sleep(1000);
-            drive.moveInches(Direction.BACKWARD, 90, Globals.HALF_MOTOR_POWER);
-            opMode.sleep(1000);
-            drive.rotateDegrees(oppositeTurnDirection, 35, Globals.HALF_MOTOR_POWER);
+            drive.rotateDegrees(oppositeTurnDirection, 36, Globals.TURNING_SPEED);
+            opMode.sleep(250);
+            drive.moveInches(Direction.BACKWARD, 65, Globals.HALF_MOTOR_POWER);
+            opMode.sleep(250);
+            drive.rotateDegrees(oppositeTurnDirection, 38, Globals.TURNING_SPEED);
 
         } else {
-            drive.rotateDegrees(oppositeTurnDirection, 33, Globals.HALF_MOTOR_POWER);
+            drive.rotateDegrees(oppositeTurnDirection, 25, Globals.TURNING_SPEED);
             opMode.sleep(250);
-            drive.moveInches(Direction.BACKWARD, 80, Globals.HALF_MOTOR_POWER);
+            drive.moveInches(Direction.BACKWARD, 70, Globals.HALF_MOTOR_POWER);
+            opMode.sleep(250);
+            drive.rotateDegrees(oppositeTurnDirection, 30, Globals.TURNING_SPEED);
         }
 
     }
@@ -306,7 +305,7 @@ public class AutoMethods {
             @Override
             public void run() {
                 telemetry("Color Detection", "Color not detected");
-                drive.moveInches(Direction.FORWARD, 1, Globals.HALF_MOTOR_POWER);
+                drive.moveInches(Direction.BACKWARD, 3, Globals.HALF_MOTOR_POWER);
                 detectBeaconColor();
             }
         });
@@ -316,7 +315,7 @@ public class AutoMethods {
     public void pressBeacon() {
         detectBeaconColor();
         opMode.sleep(500);
-        drive.moveInches(Direction.BACKWARD, 9, Globals.HALF_MOTOR_POWER);
+        drive.moveInches(Direction.BACKWARD, 12, Globals.HALF_MOTOR_POWER);
 
         telemetry("pressBeacon", "Done");
     }
@@ -325,9 +324,9 @@ public class AutoMethods {
     public void driveToFarBeacon() {
         telemetry("Auto Methods", "Driving to far "+allianceColor+" side beacon.");
         drive.moveInches(Direction.FORWARD, 13, .2);
-        drive.rotateDegrees(oppositeTurnDirection, 90, Globals.HALF_MOTOR_POWER);
-        drive.moveInches(Direction.FORWARD, 53, Globals.HALF_MOTOR_POWER);
-        drive.rotateDegrees(defaultTurnDirection, 90, Globals.HALF_MOTOR_POWER);
+        drive.rotateDegrees(oppositeTurnDirection, 90, Globals.TURNING_SPEED);
+        drive.moveInches(Direction.FORWARD, 58, Globals.HALF_MOTOR_POWER);
+        drive.rotateDegrees(defaultTurnDirection, 95, Globals.TURNING_SPEED);
     }
 
 
@@ -343,11 +342,6 @@ public class AutoMethods {
             double correctionAngle = FastMath.toDegrees(FastMath.atan(vuforia.getxPos() / vuforia.getDistance()));
             telemetry("Correction Angle", correctionAngle);
 
-            if (correctionAngle < 0) {
-                correctionAngle -= 3;
-            } else {
-                correctionAngle += 3;
-            }
 
             if (allianceColor == AllianceColor.BLUE) {
                 drive.rotateDegrees(defaultTurnDirection, correctionAngle, Globals.HALF_MOTOR_POWER);
@@ -378,16 +372,17 @@ public class AutoMethods {
     }
 
     public void runAutonomousProcess() {
-        //fireParticles();
+        drive.moveInches(Direction.BACKWARD, 4.5, Globals.HALF_MOTOR_POWER);
+        fireParticles();
         driveToNearBeacon(); // drive to near beacon
+        opMode.sleep(500);
+        //turnCorrection(); // correct angle
         opMode.sleep(1000);
-        turnCorrection(); // correct angle
-        opMode.sleep(2000);
         pressBeacon(); // read color, extend arm, press beacon
         opMode.sleep(500);
         driveToFarBeacon(); // back up and drive to next beacon
         opMode.sleep(1000);
-        turnCorrection(); // correct angle
+        //turnCorrection(); // correct angle
         pressBeacon(); // read color, extend arm, press beacon
         telemetry("Autonomous", "Done");
     }

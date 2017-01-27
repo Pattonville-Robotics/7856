@@ -24,7 +24,7 @@ public class TestDriveForward extends LinearOpMode {
         drive = new ComplexEncoderDrive(hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS);
         waitForStart();
 
-        drive.moveInches(Direction.FORWARD, 20, Globals.HALF_MOTOR_POWER);
+        drive.moveInches(Direction.FORWARD, 80, Globals.MAX_MOTOR_POWER);
 
 
 
