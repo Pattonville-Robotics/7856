@@ -52,7 +52,7 @@ public class Cannon extends AbstractMechanism {
 
         particleLauncher.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         particleLauncher.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        targetPosition = particleLauncher.getCurrentPosition() + 1440;
+        targetPosition = particleLauncher.getCurrentPosition() - 1440;
 
         particleLauncher.setTargetPosition(targetPosition);
 
