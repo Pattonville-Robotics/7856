@@ -15,7 +15,6 @@ import org.pattonvillerobotics.opmodes.autonomous.Globals;
 public class Cannon extends AbstractMechanism {
 
     private DcMotor particleLauncher;
-    private boolean launcherPrimed = false;
     private int targetPosition = 0;
 
     public Cannon(HardwareMap hardwareMap, LinearOpMode linearOpMode) {
@@ -52,7 +51,7 @@ public class Cannon extends AbstractMechanism {
 
         particleLauncher.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         particleLauncher.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        targetPosition = particleLauncher.getCurrentPosition() + 1440;
+        targetPosition = particleLauncher.getCurrentPosition() - 1440;
 
         particleLauncher.setTargetPosition(targetPosition);
 
