@@ -230,9 +230,9 @@ public class AutoMethods {
         if(allianceColor == AllianceColor.BLUE) {
             drive.rotateDegrees(oppositeTurnDirection, 36, Globals.TURNING_SPEED);
             opMode.sleep(250);
-            drive.moveInches(Direction.BACKWARD, 65, Globals.HALF_MOTOR_POWER);
+            drive.moveInches(Direction.BACKWARD, 63.5, Globals.HALF_MOTOR_POWER);
             opMode.sleep(250);
-            drive.rotateDegrees(oppositeTurnDirection, 38.5, Globals.TURNING_SPEED);
+            drive.rotateDegrees(oppositeTurnDirection, 51, Globals.TURNING_SPEED);
 
         } else {
             drive.rotateDegrees(oppositeTurnDirection, 40, Globals.TURNING_SPEED);
@@ -339,8 +339,8 @@ public class AutoMethods {
                 lastLocation = vuforia.getNearestBeaconLocation();
                 Thread.yield();
             }
-            double correctionAngle = vuforia.getHeading();
-            telemetry("Correction Angle", vuforia.getHeading());
+            double correctionAngle = FastMath.toDegrees(FastMath.atan(vuforia.getxPos()/vuforia.getDistance()));
+            telemetry("Correction Angle", correctionAngle);
 
             if(correctionAngle < 0) {
                 correctionAngle -= 4;
@@ -379,10 +379,12 @@ public class AutoMethods {
     }
 
     public void runAutonomousProcess() {
-        drive.moveInches(Direction.BACKWARD, 4.5, Globals.HALF_MOTOR_POWER);
         fireParticles();
+        drive.moveInches(Direction.BACKWARD, 4.5, Globals.HALF_MOTOR_POWER);
+
         driveToNearBeacon(); // drive to near beacon
         opMode.sleep(500);
+        drive.moveInches(Direction.BACKWARD, 15, Globals.HALF_MOTOR_POWER);
         turnCorrection(); // correct angle
         opMode.sleep(1000);
         pressBeacon(); // read color, extend arm, press beacon

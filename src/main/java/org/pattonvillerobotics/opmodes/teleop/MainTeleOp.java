@@ -76,16 +76,16 @@ public class MainTeleOp extends LinearOpMode {
                 }
             }
         });
-        gamepad.getButton(GamepadData.Button.B).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
+/*        gamepad.getButton(GamepadData.Button.B).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
             @Override
             public void run() {
                 cannon.launchLauncher();
             }
-        });
+        });*/
         gamepad.getButton(GamepadData.Button.A).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
             @Override
             public void run() {
-                cannon.reverselaunch();
+                cannonOn = !cannonOn;
             }
         });
 
