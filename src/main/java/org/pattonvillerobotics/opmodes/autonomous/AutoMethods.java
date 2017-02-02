@@ -79,7 +79,7 @@ public class AutoMethods {
             defaultTurnDirection = Direction.LEFT;
             oppositeTurnDirection = Direction.RIGHT;
         }
-        opMode.telemetry.addData("Setup", "Setting default turn direction to:" + defaultTurnDirection).setRetained(true);
+        telemetry("Setup", "Setting default turn direction to:" + defaultTurnDirection);
     }
 
 
@@ -88,7 +88,7 @@ public class AutoMethods {
             throw new IllegalStateException("Must be using vuforia in order to use alignToBeacon.");
         }
 
-        opMode.telemetry.addData("Drive", "Attempting to align to beacon.").setRetained(true);
+        telemetry("Drive", "Attempting to align to beacon.");
         OpenGLMatrix lastLocation = vuforia.getNearestBeaconLocation();
         while(lastLocation == null) {
             lastLocation = vuforia.getNearestBeaconLocation();
@@ -103,11 +103,11 @@ public class AutoMethods {
         double angleToTurn = (FastMath.toDegrees(FastMath.atan(y/x) - FastMath.atan((y-Q)/x)))/2;
         double adjustmentAngle = FastMath.toDegrees(FastMath.atan( x/(y-Q) ));
 
-        opMode.telemetry.addData("Angle to Turn", angleToTurn).setRetained(true);
-        opMode.telemetry.addData("Adjustment Angle", adjustmentAngle).setRetained(true);
-        opMode.telemetry.addData("First Heading", vuforia.getHeading()).setRetained(true);
-        opMode.telemetry.addData("d", d).setRetained(true);
-        opMode.telemetry.addData("x", x).setRetained(true);
+        telemetry("Angle to Turn", angleToTurn);
+        telemetry("Adjustment Angle", adjustmentAngle);
+        telemetry("First Heading", vuforia.getHeading());
+        telemetry("d", d);
+        telemetry("x", x);
         opMode.telemetry.addData("y", y).setRetained(true);
         opMode.telemetry.addData("angle", FastMath.toDegrees(FastMath.atan(x/y))).setRetained(true);
         opMode.telemetry.update();
@@ -216,8 +216,12 @@ public class AutoMethods {
 
     public void fireParticles() {
 
-        opMode.telemetry.addData("Cannon", "Firing particles").setRetained(true);
+        telemetry("Drive", "Driving to firing position");
+        drive.moveInches(Direction.BACKWARD, 2, Globals.HALF_MOTOR_POWER);
+        drive.rotateDegrees(Direction.BACKWARD, 40, Globals.HALF_MOTOR_POWER);
         drive.moveInches(Direction.BACKWARD, 8, Globals.HALF_MOTOR_POWER);
+
+        telemetry("Cannon", "Firing particles");
         fireCannon();
         hopper.update(true, MainTeleOp.Direction.IN);
         opMode.sleep(2500);
@@ -227,7 +231,7 @@ public class AutoMethods {
 
 
     public void driveToNearBeacon() {
-        opMode.telemetry.addData("Drive", "Driving to near "+allianceColor+" side beacon.\"").setRetained(true);
+        telemetry("Drive", "Driving to near " + allianceColor + " side beacon.");
         drive.moveInches(Direction.BACKWARD, 4.5, Globals.HALF_MOTOR_POWER);
         opMode.sleep(250);
         if(allianceColor == AllianceColor.BLUE) {

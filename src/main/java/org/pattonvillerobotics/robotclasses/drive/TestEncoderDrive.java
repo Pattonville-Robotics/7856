@@ -201,6 +201,8 @@ public class TestEncoderDrive extends EncoderDrive {
             if(currentPosLeft == prevPosLeft) {
                 stallCountLeft++;
                 if(stallCountLeft > MAX_STALL_COUNT) {
+                    linearOpMode.telemetry.addData(TAG, "Stalling").setRetained(true);
+                    linearOpMode.telemetry.update();
                     leftDriveMotor.setTargetPosition(targetPositionLeft);
                     leftDriveMotor.setPower(speed);
                 }

@@ -86,7 +86,7 @@ public class ComplexEncoderDrive extends EncoderDrive {
             double t = leftDriveMotor.getCurrentPosition();
             telemetry("CurrentPosition: " + t);
             telemetry("PositionMargin: " + (targetPositionLeft - inchesToTicks(inchMargin)));
-            if(t >= targetPositionLeft - inchesToTicks(inchMargin)) { // greater than or equal to m
+            if(t >= targetPositionLeft - inchesToTicks(inchMargin) && power > 0) { // greater than or equal to m
                 power = ((-power * t) / (inchesToTicks(inchMargin))) + ((t * inchesToTicks(inchMargin)) / (power));
                 telemetry("AdjustedPower: " + power);
             }
