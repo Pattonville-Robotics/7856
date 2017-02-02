@@ -45,8 +45,8 @@ public class SpeedsterTeleOp extends LinearOpMode {
     public void doLoop() {
         //drive.moveFreely(Range.clip(gamepad1.left_stick_y, -Globals.MAX_MOTOR_POWER, Globals.MAX_MOTOR_POWER), Range.clip(gamepad1.right_stick_y, -Globals.MAX_MOTOR_POWER, Globals.MAX_MOTOR_POWER));
 
-        motorLeft.setPower(-gamepad1.left_stick_y);
-        motorRight.setPower(-gamepad1.right_stick_y);
+        motorLeft.setPower(-gamepad1.left_stick_y/1.5);
+        motorRight.setPower(-gamepad1.right_stick_y/1.5);
 
         //telemetry.addData("Left Motor Power", drive.leftDriveMotor.getPower());
         //telemetry.addData("Right Motor Power", drive.rightDriveMotor.getPower());

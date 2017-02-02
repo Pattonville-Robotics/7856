@@ -227,20 +227,11 @@ public class AutoMethods {
     public void driveToNearBeacon() {
         opMode.telemetry.addData("Drive", "Driving to near "+allianceColor+" side beacon.\"").setRetained(true);
         opMode.sleep(250);
-        if(allianceColor == AllianceColor.BLUE) {
-            drive.rotateDegrees(oppositeTurnDirection, 36, Globals.TURNING_SPEED);
-            opMode.sleep(250);
-            drive.moveInches(Direction.BACKWARD, 63.5, Globals.HALF_MOTOR_POWER);
-            opMode.sleep(250);
-            drive.rotateDegrees(oppositeTurnDirection, 51, Globals.TURNING_SPEED);
-
-        } else {
-            drive.rotateDegrees(oppositeTurnDirection, 40, Globals.TURNING_SPEED);
-            opMode.sleep(250);
-            drive.moveInches(Direction.BACKWARD, 60.5, Globals.HALF_MOTOR_POWER);
-            opMode.sleep(250);
-            drive.rotateDegrees(oppositeTurnDirection, 58, Globals.TURNING_SPEED);
-        }
+        drive.rotateDegrees(oppositeTurnDirection, 36, Globals.TURNING_SPEED);
+        opMode.sleep(250);
+        drive.moveInches(Direction.BACKWARD, 63.5, Globals.HALF_MOTOR_POWER);
+        opMode.sleep(250);
+        drive.rotateDegrees(oppositeTurnDirection, 51, Globals.TURNING_SPEED);
 
     }
 
