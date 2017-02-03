@@ -76,16 +76,15 @@ public class MainTeleOp extends LinearOpMode {
                 }
             }
         });
-        gamepad.getButton(GamepadData.Button.B).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
+/*        gamepad.getButton(GamepadData.Button.B).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
             @Override
             public void run() {
                 cannon.launchLauncher();
             }
-        });
+        });*/
         gamepad.getButton(GamepadData.Button.A).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
             @Override
             public void run() {
-
                 cannonOn = !cannonOn;
             }
         });
@@ -100,6 +99,20 @@ public class MainTeleOp extends LinearOpMode {
             @Override
             public void run() {
                 armMover.toggle(armMover.getArmMoverRight());
+            }
+        });
+
+        gamepad.getButton(GamepadData.Button.DPAD_UP).addListener(ListenableButton.ButtonState.BEING_PRESSED, new ListenableButton.ButtonListener() {
+            @Override
+            public void run() {
+                drive.move(org.pattonvillerobotics.commoncode.enums.Direction.BACKWARD, Globals.MAX_MOTOR_POWER);
+            }
+        });
+
+        gamepad.getButton(GamepadData.Button.DPAD_DOWN).addListener(ListenableButton.ButtonState.BEING_PRESSED, new ListenableButton.ButtonListener() {
+            @Override
+            public void run() {
+                drive.move(org.pattonvillerobotics.commoncode.enums.Direction.FORWARD, Globals.MAX_MOTOR_POWER);
             }
         });
     }

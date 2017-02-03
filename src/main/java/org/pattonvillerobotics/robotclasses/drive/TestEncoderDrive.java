@@ -206,11 +206,10 @@ public class TestEncoderDrive extends EncoderDrive {
                     leftDriveMotor.setTargetPosition(targetPositionLeft);
                     leftDriveMotor.setPower(speed);
                 }
-                else {
-                    stallCountLeft = 0;
-                }
-                prevPosLeft = currentPosLeft;
+            } else {
+                stallCountLeft = 0;
             }
+            prevPosLeft = currentPosLeft;
 
             int currentPosRight = rightDriveMotor.getCurrentPosition();
             if(currentPosRight == prevPosRight) {
@@ -219,11 +218,10 @@ public class TestEncoderDrive extends EncoderDrive {
                     rightDriveMotor.setTargetPosition(targetPositionRight);
                     rightDriveMotor.setPower(speed);
                 }
-                else {
-                    stallCountRight = 0;
-                }
-                prevPosRight = currentPosRight;
+            } else {
+                stallCountRight = 0;
             }
+            prevPosRight = currentPosRight;
 
 
             distance.setValue("DistanceL: " + leftDriveMotor.getCurrentPosition() + " DistanceR: " + rightDriveMotor.getCurrentPosition());
