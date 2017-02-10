@@ -1,4 +1,4 @@
-package org.pattonvillerobotics.robotclasses.drive;
+package org.pattonvillerobotics.robotclasses.Drive;
 
 import android.util.Log;
 
@@ -80,6 +80,11 @@ public class TestEncoderDrive extends EncoderDrive {
         telemetry("RMotorT: " + targetPositionRight);
         telemetry("EncoderDelta: " + deltaPosition);
         Telemetry.Item distance = telemetry("DistanceL: N/A DistanceR: N/A");
+
+        int stallCountLeft = 0;
+        int stallCountRight = 0;
+        int prevPosLeft = 0;
+        int prevPosRight = 0;
 
         while (!reachedTarget(leftDriveMotor.getCurrentPosition(), targetPositionLeft, rightDriveMotor.getCurrentPosition(), targetPositionRight) && !linearOpMode.isStopRequested()) {
             Thread.yield();
