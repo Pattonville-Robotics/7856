@@ -13,10 +13,8 @@ import org.pattonvillerobotics.commoncode.robotclasses.BeaconColorSensor;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.EncoderDrive;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.trailblazer.vuforia.VuforiaNav;
 import org.pattonvillerobotics.enums.EndPosition;
-import org.pattonvillerobotics.opmodes.CustomizedRobotParameters;
 import org.pattonvillerobotics.opmodes.teleop.MainTeleOp;
 import org.pattonvillerobotics.robotclasses.mechanisms.ArmMover;
-import org.pattonvillerobotics.robotclasses.mechanisms.Cannon;
 import org.pattonvillerobotics.robotclasses.mechanisms.Hopper;
 
 /**
@@ -37,7 +35,7 @@ public class AutoMethods {
     private VuforiaNav vuforia;
     private LinearOpMode opMode;
     private HardwareMap hardwareMap;
-    private Cannon cannon;
+    //private Cannon cannon;
     private Hopper hopper;
     private ArmMover armMover;
     private double motorPowerLeft;
@@ -61,7 +59,7 @@ public class AutoMethods {
         //vuforia = new VuforiaNav(CustomizedRobotParameters.VUFORIA_PARAMETERS);
         //vuforia.activate();
         beaconColorSensor = new BeaconColorSensor(hardwareMap.colorSensor.get("color_sensor"));
-        cannon = new Cannon(hardwareMap, opMode);
+        //cannon = new Cannon(hardwareMap, opMode);
         hopper = new Hopper(hardwareMap, opMode);
         armMover = new ArmMover(hardwareMap, opMode);
         armMover.setLeftIn();
@@ -208,9 +206,9 @@ public class AutoMethods {
 
     public void fireCannon() {
         opMode.telemetry.addData("Cannon", "Firing cannon.").setRetained(true);
-        cannon.update(true);
+        //cannon.update(true);
         opMode.sleep(1500);
-        cannon.update(false);
+        //cannon.update(false);
     }
 
 
@@ -232,7 +230,7 @@ public class AutoMethods {
         opMode.sleep(250);
         drive.moveInches(Direction.BACKWARD, 63.5, Globals.HALF_MOTOR_POWER);
         opMode.sleep(250);
-        drive.rotateDegrees(oppositeTurnDirection, 51, Globals.TURNING_SPEED);
+        drive.rotateDegrees(oppositeTurnDirection, 70, Globals.TURNING_SPEED);
 
     }
 
