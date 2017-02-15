@@ -5,7 +5,7 @@ package org.pattonvillerobotics.enums;
  */
 
 public enum ArmPosition {
-    IN(0), OUT(1);
+    IN(1), OUT(0);
 
     private double value;
 
