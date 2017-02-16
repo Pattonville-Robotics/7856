@@ -227,11 +227,20 @@ public class AutoMethods {
     public void driveToNearBeacon() {
         opMode.telemetry.addData("Drive", "Driving to near "+allianceColor+" side beacon.\"").setRetained(true);
         opMode.sleep(250);
-        drive.rotateDegrees(oppositeTurnDirection, 30, Globals.TURNING_SPEED);
-        opMode.sleep(250);
-        drive.moveInches(Direction.BACKWARD, 53.5, Globals.HALF_MOTOR_POWER);
-        opMode.sleep(250);
-        drive.rotateDegrees(oppositeTurnDirection, 57.5, Globals.TURNING_SPEED);
+
+        if(allianceColor == AllianceColor.BLUE) {
+            drive.rotateDegrees(oppositeTurnDirection, 30, Globals.TURNING_SPEED);
+            opMode.sleep(250);
+            drive.moveInches(Direction.BACKWARD, 52, Globals.HALF_MOTOR_POWER);
+            opMode.sleep(250);
+            drive.rotateDegrees(oppositeTurnDirection, 55, Globals.TURNING_SPEED);
+        } else {
+            drive.rotateDegrees(oppositeTurnDirection, 35, Globals.TURNING_SPEED);
+            opMode.sleep(250);
+            drive.moveInches(Direction.BACKWARD, 50, Globals.HALF_MOTOR_POWER);
+            opMode.sleep(250);
+            drive.rotateDegrees(oppositeTurnDirection, 70, Globals.TURNING_SPEED);
+        }
 
     }
 
@@ -297,6 +306,7 @@ public class AutoMethods {
             public void run() {
                 telemetry("Color Detection", "Color not detected");
                 drive.moveInches(Direction.BACKWARD, 3, Globals.HALF_MOTOR_POWER);
+                turnCorrection();
                 detectBeaconColor();
             }
         });
@@ -306,7 +316,7 @@ public class AutoMethods {
     public void pressBeacon() {
         detectBeaconColor();
         opMode.sleep(500);
-        drive.moveInches(Direction.BACKWARD, 24, Globals.HALF_MOTOR_POWER);
+        drive.moveInches(Direction.BACKWARD, 30, Globals.HALF_MOTOR_POWER);
 
         telemetry("pressBeacon", "Done");
     }
@@ -334,15 +344,15 @@ public class AutoMethods {
             telemetry("Correction Angle", correctionAngle);
 
             if(correctionAngle < 0) {
-                correctionAngle -= 4;
+                correctionAngle -= 5;
             } else {
-                correctionAngle += 4;
+                correctionAngle += 5;
             }
 
             if(allianceColor == AllianceColor.BLUE) {
-                drive.rotateDegrees(defaultTurnDirection, -correctionAngle, Globals.HALF_MOTOR_POWER);
-            } else {
                 drive.rotateDegrees(defaultTurnDirection, correctionAngle, Globals.HALF_MOTOR_POWER);
+            } else {
+                drive.rotateDegrees(defaultTurnDirection, -correctionAngle, Globals.HALF_MOTOR_POWER);
             }
 
 

@@ -29,5 +29,5 @@ public class Globals {
     public static final int MINIMUM_DISTANCE_TO_BEACON = 24;
     public static final double BEACON_HALF_WIDTH = 4.75;
 
-    public static final double TURNING_SPEED = .1;
+    public static final double TURNING_SPEED = .2;
 }

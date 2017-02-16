@@ -13,7 +13,7 @@ import org.pattonvillerobotics.opmodes.CustomizedRobotParameters;
  */
 
 @Autonomous(name="MainAutonomousBlue")
-public class MainAutonomous extends LinearOpMode {
+public class MainAutonomousBlue extends LinearOpMode {
 
     private AutoMethods autoMethods;
 
