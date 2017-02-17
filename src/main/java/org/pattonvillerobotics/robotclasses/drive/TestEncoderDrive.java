@@ -52,8 +52,8 @@ public class TestEncoderDrive extends EncoderDrive {
                 break;
             }
             case BACKWARD: {
-                targetPositionLeft = deltaPosition;
-                targetPositionRight = deltaPosition;
+                targetPositionLeft = -deltaPosition;
+                targetPositionRight = -deltaPosition;
                 break;
             }
             default:

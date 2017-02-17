@@ -2,8 +2,10 @@ package org.pattonvillerobotics.opmodes.teleop;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.Range;
 
+import org.apache.commons.math3.util.FastMath;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.pattonvillerobotics.commoncode.opmodes.OpModeGroups;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.EncoderDrive;
@@ -12,7 +14,7 @@ import org.pattonvillerobotics.commoncode.robotclasses.gamepad.ListenableButton;
 import org.pattonvillerobotics.commoncode.robotclasses.gamepad.ListenableGamepad;
 import org.pattonvillerobotics.opmodes.CustomizedRobotParameters;
 import org.pattonvillerobotics.opmodes.autonomous.Globals;
-import org.pattonvillerobotics.robotclasses.mechanisms.ArmMover;
+import org.pattonvillerobotics.robotclasses.mechanisms.ButtonPresser;
 import org.pattonvillerobotics.robotclasses.mechanisms.Cannon;
 import org.pattonvillerobotics.robotclasses.mechanisms.Hopper;
 
@@ -25,7 +27,7 @@ public class MainTeleOp extends LinearOpMode {
 
     private EncoderDrive drive;
     private ListenableGamepad gamepad;
-    private ArmMover armMover;
+    private ButtonPresser buttonPresser;
     private boolean cannonOn = false;
     private Hopper hopper;
     private Cannon cannon;
@@ -48,10 +50,13 @@ public class MainTeleOp extends LinearOpMode {
     public void initialize() {
         drive = new EncoderDrive(hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS);
         gamepad = new ListenableGamepad();
-        armMover = new ArmMover(hardwareMap, this);
+        buttonPresser = new ButtonPresser(hardwareMap, this);
         cannon = new Cannon(hardwareMap, this);
         hopper = new Hopper(hardwareMap, this);
         currentDirection = Direction.IN;
+
+        drive.leftDriveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        drive.rightDriveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
         telemetry.setMsTransmissionInterval(16);
         final Telemetry.Item particle_Launcher = telemetry.addData("Particle Launcher: ", "N/A").setRetained(true);
@@ -92,13 +97,13 @@ public class MainTeleOp extends LinearOpMode {
         gamepad.getButton(GamepadData.Button.LEFT_BUMPER).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
             @Override
             public void run() {
-                armMover.toggle(armMover.getArmMoverLeft());
+                buttonPresser.toggle(buttonPresser.getButtonPresserLeft());
             }
         });
         gamepad.getButton(GamepadData.Button.RIGHT_BUMPER).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
             @Override
             public void run() {
-                armMover.toggle(armMover.getArmMoverRight());
+                buttonPresser.toggle(buttonPresser.getButtonPresserRight());
             }
         });
 
@@ -121,7 +126,7 @@ public class MainTeleOp extends LinearOpMode {
 
 
     public void doLoop() {
-        drive.moveFreely(Range.clip(gamepad1.left_stick_y, -Globals.MAX_MOTOR_POWER, Globals.MAX_MOTOR_POWER), Range.clip(gamepad1.right_stick_y, -Globals.MAX_MOTOR_POWER, Globals.MAX_MOTOR_POWER));
+        drive.moveFreely(Range.clip(gamepad1.left_stick_y*FastMath.abs(gamepad1.left_stick_y), -Globals.MAX_MOTOR_POWER, Globals.MAX_MOTOR_POWER), Range.clip(gamepad1.right_stick_y*FastMath.abs(gamepad1.right_stick_y), -Globals.MAX_MOTOR_POWER, Globals.MAX_MOTOR_POWER));
         gamepad.update(new GamepadData(gamepad1));
         hopper.update(hopperOn, currentDirection);
         cannon.update(cannonOn);
