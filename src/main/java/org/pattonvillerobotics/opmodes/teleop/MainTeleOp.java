@@ -2,7 +2,6 @@ package org.pattonvillerobotics.opmodes.teleop;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.Range;
 
 import org.apache.commons.math3.util.FastMath;
@@ -55,9 +54,6 @@ public class MainTeleOp extends LinearOpMode {
         hopper = new Hopper(hardwareMap, this);
         currentDirection = Direction.IN;
 
-        drive.leftDriveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-        drive.rightDriveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-
         telemetry.setMsTransmissionInterval(16);
         final Telemetry.Item particle_Launcher = telemetry.addData("Particle Launcher: ", "N/A").setRetained(true);
 
@@ -81,12 +77,13 @@ public class MainTeleOp extends LinearOpMode {
                 }
             }
         });
-/*        gamepad.getButton(GamepadData.Button.B).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
+        gamepad.getButton(GamepadData.Button.B).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
             @Override
             public void run() {
-                cannon.launchLauncher();
+                //cannon.fire();
             }
-        });*/
+        });
+
         gamepad.getButton(GamepadData.Button.A).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
             @Override
             public void run() {

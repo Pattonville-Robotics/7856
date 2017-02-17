@@ -233,16 +233,16 @@ public class AutoMethods {
             opMode.sleep(250);
             drive.moveInches(Direction.BACKWARD, 54, Globals.HALF_MOTOR_POWER);
             opMode.sleep(250);
-            drive.rotateDegrees(oppositeTurnDirection, 55, Globals.TURNING_SPEED);
+            drive.rotateDegrees(oppositeTurnDirection, 52, Globals.TURNING_SPEED);
         } else {
             drive.rotateDegrees(oppositeTurnDirection, 35, Globals.TURNING_SPEED);
             opMode.sleep(250);
-            drive.moveInches(Direction.BACKWARD, 50, Globals.HALF_MOTOR_POWER);
+            drive.moveInches(Direction.BACKWARD, 54.5, Globals.HALF_MOTOR_POWER);
             opMode.sleep(250);
-            drive.rotateDegrees(oppositeTurnDirection, 72, Globals.TURNING_SPEED);
+            drive.rotateDegrees(oppositeTurnDirection, 67.5, Globals.TURNING_SPEED);
             opMode.sleep(250);
-            drive.moveInches(Direction.BACKWARD, 10, Globals.HALF_MOTOR_POWER);
         }
+        drive.moveInches(Direction.BACKWARD, 10, Globals.HALF_MOTOR_POWER);
 
     }
 
