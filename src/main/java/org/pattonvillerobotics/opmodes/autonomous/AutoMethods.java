@@ -229,17 +229,17 @@ public class AutoMethods {
         opMode.sleep(250);
 
         if(allianceColor == AllianceColor.BLUE) {
-            drive.rotateDegrees(oppositeTurnDirection, 30, Globals.TURNING_SPEED);
+            drive.rotateDegrees(oppositeTurnDirection, 40, Globals.TURNING_SPEED);
             opMode.sleep(250);
             drive.moveInches(Direction.BACKWARD, 54, Globals.HALF_MOTOR_POWER);
             opMode.sleep(250);
-            drive.rotateDegrees(oppositeTurnDirection, 52, Globals.TURNING_SPEED);
+            drive.rotateDegrees(oppositeTurnDirection, 42.5, Globals.TURNING_SPEED);
         } else {
             drive.rotateDegrees(oppositeTurnDirection, 35, Globals.TURNING_SPEED);
             opMode.sleep(250);
-            drive.moveInches(Direction.BACKWARD, 54.5, Globals.HALF_MOTOR_POWER);
+            drive.moveInches(Direction.BACKWARD, 53.5, Globals.HALF_MOTOR_POWER);
             opMode.sleep(250);
-            drive.rotateDegrees(oppositeTurnDirection, 67.5, Globals.TURNING_SPEED);
+            drive.rotateDegrees(oppositeTurnDirection, 63, Globals.TURNING_SPEED);
             opMode.sleep(250);
         }
         drive.moveInches(Direction.BACKWARD, 10, Globals.HALF_MOTOR_POWER);

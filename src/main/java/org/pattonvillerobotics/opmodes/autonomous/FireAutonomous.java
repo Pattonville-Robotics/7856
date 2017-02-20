@@ -4,6 +4,8 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.pattonvillerobotics.commoncode.enums.AllianceColor;
+import org.pattonvillerobotics.commoncode.enums.Direction;
+import org.pattonvillerobotics.commoncode.robotclasses.drive.EncoderDrive;
 import org.pattonvillerobotics.enums.EndPosition;
 import org.pattonvillerobotics.opmodes.CustomizedRobotParameters;
 import org.pattonvillerobotics.robotclasses.drive.TestEncoderDrive;
@@ -15,6 +17,7 @@ import org.pattonvillerobotics.robotclasses.drive.TestEncoderDrive;
 @Autonomous(name = "FireAutonomous")
 public class FireAutonomous extends LinearOpMode {
     private AutoMethods autoMethods;
+    private EncoderDrive drive;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -22,6 +25,7 @@ public class FireAutonomous extends LinearOpMode {
         initialize();
         waitForStart();
 
+        drive.moveInches(Direction.BACKWARD, 13, Globals.HALF_MOTOR_POWER);
         autoMethods.fireParticles();
 
         while(opModeIsActive()) {
@@ -32,8 +36,9 @@ public class FireAutonomous extends LinearOpMode {
     }
 
     public void initialize() {
+        drive = new TestEncoderDrive(hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS);
         autoMethods = new AutoMethods(
-                new TestEncoderDrive(hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS),
+                drive,
                 AllianceColor.BLUE,
                 EndPosition.CENTER_VORTEX,
                 hardwareMap,
