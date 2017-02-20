@@ -95,8 +95,8 @@ public class AutoMethods {
         }
 
         // Vuforia calculations documented in notebook
-        double x = FastMath.abs(vuforia.getxPos());
-        double y = vuforia.getDistance();
+        double x = FastMath.abs(vuforia.getYPos());
+        double y = vuforia.getXPos();
         double Q = Globals.MINIMUM_DISTANCE_TO_BEACON;
         double d = Math.sqrt(Math.pow(x, 2) + Math.pow((y - Q), 2));
         double angleToTurn = (FastMath.toDegrees(FastMath.atan(y/x) - FastMath.atan((y-Q)/x)))/2;
@@ -104,7 +104,7 @@ public class AutoMethods {
 
         telemetry("Angle to Turn", angleToTurn);
         telemetry("Adjustment Angle", adjustmentAngle);
-        telemetry("First Heading", vuforia.getHeading());
+        telemetry("First Heading", vuforia.getOrientation());
         telemetry("d", d);
         telemetry("x", x);
         opMode.telemetry.addData("y", y).setRetained(true);
@@ -136,7 +136,7 @@ public class AutoMethods {
             Thread.yield();
         }
 
-        while(vuforia.getDistance() > 12 || vuforia.getxPos() > 5) {
+        while(vuforia.getXPos() > 12 || vuforia.getYPos() > 5) {
 
             lastLocation = null;
             while(lastLocation == null) {
@@ -144,8 +144,8 @@ public class AutoMethods {
                 Thread.yield();
             }
 
-            double y = vuforia.getDistance();
-            double x = vuforia.getxPos();
+            double y = vuforia.getXPos();
+            double x = vuforia.getYPos();
             double W = Globals.BEACON_HALF_WIDTH;
 
             opMode.telemetry.addData("x", x);
@@ -175,7 +175,7 @@ public class AutoMethods {
             drive.moveFreely(motorPowerLeft, motorPowerRight);
         }
 
-        opMode.telemetry.addData("Angle", vuforia.getHeading());
+        opMode.telemetry.addData("Angle", vuforia.getOrientation());
 
     }
 
@@ -342,7 +342,7 @@ public class AutoMethods {
                 lastLocation = vuforia.getNearestBeaconLocation();
                 Thread.yield();
             }
-            double correctionAngle = FastMath.toDegrees(FastMath.atan(vuforia.getxPos()/vuforia.getDistance()));
+            double correctionAngle = FastMath.toDegrees(FastMath.atan(vuforia.getYPos()/vuforia.getXPos()));
             telemetry("Correction Angle", correctionAngle);
 
             if(correctionAngle < 0) {
