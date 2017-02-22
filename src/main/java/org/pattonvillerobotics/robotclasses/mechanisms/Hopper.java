@@ -42,19 +42,5 @@ public class Hopper extends AbstractMechanism {
         activated = false;
     }
 
-    public void update(boolean toggle, Hopper.Direction direction) {
-        if (toggle) {
-            switch (direction) {
-                case IN:
-                    hopper.setPower(-.8);
-                    break;
-                case OUT:
-                    hopper.setPower(.8);
-                    break;
-            }
-        } else {
-            hopper.setPower(0);
-        }
-    }
     public enum Direction {IN, OUT}
 }
