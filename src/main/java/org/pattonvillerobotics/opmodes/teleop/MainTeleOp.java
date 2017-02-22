@@ -28,7 +28,7 @@ public class MainTeleOp extends LinearOpMode {
     private EncoderDrive drive;
     private ListenableGamepad gamepad;
     private ButtonPresser buttonPresser;
-    private boolean cannonOn = false, hopperOn = false, leftServoToggle = false, rightServoToggle = false;
+    private boolean cannonOn, hopperOn, leftServoToggle, rightServoToggle;
     private Hopper hopper;
     private Cannon cannon;
     private Hopper.Direction currentDirection;
