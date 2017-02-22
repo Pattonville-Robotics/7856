@@ -43,34 +43,38 @@ public class ComplexEncoderDrive extends EncoderDrive {
         int targetPositionLeft;
         int targetPositionRight;
 
-        int startPositionLeft = leftDriveMotor.getCurrentPosition();
-        int startPositionRight = rightDriveMotor.getCurrentPosition();
+        DcMotor.RunMode leftDriveMotorMode = leftDriveMotor.getMode();
+        DcMotor.RunMode rightDriveMotorMode = rightDriveMotor.getMode();
+
+
+        leftDriveMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightDriveMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         int deltaPosition = (int) FastMath.round(inchesToTicks(inches));
 
         switch (direction) {
             case FORWARD: {
-                targetPositionLeft = startPositionLeft + deltaPosition;
-                targetPositionRight = startPositionRight + deltaPosition;
+                targetPositionLeft = deltaPosition;
+                targetPositionRight = deltaPosition;
                 break;
             }
             case BACKWARD: {
-                targetPositionLeft = startPositionLeft - deltaPosition;
-                targetPositionRight = startPositionRight - deltaPosition;
+                targetPositionLeft = deltaPosition;
+                targetPositionRight = deltaPosition;
                 break;
             }
             default:
                 throw new IllegalArgumentException("Direction must be Direction.FORWARDS or Direction.BACKWARDS!");
         }
 
-        DcMotor.RunMode leftDriveMotorMode = leftDriveMotor.getMode();
-        DcMotor.RunMode rightDriveMotorMode = rightDriveMotor.getMode();
 
         leftDriveMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rightDriveMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         leftDriveMotor.setTargetPosition(targetPositionLeft);
         rightDriveMotor.setTargetPosition(targetPositionRight);
+
+        move(Direction.FORWARD, power);
 
         telemetry("Moving " + inches + " inches at power " + power);
         telemetry("LMotorT: " + targetPositionLeft);

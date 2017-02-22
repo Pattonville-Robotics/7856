@@ -4,16 +4,13 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.pattonvillerobotics.enums.ArmPosition;
-
 /**
  * Created by murphyk01 on 12/6/16.
  */
 
 public class ButtonPresser extends AbstractMechanism {
 
-    private Servo buttonPresserRight;
-    private Servo buttonPresserLeft;
+    private Servo buttonPresserRight, buttonPresserLeft;
 
     public ButtonPresser(HardwareMap hardwareMap, LinearOpMode linearOpMode) {
         super(hardwareMap, linearOpMode);
@@ -24,43 +21,23 @@ public class ButtonPresser extends AbstractMechanism {
 
     }
 
-    public void setPosition(Servo arm, ArmPosition position) {
-        arm.setPosition(position.getValue());
-    }
-
-    public void toggle(Servo arm) {
-        if(arm.getPosition() == ArmPosition.OUT.getValue()) {
-            setPosition(arm, ArmPosition.IN);
-        } else {
-            setPosition(arm, ArmPosition.OUT);
-        }
-    }
-
     public ButtonPresser setLeftOut() {
-        setPosition(buttonPresserLeft, ArmPosition.IN);
+        buttonPresserLeft.setPosition(1);
         return this;
     }
 
     public ButtonPresser setLeftIn() {
-        setPosition(buttonPresserLeft, ArmPosition.OUT);
+        buttonPresserLeft.setPosition(0);
         return this;
     }
 
     public ButtonPresser setRightOut() {
-        setPosition(buttonPresserRight, ArmPosition.OUT);
+        buttonPresserRight.setPosition(0);
         return this;
     }
 
     public ButtonPresser setRightIn() {
-        setPosition(buttonPresserRight, ArmPosition.IN);
+        buttonPresserRight.setPosition(0);
         return this;
-    }
-
-    public Servo getButtonPresserRight() {
-        return buttonPresserRight;
-    }
-
-    public Servo getButtonPresserLeft() {
-        return buttonPresserLeft;
     }
 }
