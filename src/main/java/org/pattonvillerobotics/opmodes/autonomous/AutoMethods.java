@@ -333,7 +333,6 @@ public class AutoMethods {
         drive.rotateDegrees(defaultTurnDirection, 92, Globals.TURNING_SPEED);
     }
 
-
     public void turnCorrection() {
         if(vuforia != null) {
             telemetry("turnCorrection", "Starting turnCorrection");
@@ -361,19 +360,15 @@ public class AutoMethods {
         fireParticles();
 
         driveToNearBeacon(); // drive to near beacon
-        opMode.sleep(500);
         turnCorrection(); // correct angle
-        opMode.sleep(1000);
-        pressBeacon(); // read color, extend arm, press beacon
         opMode.sleep(500);
+        pressBeacon(); // read color, extend arm, press beacon
         //driveToFarBeacon(); // back up and drive to next beacon
-        //opMode.sleep(1000);
         //turnCorrection(); // correct angle
         //pressBeacon(); // read color, extend arm, press beacon
         hopper.setDirection(Hopper.Direction.OUT);
         hopper.activate();
         drive.moveInches(Direction.FORWARD, 90, Globals.MAX_MOTOR_POWER);
-        opMode.sleep(500);
         hopper.deactivate();
         telemetry("Autonomous", "Done");
     }

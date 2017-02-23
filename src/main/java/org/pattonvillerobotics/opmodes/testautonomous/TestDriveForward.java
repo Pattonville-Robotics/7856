@@ -8,7 +8,7 @@ import org.pattonvillerobotics.commoncode.opmodes.OpModeGroups;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.EncoderDrive;
 import org.pattonvillerobotics.opmodes.CustomizedRobotParameters;
 import org.pattonvillerobotics.opmodes.autonomous.Globals;
-import org.pattonvillerobotics.robotclasses.drive.ComplexEncoderDrive;
+import org.pattonvillerobotics.robotclasses.drive.TestEncoderDrive;
 
 /**
  * Created by bahrg on 12/29/16.
@@ -21,7 +21,7 @@ public class TestDriveForward extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
 
-        drive = new ComplexEncoderDrive(hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS);
+        drive = new TestEncoderDrive(hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS);
         waitForStart();
 
         drive.moveInches(Direction.FORWARD, 80, Globals.MAX_MOTOR_POWER);
