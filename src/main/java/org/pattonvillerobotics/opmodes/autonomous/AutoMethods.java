@@ -13,6 +13,7 @@ import org.pattonvillerobotics.commoncode.robotclasses.BeaconColorSensor;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.EncoderDrive;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.trailblazer.vuforia.VuforiaNav;
 import org.pattonvillerobotics.enums.EndPosition;
+import org.pattonvillerobotics.robotclasses.mechanisms.BallQueue;
 import org.pattonvillerobotics.robotclasses.mechanisms.ButtonPresser;
 import org.pattonvillerobotics.robotclasses.mechanisms.Cannon;
 import org.pattonvillerobotics.robotclasses.mechanisms.Hopper;
@@ -38,6 +39,7 @@ public class AutoMethods {
     private Cannon cannon;
     private Hopper hopper;
     private ButtonPresser buttonPresser;
+    private BallQueue ballQueue;
     private double motorPowerLeft;
     private double motorPowerRight;
 
@@ -62,6 +64,8 @@ public class AutoMethods {
         cannon = new Cannon(hardwareMap, opMode);
         hopper = new Hopper(hardwareMap, opMode);
         buttonPresser = new ButtonPresser(hardwareMap, opMode);
+        ballQueue = new BallQueue(hardwareMap, opMode);
+        ballQueue.setBallQueueIn();
         buttonPresser.setLeftIn();
         buttonPresser.setRightIn();
         telemetry("INIT", "Completed");
