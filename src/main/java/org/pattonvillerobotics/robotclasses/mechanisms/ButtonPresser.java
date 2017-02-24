@@ -37,7 +37,7 @@ public class ButtonPresser extends AbstractMechanism {
     }
 
     public ButtonPresser setRightIn() {
-        buttonPresserRight.setPosition(0);
+        buttonPresserRight.setPosition(1);
         return this;
     }
 }

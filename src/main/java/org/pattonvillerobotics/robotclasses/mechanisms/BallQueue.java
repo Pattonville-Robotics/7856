@@ -19,12 +19,12 @@ public class BallQueue extends AbstractMechanism {
     }
 
     public BallQueue setBallQueueOut() {
-        ballQueue.setPosition(1);
+        ballQueue.setPosition(0);
         return this;
     }
 
     public BallQueue setBallQueueIn() {
-        ballQueue.setPosition(0);
+        ballQueue.setPosition(1);
         return this;
     }
 }

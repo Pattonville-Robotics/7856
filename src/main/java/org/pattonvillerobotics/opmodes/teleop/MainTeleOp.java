@@ -6,7 +6,6 @@ import com.qualcomm.robotcore.util.Range;
 
 import org.apache.commons.math3.util.FastMath;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.pattonvillerobotics.commoncode.enums.Direction;
 import org.pattonvillerobotics.commoncode.opmodes.OpModeGroups;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.EncoderDrive;
 import org.pattonvillerobotics.commoncode.robotclasses.gamepad.GamepadData;
@@ -66,6 +65,7 @@ public class MainTeleOp extends LinearOpMode {
         ballQueue = new BallQueue(hardwareMap, this);
         ballQueue.setBallQueueOut();
         currentDirection = Hopper.Direction.IN;
+        hopper.setDirection(currentDirection);
 
         final Telemetry.Item leftServoData = telemetry.addData("Left Servo: ", "IN").setRetained(true);
         final Telemetry.Item rightServoData = telemetry.addData("Right Servo: ", "IN").setRetained(true);
@@ -136,20 +136,6 @@ public class MainTeleOp extends LinearOpMode {
                     buttonPresser.setRightIn();
                     rightServoData.setValue("IN");
                 }
-            }
-        });
-
-        gamepad.getButton(GamepadData.Button.DPAD_UP).addListener(ListenableButton.ButtonState.BEING_PRESSED, new ListenableButton.ButtonListener() {
-            @Override
-            public void run() {
-                drive.move(Direction.FORWARD, .5);
-            }
-        });
-
-        gamepad.getButton(GamepadData.Button.DPAD_DOWN).addListener(ListenableButton.ButtonState.BEING_PRESSED, new ListenableButton.ButtonListener() {
-            @Override
-            public void run() {
-                drive.move(Direction.BACKWARD, .5);
             }
         });
 

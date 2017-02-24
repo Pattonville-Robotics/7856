@@ -11,7 +11,6 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.pattonvillerobotics.commoncode.enums.Direction;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.EncoderDrive;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.RobotParameters;
-import org.pattonvillerobotics.opmodes.autonomous.Globals;
 
 /**
  * Created by bahrg on 1/31/17.
@@ -21,7 +20,7 @@ public class TestEncoderDrive extends EncoderDrive {
 
     private static final String TAG = "EncoderDrive";
     private static final double SPEED_INCREMENT = 0.01;
-    private static final double MIN_SPEED = Globals.LOW_MOTOR_POWER-.15;
+    private static final double MIN_SPEED = .1;
 
     /**
      * sets up Drive object with custom RobotParameters useful for doing calculations with encoders
@@ -106,7 +105,7 @@ public class TestEncoderDrive extends EncoderDrive {
         if (rightDriveMotorMode != DcMotor.RunMode.RUN_TO_POSITION)
             rightDriveMotor.setMode(rightDriveMotorMode);
 
-        sleep(500);
+        sleep(2000);
     }
 
     @Override
@@ -127,11 +126,13 @@ public class TestEncoderDrive extends EncoderDrive {
         int deltaPosition = (int) FastMath.round(inchesToTicks(inches));
 
         switch (direction) {
+            case COUNTERCLOCKWISE:
             case LEFT: {
                 targetPositionLeft = -deltaPosition;
                 targetPositionRight = deltaPosition;
                 break;
             }
+            case CLOCKWISE:
             case RIGHT: {
                 targetPositionLeft = deltaPosition;
                 targetPositionRight = -deltaPosition;
@@ -181,6 +182,6 @@ public class TestEncoderDrive extends EncoderDrive {
         for (Telemetry.Item i : items)
             i.setRetained(false);
 
-        sleep(500);
+        sleep(2000);
     }
 }
