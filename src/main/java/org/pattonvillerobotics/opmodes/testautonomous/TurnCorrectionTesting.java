@@ -1,19 +1,18 @@
-package org.pattonvillerobotics.opmodes.autonomous;
+package org.pattonvillerobotics.opmodes.testautonomous;
 
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.pattonvillerobotics.commoncode.enums.AllianceColor;
+import org.pattonvillerobotics.commoncode.robotclasses.drive.EncoderDrive;
 import org.pattonvillerobotics.enums.EndPosition;
 import org.pattonvillerobotics.opmodes.CustomizedRobotParameters;
-import org.pattonvillerobotics.robotclasses.drive.TestEncoderDrive;
+import org.pattonvillerobotics.opmodes.autonomous.AutoMethods;
 
 /**
- * Created by bahrg on 1/19/17.
+ * Created by pieperm on 1/31/17.
  */
 
-@Autonomous(name="MainAutonomousBlue")
-public class MainAutonomousBlue extends LinearOpMode {
+public class TurnCorrectionTesting extends LinearOpMode {
 
     private AutoMethods autoMethods;
 
@@ -23,22 +22,22 @@ public class MainAutonomousBlue extends LinearOpMode {
         initialize();
         waitForStart();
 
-        autoMethods.runAutonomousProcess();
+        autoMethods.turnCorrection();
 
         while(opModeIsActive()) {
             telemetry.update();
             idle();
         }
 
+
     }
 
     public void initialize() {
-        autoMethods = new AutoMethods(
-                new TestEncoderDrive(hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS),
+        autoMethods = new AutoMethods(new EncoderDrive(hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS),
                 AllianceColor.BLUE,
                 EndPosition.CENTER_VORTEX,
                 hardwareMap,
-                this
-        );
+                this);
     }
+
 }

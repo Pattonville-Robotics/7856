@@ -13,6 +13,7 @@ import org.pattonvillerobotics.commoncode.robotclasses.BeaconColorSensor;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.EncoderDrive;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.trailblazer.vuforia.VuforiaNav;
 import org.pattonvillerobotics.enums.EndPosition;
+import org.pattonvillerobotics.opmodes.CustomizedRobotParameters;
 import org.pattonvillerobotics.opmodes.teleop.MainTeleOp;
 import org.pattonvillerobotics.robotclasses.mechanisms.ArmMover;
 import org.pattonvillerobotics.robotclasses.mechanisms.Cannon;
@@ -78,7 +79,7 @@ public class AutoMethods {
             defaultTurnDirection = Direction.LEFT;
             oppositeTurnDirection = Direction.RIGHT;
         }
-        opMode.telemetry.addData("Setup", "Setting default turn direction to:" + defaultTurnDirection).setRetained(true);
+        telemetry("Setup", "Setting default turn direction to:" + defaultTurnDirection);
     }
 
 
@@ -87,7 +88,7 @@ public class AutoMethods {
             throw new IllegalStateException("Must be using vuforia in order to use alignToBeacon.");
         }
 
-        opMode.telemetry.addData("Drive", "Attempting to align to beacon.").setRetained(true);
+        telemetry("Drive", "Attempting to align to beacon.");
         OpenGLMatrix lastLocation = vuforia.getNearestBeaconLocation();
         while(lastLocation == null) {
             lastLocation = vuforia.getNearestBeaconLocation();
@@ -102,11 +103,11 @@ public class AutoMethods {
         double angleToTurn = (FastMath.toDegrees(FastMath.atan(y/x) - FastMath.atan((y-Q)/x)))/2;
         double adjustmentAngle = FastMath.toDegrees(FastMath.atan( x/(y-Q) ));
 
-        opMode.telemetry.addData("Angle to Turn", angleToTurn).setRetained(true);
-        opMode.telemetry.addData("Adjustment Angle", adjustmentAngle).setRetained(true);
-        opMode.telemetry.addData("First Heading", vuforia.getHeading()).setRetained(true);
-        opMode.telemetry.addData("d", d).setRetained(true);
-        opMode.telemetry.addData("x", x).setRetained(true);
+        telemetry("Angle to Turn", angleToTurn);
+        telemetry("Adjustment Angle", adjustmentAngle);
+        telemetry("First Heading", vuforia.getHeading());
+        telemetry("d", d);
+        telemetry("x", x);
         opMode.telemetry.addData("y", y).setRetained(true);
         opMode.telemetry.addData("angle", FastMath.toDegrees(FastMath.atan(x/y))).setRetained(true);
         opMode.telemetry.update();
@@ -227,20 +228,11 @@ public class AutoMethods {
     public void driveToNearBeacon() {
         opMode.telemetry.addData("Drive", "Driving to near "+allianceColor+" side beacon.\"").setRetained(true);
         opMode.sleep(250);
-        if(allianceColor == AllianceColor.BLUE) {
-            drive.rotateDegrees(oppositeTurnDirection, 36, Globals.TURNING_SPEED);
-            opMode.sleep(250);
-            drive.moveInches(Direction.BACKWARD, 63.5, Globals.HALF_MOTOR_POWER);
-            opMode.sleep(250);
-            drive.rotateDegrees(oppositeTurnDirection, 51, Globals.TURNING_SPEED);
-
-        } else {
-            drive.rotateDegrees(oppositeTurnDirection, 40, Globals.TURNING_SPEED);
-            opMode.sleep(250);
-            drive.moveInches(Direction.BACKWARD, 60.5, Globals.HALF_MOTOR_POWER);
-            opMode.sleep(250);
-            drive.rotateDegrees(oppositeTurnDirection, 58, Globals.TURNING_SPEED);
-        }
+        drive.rotateDegrees(oppositeTurnDirection, 36, Globals.TURNING_SPEED);
+        opMode.sleep(250);
+        drive.moveInches(Direction.BACKWARD, 63.5, Globals.HALF_MOTOR_POWER);
+        opMode.sleep(250);
+        drive.rotateDegrees(oppositeTurnDirection, 51, Globals.TURNING_SPEED);
 
     }
 
