@@ -20,7 +20,7 @@ public class TestEncoderDrive extends EncoderDrive {
 
     private static final String TAG = "EncoderDrive";
     private static final double SPEED_INCREMENT = 0.01;
-    private static final double MIN_SPEED = .1;
+    private static final double MIN_SPEED = .15;
 
     /**
      * sets up Drive object with custom RobotParameters useful for doing calculations with encoders
@@ -87,7 +87,7 @@ public class TestEncoderDrive extends EncoderDrive {
         Telemetry.Item distance = telemetry("DistanceL: N/A DistanceR: N/A");
         Telemetry.Item motorPowerData = telemetry("Current Motor Power: N/A");
 
-        while ((leftDriveMotor.isBusy() || rightDriveMotor.isBusy()) && !linearOpMode.isStopRequested()) {
+        while ((!reachedTarget(leftDriveMotor.getCurrentPosition(), targetPositionLeft, rightDriveMotor.getCurrentPosition(), targetPositionRight) || (leftDriveMotor.isBusy() || rightDriveMotor.isBusy())) && !linearOpMode.isStopRequested()) {
             if(currentSpeed < power) {
                 currentSpeed += SPEED_INCREMENT;
                 move(Direction.FORWARD, currentSpeed);
@@ -105,7 +105,7 @@ public class TestEncoderDrive extends EncoderDrive {
         if (rightDriveMotorMode != DcMotor.RunMode.RUN_TO_POSITION)
             rightDriveMotor.setMode(rightDriveMotorMode);
 
-        sleep(2000);
+        sleep(500);
     }
 
     @Override
@@ -162,7 +162,7 @@ public class TestEncoderDrive extends EncoderDrive {
         Telemetry.Item motorPowerData = items[5];
 
         move(Direction.FORWARD, currentSpeed); // To keep speed in [0.0, 1.0]. Encoders control direction
-        while ((leftDriveMotor.isBusy() || rightDriveMotor.isBusy()) && !linearOpMode.isStopRequested()) {
+        while ((!reachedTarget(leftDriveMotor.getCurrentPosition(), targetPositionLeft, rightDriveMotor.getCurrentPosition(), targetPositionRight) || (leftDriveMotor.isBusy() || rightDriveMotor.isBusy())) && !linearOpMode.isStopRequested()) {
             if (currentSpeed < speed) {
                 currentSpeed += SPEED_INCREMENT;
                 move(Direction.FORWARD, currentSpeed);
@@ -182,6 +182,6 @@ public class TestEncoderDrive extends EncoderDrive {
         for (Telemetry.Item i : items)
             i.setRetained(false);
 
-        sleep(2000);
+        sleep(500);
     }
 }

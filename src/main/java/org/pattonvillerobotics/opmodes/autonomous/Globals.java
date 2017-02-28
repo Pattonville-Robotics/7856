@@ -10,7 +10,7 @@ public class Globals {
     public static final double ROBOT_LENGTH = 15;
 
     // Motors
-    public static final double MAX_MOTOR_POWER = 0.7;
+    public static final double MAX_MOTOR_POWER = .7;
     public static final double LOW_MOTOR_POWER = .25;
     public static final double CANNON_POWER = .7;
     public static final double ALIGN_MOTOR_POWER = .25;
