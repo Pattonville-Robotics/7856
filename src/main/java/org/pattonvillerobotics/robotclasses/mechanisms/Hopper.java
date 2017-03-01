@@ -4,8 +4,6 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import org.pattonvillerobotics.opmodes.teleop.MainTeleOp;
-
 /**
  * Created by pieperm on 10/20/16.
  */
@@ -13,24 +11,36 @@ import org.pattonvillerobotics.opmodes.teleop.MainTeleOp;
 public class Hopper extends AbstractMechanism {
 
     private DcMotor hopper;
+    private Hopper.Direction direction;
+    private boolean activated;
 
     public Hopper(HardwareMap hardwareMap, LinearOpMode linearOpMode) {
         super(hardwareMap, linearOpMode);
         hopper = hardwareMap.dcMotor.get("hopper");
+        direction = Hopper.Direction.OUT;
     }
 
-    public void update(boolean toggle, MainTeleOp.Direction direction) {
-        if (toggle) {
-            switch (direction) {
-                case IN:
-                    hopper.setPower(-.8);
-                    break;
-                case OUT:
-                    hopper.setPower(.8);
-                    break;
-            }
-        } else {
-            hopper.setPower(0);
-        }
+    public void setDirection(Hopper.Direction direction) {
+        this.direction = direction;
+        if (activated) activate();
     }
+
+    public void activate() {
+        switch (direction) {
+            case IN:
+                hopper.setPower(-.8);
+                break;
+            case OUT:
+                hopper.setPower(.8);
+                break;
+        }
+        activated = true;
+    }
+
+    public void deactivate() {
+        hopper.setPower(0);
+        activated = false;
+    }
+
+    public enum Direction {IN, OUT}
 }

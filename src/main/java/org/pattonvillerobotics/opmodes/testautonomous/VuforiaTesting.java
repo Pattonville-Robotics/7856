@@ -28,11 +28,10 @@ public class VuforiaTesting extends LinearOpMode {
         while (opModeIsActive()) {
             lastUpdatedLocation = vuforia.getNearestBeaconLocation();
             if (lastUpdatedLocation != null) {
-                telemetry.addData("Distance", vuforia.getDistance());
-                telemetry.addData("x Position", vuforia.getxPos());
-                telemetry.addData("Heading", vuforia.getHeading());
-                telemetry.addData("AngleToBeacon", vuforia.getAngle());
-                telemetry.addData("Correction Angle", FastMath.toDegrees(FastMath.atan(vuforia.getxPos()/vuforia.getDistance())));
+                telemetry.addData("X Offset", vuforia.getXPos());
+                telemetry.addData("Y Offset", vuforia.getYPos());
+                telemetry.addData("Orientation", vuforia.getOrientation());
+                telemetry.addData("Correction Angle", FastMath.toDegrees(FastMath.atan(vuforia.getYPos()/vuforia.getXPos())));
             } else {
                 telemetry.addData("Position", "Unknown");
             }

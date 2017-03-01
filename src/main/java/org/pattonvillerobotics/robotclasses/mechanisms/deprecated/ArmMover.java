@@ -11,11 +11,11 @@ import org.pattonvillerobotics.robotclasses.mechanisms.AbstractMechanism;
  * Created by skaggsw on 10/18/16.
  */
 @Deprecated
-public class ArmMoverOld extends AbstractMechanism {
+public class ArmMover extends AbstractMechanism {
 
     private Servo armMover;
 
-    public ArmMoverOld(HardwareMap hardwareMap, LinearOpMode linearOpMode) {
+    public ArmMover(HardwareMap hardwareMap, LinearOpMode linearOpMode) {
         super(hardwareMap, linearOpMode);
         armMover = hardwareMap.servo.get("arm_mover");
     }
