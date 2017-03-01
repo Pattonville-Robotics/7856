@@ -25,7 +25,7 @@ public class FireAutonomous extends LinearOpMode {
         initialize();
         waitForStart();
 
-        drive.moveInches(Direction.BACKWARD, 13, Globals.LOW_MOTOR_POWER);
+        drive.moveInches(Direction.BACKWARD, 20, Globals.LOW_MOTOR_POWER);
         autoMethods.fireParticles();
 
         while(opModeIsActive()) {

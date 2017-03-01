@@ -7,6 +7,7 @@ import org.pattonvillerobotics.commoncode.enums.Direction;
 import org.pattonvillerobotics.commoncode.opmodes.OpModeGroups;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.EncoderDrive;
 import org.pattonvillerobotics.opmodes.CustomizedRobotParameters;
+import org.pattonvillerobotics.opmodes.autonomous.Globals;
 
 /**
  * Created by pieperm on 11/15/16.
@@ -19,10 +20,9 @@ public class SpinTest extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-
         drive = new EncoderDrive(hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS);
         waitForStart();
-        drive.rotateDegrees(Direction.RIGHT, 360, .25);
+        drive.rotateDegrees(Direction.RIGHT, 360, Globals.TURNING_SPEED);
 
     }
 }

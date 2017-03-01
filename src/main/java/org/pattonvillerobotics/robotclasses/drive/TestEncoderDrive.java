@@ -20,7 +20,7 @@ public class TestEncoderDrive extends EncoderDrive {
 
     private static final String TAG = "EncoderDrive";
     private static final double SPEED_INCREMENT = 0.01;
-    private static final double MIN_SPEED = .1;
+    private static final double MIN_SPEED = .15;
 
     /**
      * sets up Drive object with custom RobotParameters useful for doing calculations with encoders
@@ -105,7 +105,7 @@ public class TestEncoderDrive extends EncoderDrive {
         if (rightDriveMotorMode != DcMotor.RunMode.RUN_TO_POSITION)
             rightDriveMotor.setMode(rightDriveMotorMode);
 
-        sleep(2000);
+        sleep(200);
     }
 
     @Override
@@ -182,6 +182,6 @@ public class TestEncoderDrive extends EncoderDrive {
         for (Telemetry.Item i : items)
             i.setRetained(false);
 
-        sleep(2000);
+        sleep(200);
     }
 }
