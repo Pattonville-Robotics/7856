@@ -13,7 +13,7 @@ import org.pattonvillerobotics.commoncode.robotclasses.gamepad.ListenableButton;
 import org.pattonvillerobotics.commoncode.robotclasses.gamepad.ListenableGamepad;
 import org.pattonvillerobotics.opmodes.CustomizedRobotParameters;
 import org.pattonvillerobotics.opmodes.autonomous.Globals;
-import org.pattonvillerobotics.robotclasses.mechanisms.BallQueue;
+import org.pattonvillerobotics.robotclasses.mechanisms.ParticleQueue;
 import org.pattonvillerobotics.robotclasses.mechanisms.ButtonPresser;
 import org.pattonvillerobotics.robotclasses.mechanisms.Cannon;
 import org.pattonvillerobotics.robotclasses.mechanisms.Hopper;
@@ -32,7 +32,7 @@ public class MainTeleOp extends LinearOpMode {
     private Hopper hopper;
     private Cannon cannon;
     private Hopper.Direction currentDirection;
-    private BallQueue ballQueue;
+    private ParticleQueue ballQueue;
 
     public void runOpMode() throws InterruptedException {
         telemetry.setMsTransmissionInterval(33);
@@ -62,8 +62,8 @@ public class MainTeleOp extends LinearOpMode {
         buttonPresser = new ButtonPresser(hardwareMap, this);
         cannon = new Cannon(hardwareMap, this);
         hopper = new Hopper(hardwareMap, this);
-        ballQueue = new BallQueue(hardwareMap, this);
-        ballQueue.setBallQueueOut();
+        ballQueue = new ParticleQueue(hardwareMap, this);
+        ballQueue.setParticleQueueOut();
         currentDirection = Hopper.Direction.IN;
         hopper.setDirection(currentDirection);
 
@@ -142,7 +142,7 @@ public class MainTeleOp extends LinearOpMode {
         gamepad.getButton(GamepadData.Button.STICK_BUTTON_RIGHT).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
             @Override
             public void run() {
-                ballQueue.setBallQueueOut();
+                ballQueue.setParticleQueueOut();
                 ballQueueData.setValue("OUT");
             }
         });
@@ -150,7 +150,7 @@ public class MainTeleOp extends LinearOpMode {
         gamepad.getButton(GamepadData.Button.STICK_BUTTON_LEFT).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
             @Override
             public void run() {
-                ballQueue.setBallQueueIn();
+                ballQueue.setParticleQueueIn();
                 ballQueueData.setValue("IN");
             }
         });
