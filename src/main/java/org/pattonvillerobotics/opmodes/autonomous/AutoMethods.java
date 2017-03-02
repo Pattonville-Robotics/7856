@@ -354,4 +354,17 @@ public class AutoMethods {
         telemetry("Autonomous", "Done");
     }
 
+    public Hopper getHopper() {
+        return hopper;
+    }
+
+    public Direction getDefaultTurnDirection() {
+        return defaultTurnDirection;
+    }
+
+    public Direction getOppositeTurnDirection() {
+        return oppositeTurnDirection;
+    }
+
+
 }
