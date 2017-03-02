@@ -14,7 +14,7 @@ import org.pattonvillerobotics.commoncode.robotclasses.drive.EncoderDrive;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.trailblazer.vuforia.VuforiaNav;
 import org.pattonvillerobotics.enums.EndPosition;
 import org.pattonvillerobotics.opmodes.CustomizedRobotParameters;
-import org.pattonvillerobotics.robotclasses.mechanisms.BallQueue;
+import org.pattonvillerobotics.robotclasses.mechanisms.ParticleQueue;
 import org.pattonvillerobotics.robotclasses.mechanisms.ButtonPresser;
 import org.pattonvillerobotics.robotclasses.mechanisms.Cannon;
 import org.pattonvillerobotics.robotclasses.mechanisms.Hopper;
@@ -40,7 +40,7 @@ public class AutoMethods {
     private Cannon cannon;
     private Hopper hopper;
     private ButtonPresser buttonPresser;
-    private BallQueue ballQueue;
+    private ParticleQueue ballQueue;
     private double motorPowerLeft;
     private double motorPowerRight;
 
@@ -65,8 +65,8 @@ public class AutoMethods {
         cannon = new Cannon(hardwareMap, opMode);
         hopper = new Hopper(hardwareMap, opMode);
         buttonPresser = new ButtonPresser(hardwareMap, opMode);
-        ballQueue = new BallQueue(hardwareMap, opMode);
-        ballQueue.setBallQueueIn();
+        ballQueue = new ParticleQueue(hardwareMap, opMode);
+        ballQueue.setParticleQueueIn();
         buttonPresser.setLeftIn();
         buttonPresser.setRightIn();
         telemetry("INIT", "Completed");
@@ -221,7 +221,7 @@ public class AutoMethods {
     public void fireParticles() {
         opMode.telemetry.addData("Cannon", "Firing particles").setRetained(true);
         cannon.fire();
-        ballQueue.setBallQueueOut();
+        ballQueue.setParticleQueueOut();
         opMode.sleep(500);
         cannon.fire();
     }
