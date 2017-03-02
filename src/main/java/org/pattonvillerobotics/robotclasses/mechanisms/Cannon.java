@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.apache.commons.math3.util.FastMath;
 import org.pattonvillerobotics.opmodes.autonomous.Globals;
 
 /**
@@ -35,7 +36,7 @@ public class Cannon extends AbstractMechanism {
         cannon.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         cannon.setTargetPosition(targetPosition);
         cannon.setPower(Globals.CANNON_POWER);
-        while (cannon.isBusy() && !linearOpMode.isStopRequested()) {
+        while (!reachedTarget(cannon.getCurrentPosition(), targetPosition) && !linearOpMode.isStopRequested()) {
             Thread.yield();
             linearOpMode.telemetry.update();
         }
@@ -45,5 +46,9 @@ public class Cannon extends AbstractMechanism {
 
     public DcMotor getCannon() {
         return cannon;
+    }
+
+    private boolean reachedTarget(int currentPosition, int targetPosition) {
+        return FastMath.abs(currentPosition - targetPosition) < 100;
     }
 }
