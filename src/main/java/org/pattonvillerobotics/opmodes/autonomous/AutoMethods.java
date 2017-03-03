@@ -13,12 +13,10 @@ import org.pattonvillerobotics.commoncode.robotclasses.BeaconColorSensor;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.EncoderDrive;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.trailblazer.vuforia.VuforiaNav;
 import org.pattonvillerobotics.enums.EndPosition;
-import org.pattonvillerobotics.robotclasses.mechanisms.BallQueue;
-import org.pattonvillerobotics.opmodes.CustomizedRobotParameters;
-import org.pattonvillerobotics.robotclasses.mechanisms.ParticleQueue;
 import org.pattonvillerobotics.robotclasses.mechanisms.ButtonPresser;
 import org.pattonvillerobotics.robotclasses.mechanisms.Cannon;
 import org.pattonvillerobotics.robotclasses.mechanisms.Hopper;
+import org.pattonvillerobotics.robotclasses.mechanisms.ParticleQueue;
 
 /**
  * Created by murphyk01 on 10/1/16.
@@ -230,9 +228,9 @@ public class AutoMethods {
     public void driveToNearBeacon() {
         opMode.telemetry.addData("Drive", "Driving to near "+allianceColor+" side beacon.\"").setRetained(true);
         if(allianceColor == AllianceColor.BLUE) {
-            drive.rotateDegrees(defaultTurnDirection, 55, Globals.TURNING_SPEED);
-            drive.moveInches(Direction.BACKWARD, 64, Globals.LOW_MOTOR_POWER);
-            drive.rotateDegrees(defaultTurnDirection, 35, Globals.TURNING_SPEED);
+            drive.rotateDegrees(defaultTurnDirection, 60, Globals.TURNING_SPEED);
+            drive.moveInches(Direction.BACKWARD, 67.5, Globals.LOW_MOTOR_POWER);
+            drive.rotateDegrees(defaultTurnDirection, 30, Globals.TURNING_SPEED);
         } else {
             drive.rotateDegrees(defaultTurnDirection, 65, Globals.TURNING_SPEED);
             drive.moveInches(Direction.BACKWARD, 67.5, Globals.LOW_MOTOR_POWER);

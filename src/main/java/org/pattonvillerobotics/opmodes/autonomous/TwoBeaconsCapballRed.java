@@ -14,7 +14,7 @@ import org.pattonvillerobotics.robotclasses.mechanisms.Hopper;
 /**
  * Created by pieperm on 3/1/17.
  */
-@Autonomous(name = "TwoBeaconsCapballBlue", group = OpModeGroups.MAIN)
+@Autonomous(name = "TwoBeaconsCapballRed", group = OpModeGroups.MAIN)
 public class TwoBeaconsCapballRed extends LinearOpMode {
 
     private AutoMethods autoMethods;

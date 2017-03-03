@@ -13,7 +13,7 @@ import org.pattonvillerobotics.robotclasses.drive.TestEncoderDrive;
 /**
  * Created by pieperm on 3/1/17.
  */
-@Autonomous(name = "TwoParticlesNearBeaconCornerBlue", group = OpModeGroups.MAIN)
+@Autonomous(name = "OneParticleNearBeaconCornerRed", group = OpModeGroups.MAIN)
 public class OneParticleOneBeaconCornerRed extends LinearOpMode {
 
     private AutoMethods autoMethods;
