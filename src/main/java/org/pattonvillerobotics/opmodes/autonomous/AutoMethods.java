@@ -229,11 +229,11 @@ public class AutoMethods {
         opMode.telemetry.addData("Drive", "Driving to near "+allianceColor+" side beacon.\"").setRetained(true);
         if(allianceColor == AllianceColor.BLUE) {
             drive.rotateDegrees(defaultTurnDirection, 60, Globals.TURNING_SPEED);
-            drive.moveInches(Direction.BACKWARD, 67.5, Globals.LOW_MOTOR_POWER);
+            drive.moveInches(Direction.BACKWARD, 64, Globals.LOW_MOTOR_POWER);
             drive.rotateDegrees(defaultTurnDirection, 30, Globals.TURNING_SPEED);
         } else {
             drive.rotateDegrees(defaultTurnDirection, 65, Globals.TURNING_SPEED);
-            drive.moveInches(Direction.BACKWARD, 67.5, Globals.LOW_MOTOR_POWER);
+            drive.moveInches(Direction.BACKWARD, 70, Globals.LOW_MOTOR_POWER);
             drive.rotateDegrees(defaultTurnDirection, 25, Globals.TURNING_SPEED);
         }
     }
@@ -283,7 +283,7 @@ public class AutoMethods {
         // Reset both arms
         detectBeaconColor();
         opMode.sleep(500);
-        drive.moveInches(Direction.BACKWARD, 8, Globals.LOW_MOTOR_POWER);
+        drive.moveInches(Direction.BACKWARD, 10, Globals.LOW_MOTOR_POWER);
 
         telemetry("pressBeacon", "Done");
     }
@@ -297,8 +297,8 @@ public class AutoMethods {
             drive.rotateDegrees(defaultTurnDirection, 90, Globals.TURNING_SPEED);
             drive.moveInches(Direction.FORWARD, 52, Globals.LOW_MOTOR_POWER);
         } else {
-            drive.rotateDegrees(defaultTurnDirection, 87.5, Globals.TURNING_SPEED);
-            drive.moveInches(Direction.FORWARD, 55, Globals.LOW_MOTOR_POWER);
+            drive.rotateDegrees(defaultTurnDirection, 90, Globals.TURNING_SPEED);
+            drive.moveInches(Direction.FORWARD, 56, Globals.LOW_MOTOR_POWER);
         }
         drive.rotateDegrees(oppositeTurnDirection, 90, Globals.TURNING_SPEED);
     }
@@ -311,7 +311,7 @@ public class AutoMethods {
                 opMode.telemetry.update();
             }
             double angleToBeacon = vuforia.angleToBeacon();
-            if(Math.abs(angleToBeacon) > 8 && Math.abs(angleToBeacon) < 15)
+            if(Math.abs(angleToBeacon) > 6)
                 telemetry("Angle to Beacon", angleToBeacon);
                 drive.rotateDegrees(oppositeTurnDirection, angleToBeacon, Globals.TURNING_SPEED);
         }

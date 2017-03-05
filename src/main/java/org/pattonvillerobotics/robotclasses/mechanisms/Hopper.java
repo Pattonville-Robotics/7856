@@ -28,10 +28,10 @@ public class Hopper extends AbstractMechanism {
     public void activate() {
         switch (direction) {
             case IN:
-                hopper.setPower(-.8);
+                hopper.setPower(1);
                 break;
             case OUT:
-                hopper.setPower(.8);
+                hopper.setPower(-1);
                 break;
         }
         activated = true;

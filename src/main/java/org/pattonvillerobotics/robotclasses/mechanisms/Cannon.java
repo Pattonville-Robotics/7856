@@ -31,17 +31,20 @@ public class Cannon extends AbstractMechanism {
     }
 
     public void fire() {
-        int targetPosition = 3500;
-        cannon.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        cannon.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        cannon.setTargetPosition(targetPosition);
-        cannon.setPower(Globals.CANNON_POWER);
-        while (!reachedTarget(cannon.getCurrentPosition(), targetPosition) && !linearOpMode.isStopRequested()) {
-            Thread.yield();
-            linearOpMode.telemetry.update();
-        }
-        cannon.setPower(0);
-        cannon.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//        int targetPosition = 3500;
+//        cannon.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        cannon.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//        cannon.setTargetPosition(targetPosition);
+//        cannon.setPower(Globals.CANNON_POWER);
+//        while (!reachedTarget(cannon.getCurrentPosition(), targetPosition) && !linearOpMode.isStopRequested()) {
+//            Thread.yield();
+//            linearOpMode.telemetry.update();
+//        }
+//        cannon.setPower(0);
+//        cannon.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        setToggle(true);
+        linearOpMode.sleep(1500);
+        setToggle(false);
     }
 
     public DcMotor getCannon() {

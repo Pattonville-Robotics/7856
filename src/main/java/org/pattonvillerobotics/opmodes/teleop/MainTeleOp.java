@@ -34,7 +34,8 @@ public class MainTeleOp extends LinearOpMode {
     private Hopper.Direction currentDirection;
     private ParticleQueue ballQueue;
 
-    public void runOpMode() throws InterruptedException {
+
+    public void runOpMode() {
         telemetry.setMsTransmissionInterval(33);
         initialize();
         final Telemetry.Item leftMotorPowerData = telemetry.addData("Left Motor Power: ", "N/A").setRetained(true);
@@ -70,6 +71,7 @@ public class MainTeleOp extends LinearOpMode {
         final Telemetry.Item leftServoData = telemetry.addData("Left Servo: ", "IN").setRetained(true);
         final Telemetry.Item rightServoData = telemetry.addData("Right Servo: ", "IN").setRetained(true);
         final Telemetry.Item ballQueueData = telemetry.addData("Ball Queue: ", "OUT").setRetained(true);
+        final Telemetry.Item hopperData = telemetry.addData("Hopper: ", "OFF").setRetained(true);
 
         gamepad.getButton(GamepadData.Button.X).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
             @Override
@@ -77,8 +79,10 @@ public class MainTeleOp extends LinearOpMode {
                 hopperOn = !hopperOn;
                 if (hopperOn) {
                     hopper.activate();
+                    hopperData.setValue("ON");
                 } else {
                     hopper.deactivate();
+                    hopperData.setValue("OFF");
                 }
             }
         });
