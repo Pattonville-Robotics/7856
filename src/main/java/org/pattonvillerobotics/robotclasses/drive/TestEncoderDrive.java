@@ -39,7 +39,7 @@ public class TestEncoderDrive extends EncoderDrive {
 
         int targetPositionLeft;
         int targetPositionRight;
-        double currentSpeed = MIN_SPEED;
+        double currentSpeed = power;
 
         Log.e(TAG, "Getting motor modes");
         DcMotor.RunMode leftDriveMotorMode = leftDriveMotor.getMode();
@@ -114,7 +114,7 @@ public class TestEncoderDrive extends EncoderDrive {
 
         int targetPositionLeft;
         int targetPositionRight;
-        double currentSpeed = MIN_SPEED;
+        double currentSpeed = speed;
 
         DcMotor.RunMode leftDriveMotorMode = leftDriveMotor.getMode();
         DcMotor.RunMode rightDriveMotorMode = rightDriveMotor.getMode();
@@ -128,14 +128,14 @@ public class TestEncoderDrive extends EncoderDrive {
         switch (direction) {
             case COUNTERCLOCKWISE:
             case LEFT: {
-                targetPositionLeft = -deltaPosition;
-                targetPositionRight = deltaPosition;
+                targetPositionLeft = deltaPosition;
+                targetPositionRight = -deltaPosition;
                 break;
             }
             case CLOCKWISE:
             case RIGHT: {
-                targetPositionLeft = deltaPosition;
-                targetPositionRight = -deltaPosition;
+                targetPositionLeft = -deltaPosition;
+                targetPositionRight = deltaPosition;
                 break;
             }
             default:
