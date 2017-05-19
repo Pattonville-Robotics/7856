@@ -30,8 +30,37 @@ public class TankBotTeleOp extends LinearOpMode {
         rightDriveServo = hardwareMap.crservo.get("right-drive-servo");
         angleAdjustServo = hardwareMap.servo.get("angle-adjust-servo");
         rotateTopServo = hardwareMap.servo.get("rotate-top-servo");
+        gamepad = new ListenableGamepad();
 
-        while(opModeIsActive()) {
+        gamepad.getButton(GamepadData.Button.DPAD_DOWN).addListener(ListenableButton.ButtonState.BEING_PRESSED, new ListenableButton.ButtonListener() {
+            @Override
+            public void run() {
+                angleAdjustServo.setPosition(angleAdjustServo.getPosition() - 0.01);
+            }
+        });
+
+        gamepad.getButton(GamepadData.Button.DPAD_UP).addListener(ListenableButton.ButtonState.BEING_PRESSED, new ListenableButton.ButtonListener() {
+            @Override
+            public void run() {
+                angleAdjustServo.setPosition(angleAdjustServo.getPosition() + 0.01);
+            }
+        });
+
+        gamepad.getButton(GamepadData.Button.LEFT_BUMPER).addListener(ListenableButton.ButtonState.BEING_PRESSED, new ListenableButton.ButtonListener() {
+            @Override
+            public void run() {
+                rotateTopServo.setPosition(rotateTopServo.getPosition() - 0.01);
+            }
+        });
+
+        gamepad.getButton(GamepadData.Button.RIGHT_BUMPER).addListener(ListenableButton.ButtonState.BEING_PRESSED, new ListenableButton.ButtonListener() {
+            @Override
+            public void run() {
+                rotateTopServo.setPosition(rotateTopServo.getPosition() + 0.01);
+            }
+        });
+
+        while (opModeIsActive()) {
 
             gamepad.update(new GamepadData(gamepad1));
 
@@ -42,36 +71,8 @@ public class TankBotTeleOp extends LinearOpMode {
             rightDriveServo.setPower(rightPower);
 
             idle();
-
         }
 
-        gamepad.getButton(GamepadData.Button.DPAD_DOWN).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
-            @Override
-            public void run() {
-                angleAdjustServo.setPosition(0);
-            }
-        });
-
-        gamepad.getButton(GamepadData.Button.DPAD_UP).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
-            @Override
-            public void run() {
-                angleAdjustServo.setPosition(1);
-            }
-        });
-
-        gamepad.getButton(GamepadData.Button.LEFT_BUMPER).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
-            @Override
-            public void run() {
-                rotateTopServo.setPosition(0);
-            }
-        });
-
-        gamepad.getButton(GamepadData.Button.RIGHT_BUMPER).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
-            @Override
-            public void run() {
-                rotateTopServo.setPosition(1);
-            }
-        });
 
     }
 }
