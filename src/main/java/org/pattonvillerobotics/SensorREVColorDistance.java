@@ -114,8 +114,7 @@ public class SensorREVColorDistance extends LinearOpMode {
                     hsvValues);
 
             // send the info back to driver station using telemetry function.
-            telemetry.addData("Distance (inches)",
-                    String.format(Locale.US, "%.02f", (sensorDistance.getDistance(DistanceUnit.INCH))/2.0));
+            telemetry.addData("Distance (inches)", String.format(Locale.US, "%.02f", (sensorDistance.getDistance(DistanceUnit.INCH))/2.0));
             telemetry.addData("Alpha", sensorColor.alpha());
             telemetry.addData("Red  ", sensorColor.red());
             telemetry.addData("Green", sensorColor.green());
