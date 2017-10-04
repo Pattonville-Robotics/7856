@@ -24,7 +24,7 @@ public class HolonomicTestDrive extends LinearOpMode {
         telemetry.addData("Holonomic", "Opmode started");
 
         while(opModeIsActive()) {
-            drive.drive(gamepad1.left_stick_y, gamepad1.left_stick_x);
+            drive.drive(gamepad1.left_stick_y, gamepad1.left_stick_y);
             idle();
         }
 
