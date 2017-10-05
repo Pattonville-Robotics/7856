@@ -17,15 +17,14 @@ public class Glyphter {
 
     private DcMotor glyphterMotor;
     private int currentRow, currentColumn;
-    private double cylinderRadius;
     private HolonomicEncoderDrive holonomicEncoderDrive;
     private static final double COLUMN_WIDTH = 3;
-    public static final double ROW_HEIGHT = 3;
+    private static final double ROW_HEIGHT = 3;
+    private static final double CYLINDER_RADIUS = 1;
 
-    public Glyphter(HardwareMap hardwareMap, LinearOpMode linearOpMode, HolonomicEncoderDrive holonomicEncoderDrive, double cylinderRadius) {
+    public Glyphter(HardwareMap hardwareMap, LinearOpMode linearOpMode, HolonomicEncoderDrive holonomicEncoderDrive) {
 
         glyphterMotor = hardwareMap.dcMotor.get("glyphter-motor");
-        this.cylinderRadius = cylinderRadius;
         this.holonomicEncoderDrive = holonomicEncoderDrive;
         this.currentRow = 1;
         this.currentColumn = 2;
@@ -75,7 +74,7 @@ public class Glyphter {
      * @return the number of encoder ticks
      */
     private double inchesToTicks(double inches) {
-        return (inches / cylinderRadius) * (RobotParameters.TICKS_PER_REVOLUTION / (2*FastMath.PI));
+        return (inches / CYLINDER_RADIUS) * (RobotParameters.TICKS_PER_REVOLUTION / (2*FastMath.PI));
     }
 
     private boolean reachedTarget(int currentPosition, int targetPosition) {
