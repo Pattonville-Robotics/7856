@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.apache.commons.math3.util.FastMath;
-import org.pattonvillerobotics.HolonomicEncoderDrive;
+import org.pattonvillerobotics.autonomous.HolonomicEncoderDrive;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.EncoderDrive;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.RobotParameters;
 
