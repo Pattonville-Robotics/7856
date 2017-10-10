@@ -65,19 +65,19 @@ public class REVGyro {
         telemetry.update();
     }
 
-    public void balanceRobot(HolonomicDrive holonomicDrive) {
+//    public void balanceRobot(HolonomicDrive holonomicDrive) {
+//
+//        double roll = getRoll();
+//        double pitch = getPitch();
+//        final double ANGLE_MARGIN = 10;
+//
+//    }
 
-        double roll = getRoll();
-        double pitch = getPitch();
-        final double ANGLE_MARGIN = 10;
-
-    }
-
-    String formatAngle(AngleUnit angleUnit, double angle) {
+    private String formatAngle(AngleUnit angleUnit, double angle) {
         return formatDegrees(AngleUnit.DEGREES.fromUnit(angleUnit, angle));
     }
 
-    String formatDegrees(double degrees) {
+    private String formatDegrees(double degrees) {
         return String.format(Locale.getDefault(), "%.1f", AngleUnit.DEGREES.normalize(degrees));
     }
 }
