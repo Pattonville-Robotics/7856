@@ -11,6 +11,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
+import org.pattonvillerobotics.commoncode.robotclasses.drive.SimpleMecanumDrive;
 
 import java.util.Locale;
 
@@ -65,7 +66,7 @@ public class REVGyro {
         telemetry.update();
     }
 
-    public void balanceRobot(HolonomicDrive holonomicDrive) {
+    public void balanceRobot(SimpleMecanumDrive mecanumDrive) {
 
         double roll = getRoll();
         double pitch = getPitch();

@@ -5,9 +5,9 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.apache.commons.math3.util.FastMath;
-import org.pattonvillerobotics.HolonomicEncoderDrive;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.EncoderDrive;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.RobotParameters;
+import org.pattonvillerobotics.commoncode.robotclasses.drive.SimpleMecanumDrive;
 
 /**
  * Created by pieperm on 9/30/17.
@@ -17,15 +17,15 @@ public class Glyphter {
 
     private DcMotor glyphterMotor;
     private int currentRow, currentColumn;
-    private HolonomicEncoderDrive holonomicEncoderDrive;
     private static final double COLUMN_WIDTH = 3;
     private static final double ROW_HEIGHT = 3;
     private static final double CYLINDER_RADIUS = 1;
+    private SimpleMecanumDrive mecanumDrive;
 
-    public Glyphter(HardwareMap hardwareMap, LinearOpMode linearOpMode, HolonomicEncoderDrive holonomicEncoderDrive) {
+    public Glyphter(HardwareMap hardwareMap, LinearOpMode linearOpMode, SimpleMecanumDrive mecanumDrive) {
 
         glyphterMotor = hardwareMap.dcMotor.get("glyphter-motor");
-        this.holonomicEncoderDrive = holonomicEncoderDrive;
+        this.mecanumDrive = mecanumDrive;
         this.currentRow = 1;
         this.currentColumn = 2;
 
