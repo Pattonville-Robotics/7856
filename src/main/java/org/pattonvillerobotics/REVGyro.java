@@ -11,6 +11,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
+import org.pattonvillerobotics.commoncode.enums.Direction;
+import org.pattonvillerobotics.commoncode.robotclasses.drive.SimpleMecanumDrive;
 
 import java.util.Locale;
 
@@ -65,13 +67,28 @@ public class REVGyro {
         telemetry.update();
     }
 
-//    public void balanceRobot(HolonomicDrive holonomicDrive) {
-//
-//        double roll = getRoll();
-//        double pitch = getPitch();
-//        final double ANGLE_MARGIN = 10;
-//
-//    }
+    public void balanceRobot(SimpleMecanumDrive mecanumDrive) {
+
+        final double ANGLE_MARGIN = 10;
+        double balancingSpeed = 0.2;
+
+        //TODO: Determine pitch and roll directions and experimentally determine ANGLE_MARGIN
+
+        while(getRoll() > ANGLE_MARGIN) {
+            mecanumDrive.moveFreely(Direction.LEFT, balancingSpeed, 0);
+        }
+        while(getRoll() < -ANGLE_MARGIN) {
+            mecanumDrive.moveFreely(Direction.RIGHT, balancingSpeed, 0);
+        }
+        while(getPitch() > ANGLE_MARGIN) {
+            mecanumDrive.moveFreely(Direction.FORWARD, balancingSpeed, 0);
+        }
+        while(getPitch() < -ANGLE_MARGIN) {
+            mecanumDrive.moveFreely(Direction.BACKWARD, balancingSpeed, 0);
+        }
+
+
+    }
 
     private String formatAngle(AngleUnit angleUnit, double angle) {
         return formatDegrees(AngleUnit.DEGREES.fromUnit(angleUnit, angle));

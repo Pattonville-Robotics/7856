@@ -5,8 +5,9 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.apache.commons.math3.util.FastMath;
-import org.pattonvillerobotics.HolonomicEncoderDrive;
+import org.pattonvillerobotics.commoncode.enums.Direction;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.EncoderDrive;
+import org.pattonvillerobotics.commoncode.robotclasses.drive.MecanumEncoderDrive;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.RobotParameters;
 
 /**
@@ -16,16 +17,16 @@ import org.pattonvillerobotics.commoncode.robotclasses.drive.RobotParameters;
 public class Glyphter {
 
     private DcMotor glyphterMotor;
+    private MecanumEncoderDrive drive;
     private int currentRow, currentColumn;
-    private HolonomicEncoderDrive holonomicEncoderDrive;
-    private static final double COLUMN_WIDTH = 3;
-    private static final double ROW_HEIGHT = 3;
+    private static final double COLUMN_WIDTH = 7;
+    private static final double ROW_HEIGHT = 6.5;
     private static final double CYLINDER_RADIUS = 1;
 
-    public Glyphter(HardwareMap hardwareMap, LinearOpMode linearOpMode, HolonomicEncoderDrive holonomicEncoderDrive) {
+    public Glyphter(HardwareMap hardwareMap, LinearOpMode linearOpMode, MecanumEncoderDrive mecanumEncoderDrive) {
 
         glyphterMotor = hardwareMap.dcMotor.get("glyphter-motor");
-        this.holonomicEncoderDrive = holonomicEncoderDrive;
+        this.drive = mecanumEncoderDrive;
         this.currentRow = 1;
         this.currentColumn = 2;
 
@@ -44,6 +45,13 @@ public class Glyphter {
 
         int columnVector = targetColumn - currentColumn;
         double inchesVector = columnVector * COLUMN_WIDTH;
+
+        if(inchesVector > 0) {
+            drive.moveInches(Direction.RIGHT, FastMath.abs(inchesVector), 0.5);
+        }
+        else if(inchesVector < 0) {
+            drive.moveInches(Direction.LEFT, FastMath.abs(inchesVector), 0.5);
+        }
 
         currentColumn = targetColumn;
 

@@ -8,6 +8,7 @@ import org.pattonvillerobotics.commoncode.enums.AllianceColor;
 import org.pattonvillerobotics.commoncode.enums.Direction;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.MecanumEncoderDrive;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.RobotParameters;
+import org.pattonvillerobotics.mechanisms.Glyphter;
 
 /**
  * Created by pieperm on 10/5/17.
@@ -19,6 +20,7 @@ public class AutoMethods {
     private LinearOpMode linearOpMode;
     private AllianceColor allianceColor;
     private MecanumEncoderDrive drive;
+    private Glyphter glyphter;
 
     public AutoMethods(HardwareMap hardwareMap, LinearOpMode linearOpMode, AllianceColor allianceColor) {
 
@@ -31,11 +33,13 @@ public class AutoMethods {
     public void initialize() {
 
         drive = new MecanumEncoderDrive(hardwareMap, linearOpMode, CustomRobotParameters.ROBOT_PARAMETERS);
+        glyphter = new Glyphter(hardwareMap, linearOpMode, drive);
 
     }
 
     public void runAutonomousProcess() {
 
+        initialize();
         drive.rotateDegrees(allianceColor == AllianceColor.BLUE ? Direction.RIGHT : Direction.LEFT, 10, 0.6);
 
     }
