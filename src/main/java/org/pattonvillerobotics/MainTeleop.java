@@ -52,9 +52,6 @@ public class MainTeleop extends LinearOpMode {
                 }
 
             });
-
-
-
         gamepad.getButton(GamepadData.Button.B).addListener(ListenableButton.ButtonState.JUST_PRESSED,
             new ListenableButton.ButtonListener() {
                 @Override
