@@ -78,10 +78,6 @@ public class MainTeleop extends LinearOpMode {
                     public void run() {
                         //automatic balance
                     }
-
-
-
-
     });
 
 
