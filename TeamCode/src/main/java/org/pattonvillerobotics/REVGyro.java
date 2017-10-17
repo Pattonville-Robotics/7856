@@ -11,6 +11,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
+import org.pattonvillerobotics.commoncode.enums.Direction;
+import org.pattonvillerobotics.commoncode.robotclasses.drive.SimpleMecanumDrive;
 
 import java.util.Locale;
 
@@ -32,7 +34,9 @@ public class REVGyro {
         imu = hardwareMap.get(BNO055IMU.class, "imu");
         imu.initialize(parameters);
 
-        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+        updateAngles();
+
+        startAccelerationIntegration();
 
     }
 
@@ -40,24 +44,32 @@ public class REVGyro {
         imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
     }
 
+    public void updateAngles() {
+        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+    }
+
     public double getHeading() {
+        updateAngles();
         return Double.parseDouble(formatAngle(angles.angleUnit, angles.firstAngle));
     }
 
     public double getRoll() {
+        updateAngles();
         return Double.parseDouble(formatAngle(angles.angleUnit, angles.secondAngle));
     }
 
     public double getPitch() {
+        updateAngles();
         return Double.parseDouble(formatAngle(angles.angleUnit, angles.thirdAngle));
     }
 
-    public double[] getGravity() {
-        double[] array = {imu.getGravity().xAccel, imu.getGravity().yAccel, imu.getGravity().zAccel};
-        return array;
+    public String getGravity() {
+        updateAngles();
+        return imu.getGravity().xAccel + ", " + imu.getGravity().yAccel + ", " + imu.getGravity().zAccel;
     }
 
     public void getGyroTelemetry(Telemetry telemetry) {
+        updateAngles();
         telemetry.addData("Heading", getHeading());
         telemetry.addData("Roll", getRoll());
         telemetry.addData("Pitch", getPitch());
@@ -65,13 +77,30 @@ public class REVGyro {
         telemetry.update();
     }
 
-//    public void balanceRobot(HolonomicDrive holonomicDrive) {
-//
-//        double roll = getRoll();
-//        double pitch = getPitch();
-//        final double ANGLE_MARGIN = 10;
-//
-//    }
+    public void balanceRobot(SimpleMecanumDrive mecanumDrive) {
+
+        double roll = getRoll();
+        double pitch = getPitch();
+        final double ANGLE_MARGIN = 10;
+
+        final double ROLL_MARGIN = 8;
+        final double PITCH_MARGIN = 6;
+        double balancingSpeed = 0.2;
+
+        while(getRoll() > ROLL_MARGIN) {
+            mecanumDrive.moveFreely(Direction.FORWARD, balancingSpeed, 0);
+        }
+        while(getRoll() < -ROLL_MARGIN) {
+            mecanumDrive.moveFreely(Direction.RIGHT, balancingSpeed, 0);
+        }
+        while(getPitch() > PITCH_MARGIN) {
+            mecanumDrive.moveFreely(Direction.FORWARD, balancingSpeed, 0);
+        }
+        while(getPitch() < -PITCH_MARGIN) {
+            mecanumDrive.moveFreely(Direction.BACKWARD, balancingSpeed, 0);
+        }
+
+    }
 
     private String formatAngle(AngleUnit angleUnit, double angle) {
         return formatDegrees(AngleUnit.DEGREES.fromUnit(angleUnit, angle));
