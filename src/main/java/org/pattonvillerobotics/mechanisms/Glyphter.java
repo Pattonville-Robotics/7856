@@ -9,6 +9,7 @@ import org.pattonvillerobotics.commoncode.enums.Direction;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.EncoderDrive;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.MecanumEncoderDrive;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.RobotParameters;
+import org.pattonvillerobotics.commoncode.robotclasses.drive.SimpleMecanumDrive;
 
 /**
  * Created by pieperm on 9/30/17.
@@ -22,6 +23,7 @@ public class Glyphter {
     private static final double COLUMN_WIDTH = 7;
     private static final double ROW_HEIGHT = 6.5;
     private static final double CYLINDER_RADIUS = 1;
+    private SimpleMecanumDrive mecanumDrive;
 
     public Glyphter(HardwareMap hardwareMap, LinearOpMode linearOpMode, MecanumEncoderDrive mecanumEncoderDrive) {
 

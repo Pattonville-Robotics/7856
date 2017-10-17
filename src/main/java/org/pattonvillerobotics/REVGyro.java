@@ -79,6 +79,10 @@ public class REVGyro {
 
     public void balanceRobot(SimpleMecanumDrive mecanumDrive) {
 
+        double roll = getRoll();
+        double pitch = getPitch();
+        final double ANGLE_MARGIN = 10;
+
         final double ROLL_MARGIN = 8;
         final double PITCH_MARGIN = 6;
         double balancingSpeed = 0.2;
@@ -95,7 +99,6 @@ public class REVGyro {
         while(getPitch() < -PITCH_MARGIN) {
             mecanumDrive.moveFreely(Direction.BACKWARD, balancingSpeed, 0);
         }
-
 
     }
 
