@@ -7,10 +7,10 @@ import com.qualcomm.robotcore.hardware.Servo;
  * Created by martint08 on 10/12/17.
  */
 
-public class Jewelwhopper {
+public class JewelWhopper {
     private Servo jewelWhopperServo;
 
-    public Jewelwhopper(HardwareMap hardwareMap) {
+    public JewelWhopper(HardwareMap hardwareMap) {
         jewelWhopperServo = hardwareMap.servo.get("jewel-whopper-servo");
 
     }
