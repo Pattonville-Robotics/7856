@@ -12,23 +12,23 @@ import org.pattonvillerobotics.commoncode.opmodes.OpModeGroups;
  */
 
 public class GlyphGrabber {
-    private Servo leftservo;
-    private Servo rightservo;
+    private Servo leftServo;
+    private Servo rightServo;
 
     public GlyphGrabber(HardwareMap hardwareMap, LinearOpMode opMode) {
-        leftservo = hardwareMap.servo.get("glyph-grabber-left");
-        //rightservo = hardwareMap.servo.get("glyph-grabber-right");
+        leftServo = hardwareMap.servo.get("glyph-grabber-left");
+        rightServo = hardwareMap.servo.get("glyph-grabber-right");
     }
 
     public void clamp() {
-        leftservo.setPosition(0.7);
-        rightservo.setPosition((0.7));
+        leftServo.setPosition(0.7);
+        rightServo.setPosition((0.7));
     }
 
     public void release()
 
     {
-        leftservo.setPosition(0);
-        rightservo.setPosition(0);
+        leftServo.setPosition(0);
+        rightServo.setPosition(0);
     }
 }
