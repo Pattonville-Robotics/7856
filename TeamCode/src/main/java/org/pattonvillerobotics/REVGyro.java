@@ -11,7 +11,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
-import org.pattonvillerobotics.commoncode.enums.Direction;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.SimpleMecanumDrive;
 
 import java.util.Locale;
@@ -87,17 +86,18 @@ public class REVGyro {
         final double PITCH_MARGIN = 6;
         double balancingSpeed = 0.2;
 
+        //TODO moveFreely doesn't take in a Direction enum. Perhaps Common-Code was meant to be updated?
         while(getRoll() > ROLL_MARGIN) {
-            mecanumDrive.moveFreely(Direction.FORWARD, balancingSpeed, 0);
+            //mecanumDrive.moveFreely(Direction.FORWARD, balancingSpeed, 0);
         }
         while(getRoll() < -ROLL_MARGIN) {
-            mecanumDrive.moveFreely(Direction.RIGHT, balancingSpeed, 0);
+            //mecanumDrive.moveFreely(Direction.RIGHT, balancingSpeed, 0);
         }
         while(getPitch() > PITCH_MARGIN) {
-            mecanumDrive.moveFreely(Direction.FORWARD, balancingSpeed, 0);
+            //mecanumDrive.moveFreely(Direction.FORWARD, balancingSpeed, 0);
         }
         while(getPitch() < -PITCH_MARGIN) {
-            mecanumDrive.moveFreely(Direction.BACKWARD, balancingSpeed, 0);
+            //mecanumDrive.moveFreely(Direction.BACKWARD, balancingSpeed, 0);
         }
 
     }
