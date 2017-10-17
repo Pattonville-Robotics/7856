@@ -12,7 +12,7 @@ import org.pattonvillerobotics.commoncode.robotclasses.gamepad.ListenableGamepad
 /**
  * Created by martint08 on 9/30/17.
  */
-@TeleOp(name = "MainTeleop", group = OpModeGroups.TESTING)
+@TeleOp(name = "MainTeleop", group = OpModeGroups.MAIN)
 public class MainTeleop extends LinearOpMode {
 
     private GlyphGrabber glyphGrabber;
