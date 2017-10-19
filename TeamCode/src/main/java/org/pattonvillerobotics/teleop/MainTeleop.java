@@ -1,8 +1,9 @@
-package org.pattonvillerobotics;
+package org.pattonvillerobotics.teleop;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.pattonvillerobotics.mechanisms.GlyphGrabber;
 import org.pattonvillerobotics.commoncode.opmodes.OpModeGroups;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.SimpleMecanumDrive;
 import org.pattonvillerobotics.commoncode.robotclasses.gamepad.GamepadData;
@@ -12,7 +13,7 @@ import org.pattonvillerobotics.commoncode.robotclasses.gamepad.ListenableGamepad
 /**
  * Created by martint08 on 9/30/17.
  */
-@TeleOp(name = "MainTeleop", group = OpModeGroups.TESTING)
+@TeleOp(name = "MainTeleop", group = OpModeGroups.MAIN)
 public class MainTeleop extends LinearOpMode {
 
     private GlyphGrabber glyphGrabber;

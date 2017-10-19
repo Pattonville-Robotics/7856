@@ -10,13 +10,15 @@ public class CustomRobotParameters {
 
     public static RobotParameters ROBOT_PARAMETERS;
 
+    // TODO: Find wheelBaseRadius
+
     static {
 
         ROBOT_PARAMETERS = new RobotParameters.Builder()
-                .driveGearRatio(1)
+                .driveGearRatio(2)
                 .encodersEnabled(true)
                 .wheelBaseRadius(10)
-                .wheelRadius(2)
+                .wheelRadius(2.5)
                 .build();
 
     }

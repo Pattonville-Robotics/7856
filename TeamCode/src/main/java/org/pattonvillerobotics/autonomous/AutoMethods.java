@@ -44,12 +44,6 @@ public class AutoMethods {
 
     }
 
-    public void runAutonomousProcess() {
-
-        initialize();
-        drive.rotateDegrees(allianceColor == AllianceColor.BLUE ? Direction.RIGHT : Direction.LEFT, 10, 0.6);
-
-    }
 
     public void driveToColumn() {
 
@@ -73,6 +67,12 @@ public class AutoMethods {
                 driveToColumn();
                 break;
         }
+
+    }
+
+    public void runAutonomousProcess() {
+
+
 
     }
 
