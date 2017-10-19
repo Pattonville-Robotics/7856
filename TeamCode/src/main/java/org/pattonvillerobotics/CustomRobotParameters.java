@@ -1,6 +1,7 @@
 package org.pattonvillerobotics;
 
 import org.pattonvillerobotics.commoncode.robotclasses.drive.RobotParameters;
+import org.pattonvillerobotics.commoncode.robotclasses.vuforia.VuforiaParameters;
 
 /**
  * Created by pieperm on 10/10/17.
@@ -9,6 +10,7 @@ import org.pattonvillerobotics.commoncode.robotclasses.drive.RobotParameters;
 public class CustomRobotParameters {
 
     public static RobotParameters ROBOT_PARAMETERS;
+    public static VuforiaParameters VUFORIA_PARAMETERS;
 
     // TODO: Find wheelBaseRadius
 
@@ -20,6 +22,10 @@ public class CustomRobotParameters {
                 .wheelBaseRadius(10)
                 .wheelRadius(2.5)
                 .build();
+
+        VUFORIA_PARAMETERS = new VuforiaParameters.Builder()
+                .build();
+
 
     }
 
