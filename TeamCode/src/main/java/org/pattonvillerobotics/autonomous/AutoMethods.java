@@ -3,13 +3,10 @@ package org.pattonvillerobotics.autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 import org.pattonvillerobotics.CustomRobotParameters;
-import org.pattonvillerobotics.CustomVuforiaParameters;
 import org.pattonvillerobotics.commoncode.enums.AllianceColor;
 import org.pattonvillerobotics.commoncode.enums.Direction;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.MecanumEncoderDrive;
-import org.pattonvillerobotics.commoncode.robotclasses.drive.RobotParameters;
 import org.pattonvillerobotics.commoncode.robotclasses.vuforia.VuforiaNavigation;
 import org.pattonvillerobotics.mechanisms.Glyphter;
 
@@ -19,6 +16,7 @@ import org.pattonvillerobotics.mechanisms.Glyphter;
 
 public class AutoMethods {
 
+    public static final String TAG = AutoMethods.class.getSimpleName();
     private HardwareMap hardwareMap;
     private LinearOpMode linearOpMode;
     private AllianceColor allianceColor;
@@ -39,8 +37,8 @@ public class AutoMethods {
     public void initialize() {
 
         drive = new MecanumEncoderDrive(hardwareMap, linearOpMode, CustomRobotParameters.ROBOT_PARAMETERS);
-        glyphter = new Glyphter(hardwareMap, linearOpMode, drive);
-        vuforia = new VuforiaNavigation(CustomVuforiaParameters.VUFORIA_PARAMTERS);
+        glyphter = new Glyphter(hardwareMap, drive);
+        vuforia = new VuforiaNavigation(CustomRobotParameters.VUFORIA_PARAMETERS);
 
     }
 
@@ -72,7 +70,7 @@ public class AutoMethods {
 
     public void runAutonomousProcess() {
 
-
+        linearOpMode.telemetry.addData(TAG, allianceColor +  " autonomous initialized!");
 
     }
 

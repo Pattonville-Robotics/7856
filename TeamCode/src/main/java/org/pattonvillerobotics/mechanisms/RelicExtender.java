@@ -9,20 +9,15 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
  */
 
 public class RelicExtender {
+
     private DcMotor relicExtenderMotor;
 
-
-    public RelicExtender(HardwareMap hardwareMap, LinearOpMode linearOpMode) {
+    public RelicExtender(HardwareMap hardwareMap) {
         relicExtenderMotor = hardwareMap.dcMotor.get("relic-extender-motor");
-
     }
 
     public void extend() {
         relicExtenderMotor.setPower(0.7);
-
     }
 
-    public void retract() {
-        relicExtenderMotor.setPower(-0.7);
-    }
 }
