@@ -9,4 +9,8 @@ public class Globals {
     public static final double COLUMN_WIDTH = 7;
     public static final double ROW_HEIGHT = 6.5;
 
+    public enum GrabberPosition {
+        CLAMPED, RELEASED
+    }
+
 }
