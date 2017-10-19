@@ -7,6 +7,8 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.apache.commons.math3.util.FastMath;
 import org.pattonvillerobotics.Globals;
 import org.pattonvillerobotics.commoncode.enums.Direction;
+import org.pattonvillerobotics.commoncode.robotclasses.drive.AbstractDrive;
+import org.pattonvillerobotics.commoncode.robotclasses.drive.Drive;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.EncoderDrive;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.MecanumEncoderDrive;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.RobotParameters;
@@ -24,7 +26,7 @@ public class Glyphter {
     private static final double CYLINDER_RADIUS = 1;
     private SimpleMecanumDrive mecanumDrive;
 
-    public Glyphter(HardwareMap hardwareMap, LinearOpMode linearOpMode, MecanumEncoderDrive mecanumEncoderDrive) {
+    public Glyphter(HardwareMap hardwareMap, MecanumEncoderDrive mecanumEncoderDrive) {
 
         glyphterMotor = hardwareMap.dcMotor.get("glyphter-motor");
         this.drive = mecanumEncoderDrive;
@@ -71,6 +73,27 @@ public class Glyphter {
         glyphterMotor.setPower(0);
 
         currentRow = targetRow;
+
+    }
+
+    public void moveOneSpace(Direction direction) {
+
+        switch (direction) {
+            case UP:
+                if(currentRow < 4) moveToRow(currentRow + 1);
+                break;
+            case DOWN:
+                if(currentRow > 1) moveToRow(currentRow - 1);
+                break;
+            case LEFT:
+                if(currentColumn > 1) moveToColumn(currentColumn - 1);
+                break;
+            case RIGHT:
+                if(currentColumn < 3) moveToColumn(currentColumn + 1);
+                break;
+            default:
+                throw new IllegalArgumentException("Direction must be UP, DOWN, LEFT, or RIGHT");
+        }
 
     }
 
