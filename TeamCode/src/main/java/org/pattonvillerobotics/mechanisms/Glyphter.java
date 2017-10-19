@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.apache.commons.math3.util.FastMath;
+import org.pattonvillerobotics.Globals;
 import org.pattonvillerobotics.commoncode.enums.Direction;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.EncoderDrive;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.MecanumEncoderDrive;
@@ -20,8 +21,6 @@ public class Glyphter {
     private DcMotor glyphterMotor;
     private MecanumEncoderDrive drive;
     private int currentRow, currentColumn;
-    private static final double COLUMN_WIDTH = 7;
-    private static final double ROW_HEIGHT = 6.5;
     private static final double CYLINDER_RADIUS = 1;
     private SimpleMecanumDrive mecanumDrive;
 
@@ -46,7 +45,7 @@ public class Glyphter {
         // TODO: Need a way to find the current column (perhaps with the pictograph)
 
         int columnVector = targetColumn - currentColumn;
-        double inchesVector = columnVector * COLUMN_WIDTH;
+        double inchesVector = columnVector * Globals.COLUMN_WIDTH;
 
         if(inchesVector > 0) {
             drive.moveInches(Direction.RIGHT, FastMath.abs(inchesVector), 0.5);
@@ -62,7 +61,7 @@ public class Glyphter {
     public void moveToRow(int targetRow) {
 
         int rowVector = targetRow - currentRow; // The number and direction of rows to travel
-        double inchesVector = rowVector * ROW_HEIGHT; // Converts the number of rows into inches
+        double inchesVector = rowVector * Globals.ROW_HEIGHT; // Converts the number of rows into inches
         int targetPosition = (int) FastMath.round(inchesToTicks(inchesVector)); // Obtains a target position for the motor
         glyphterMotor.setTargetPosition(targetPosition);
 
