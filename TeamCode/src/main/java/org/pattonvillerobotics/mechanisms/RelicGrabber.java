@@ -16,7 +16,7 @@ public class RelicGrabber {
 
     public RelicGrabber(HardwareMap hardwareMap, Globals.GrabberPosition initialPosition) {
 
-        servo = hardwareMap.servo.get("");
+        servo = hardwareMap.servo.get("relic-grabber-motor");
         position = initialPosition;
 
     }

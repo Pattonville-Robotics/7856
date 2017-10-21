@@ -11,20 +11,27 @@ import org.pattonvillerobotics.commoncode.robotclasses.vuforia.VuforiaNavigation
  * Created by pieperm on 10/21/17.
  */
 
-@Autonomous(name = "VuforiaTest", group = OpModeGroups.TESTING)
-public class VuforiaTest extends LinearOpMode {
+@Autonomous(name = "RelicVuforiaTest", group = OpModeGroups.TESTING)
+public class RelicVuforiaTest extends LinearOpMode {
 
     private VuforiaNavigation vuforia;
 
     @Override
     public void runOpMode() throws InterruptedException {
 
+        addTelemetry("init");
+        sleep(5000);
         vuforia = new VuforiaNavigation(CustomRobotParameters.VUFORIA_PARAMETERS);
+        addTelemetry("vuforia init");
+        sleep(5000);
         vuforia.activateTracking();
+        addTelemetry("activated tracking");
 
         waitForStart();
 
         while(opModeIsActive()) {
+
+            vuforia.getVisibleTrackableLocation();
 
             telemetry.addData("Relic", vuforia.getCurrentVisibleRelic());
             telemetry.update();
@@ -33,4 +40,10 @@ public class VuforiaTest extends LinearOpMode {
         }
 
     }
+
+    public void addTelemetry(Object value) {
+        telemetry.addData("RelicVuforiaTest", value);
+        telemetry.update();
+    }
+
 }

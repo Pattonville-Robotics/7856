@@ -33,7 +33,7 @@ public class GyroTeleOp extends LinearOpMode {
     // The IMU sensor object
     BNO055IMU imu;
 
-    // State used for updating telemetry
+    // State used for updating addTelemetry
     Orientation angles;
     Acceleration gravity;
 
@@ -61,7 +61,7 @@ public class GyroTeleOp extends LinearOpMode {
         imu = hardwareMap.get(BNO055IMU.class, "imu");
         imu.initialize(parameters);
 
-        // Set up our telemetry dashboard
+        // Set up our addTelemetry dashboard
         composeTelemetry();
 
         // Wait until we're told to go
@@ -82,7 +82,7 @@ public class GyroTeleOp extends LinearOpMode {
 
     void composeTelemetry() {
 
-        // At the beginning of each telemetry update, grab a bunch of data
+        // At the beginning of each addTelemetry update, grab a bunch of data
         // from the IMU that we will then display in separate lines.
         telemetry.addAction(new Runnable() {
             @Override
