@@ -5,9 +5,11 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.pattonvillerobotics.CustomRobotParameters;
 import org.pattonvillerobotics.Globals;
+import org.pattonvillerobotics.REVGyro;
 import org.pattonvillerobotics.commoncode.enums.AllianceColor;
 import org.pattonvillerobotics.commoncode.enums.Direction;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.MecanumEncoderDrive;
+import org.pattonvillerobotics.commoncode.robotclasses.drive.SimpleMecanumDrive;
 import org.pattonvillerobotics.commoncode.robotclasses.vuforia.VuforiaNavigation;
 import org.pattonvillerobotics.mechanisms.Glyphter;
 
@@ -24,6 +26,8 @@ public class AutoMethods {
     private MecanumEncoderDrive drive;
     private Glyphter glyphter;
     private VuforiaNavigation vuforia;
+    private REVGyro gyro;
+    private SimpleMecanumDrive simpleMecanumDrive;
 
     public AutoMethods(HardwareMap hardwareMap, LinearOpMode linearOpMode, AllianceColor allianceColor) {
 
@@ -33,6 +37,8 @@ public class AutoMethods {
 
         drive = new MecanumEncoderDrive(hardwareMap, linearOpMode, CustomRobotParameters.ROBOT_PARAMETERS);
         glyphter = new Glyphter(hardwareMap, drive);
+        gyro = new REVGyro(hardwareMap);
+        simpleMecanumDrive = new SimpleMecanumDrive(linearOpMode, hardwareMap);
         vuforia = new VuforiaNavigation(CustomRobotParameters.VUFORIA_PARAMETERS);
 
         vuforia.activateTracking();
@@ -65,6 +71,13 @@ public class AutoMethods {
 
     public void driveOffBalancingStone() {
 
+        drive.moveInches(allianceColor== AllianceColor.BLUE? Direction.LEFT: Direction.RIGHT, 1, 0.2);
+        double angleMargin =3;
+        double angle = allianceColor == AllianceColor.BLUE ? 180 : 0;
+        while ((gyro.getRoll() > angleMargin ||  gyro.getRoll() < -angleMargin) && ( gyro.getPitch() > angleMargin || gyro.getPitch() < -angleMargin)){
+            simpleMecanumDrive.moveFreely(angle, 0.3, 0);
+
+        }
 
 
     }
