@@ -3,32 +3,34 @@ package org.pattonvillerobotics.autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.pattonvillerobotics.commoncode.enums.AllianceColor;
+import org.pattonvillerobotics.CustomRobotParameters;
 import org.pattonvillerobotics.commoncode.opmodes.OpModeGroups;
 import org.pattonvillerobotics.commoncode.robotclasses.vuforia.VuforiaNavigation;
 
 /**
- * Created by pieperm on 10/18/17.
+ * Created by pieperm on 10/21/17.
  */
-@Autonomous(name = "BlueAutonomous", group = OpModeGroups.MAIN)
-public class BlueAutonomous extends LinearOpMode {
 
-    private AutoMethods autoMethods;
+@Autonomous(name = "VuforiaTest", group = OpModeGroups.TESTING)
+public class VuforiaTest extends LinearOpMode {
+
     private VuforiaNavigation vuforia;
 
     @Override
     public void runOpMode() throws InterruptedException {
 
-        autoMethods = new AutoMethods(hardwareMap, this, AllianceColor.BLUE);
+        vuforia = new VuforiaNavigation(CustomRobotParameters.VUFORIA_PARAMETERS);
+        vuforia.activateTracking();
 
         waitForStart();
 
-        while (opModeIsActive()) {
-//            autoMethods.runAutonomousProcess();
-            telemetry.addData("Vuforia", vuforia.getCurrentVisibleRelic());
+        while(opModeIsActive()) {
+
+            telemetry.addData("Relic", vuforia.getCurrentVisibleRelic());
+            telemetry.update();
             idle();
+
         }
 
     }
-
 }

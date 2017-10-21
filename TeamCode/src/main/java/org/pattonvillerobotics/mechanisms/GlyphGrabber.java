@@ -17,8 +17,14 @@ public class GlyphGrabber {
     private Globals.GrabberPosition position;
 
     public GlyphGrabber(HardwareMap hardwareMap, Globals.GrabberPosition initialPosition) {
-        leftServo = hardwareMap.servo.get("glyph-grabber-left");
-        rightServo = hardwareMap.servo.get("glyph-grabber-right");
+        try {
+            leftServo = hardwareMap.servo.get("glyph-grabber-left");
+            rightServo = hardwareMap.servo.get("glyph-grabber-right");
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+
+
         position = initialPosition;
     }
 
