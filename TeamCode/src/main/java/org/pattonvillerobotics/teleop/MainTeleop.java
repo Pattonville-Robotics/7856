@@ -63,8 +63,8 @@ public class MainTeleop extends LinearOpMode {
 
         addTelemetry("Gyro initialized");
 
-        relicGrabber = new RelicGrabber(hardwareMap, Globals.GrabberPosition.RELEASED);
-        glyphter = new Glyphter(hardwareMap, mecanumEncoderDrive);
+        //relicGrabber = new RelicGrabber(hardwareMap, Globals.GrabberPosition.RELEASED);
+        glyphter = new Glyphter(hardwareMap);
 
         addTelemetry("Binding buttons");
 
@@ -124,6 +124,7 @@ public class MainTeleop extends LinearOpMode {
         gamepad.getButton(GamepadData.Button.DPAD_UP).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
             @Override
             public void run() {
+                addTelemetry("d-pad up");
                 glyphter.moveOneSpace(Direction.UP);
             }
         });
@@ -131,6 +132,7 @@ public class MainTeleop extends LinearOpMode {
         gamepad.getButton(GamepadData.Button.DPAD_DOWN).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
             @Override
             public void run() {
+                addTelemetry("d-pad down");
                 glyphter.moveOneSpace(Direction.DOWN);
             }
         });

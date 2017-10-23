@@ -36,7 +36,7 @@ public class AutoMethods {
         this.allianceColor = allianceColor;
 
         drive = new MecanumEncoderDrive(hardwareMap, linearOpMode, CustomRobotParameters.ROBOT_PARAMETERS);
-        glyphter = new Glyphter(hardwareMap, drive);
+        glyphter = new Glyphter(hardwareMap); //, drive);
         gyro = new REVGyro(hardwareMap);
         simpleMecanumDrive = new SimpleMecanumDrive(linearOpMode, hardwareMap);
         vuforia = new VuforiaNavigation(CustomRobotParameters.VUFORIA_PARAMETERS);
@@ -71,12 +71,11 @@ public class AutoMethods {
 
     public void driveOffBalancingStone() {
 
-        drive.moveInches(allianceColor== AllianceColor.BLUE? Direction.LEFT: Direction.RIGHT, 1, 0.2);
-        double angleMargin =3;
+        drive.moveInches(allianceColor == AllianceColor.BLUE? Direction.LEFT: Direction.RIGHT, 1, 0.2);
+        double angleMargin = 3;
         double angle = allianceColor == AllianceColor.BLUE ? 180 : 0;
         while ((gyro.getRoll() > angleMargin ||  gyro.getRoll() < -angleMargin) && ( gyro.getPitch() > angleMargin || gyro.getPitch() < -angleMargin)){
             simpleMecanumDrive.moveFreely(angle, 0.3, 0);
-
         }
 
 
