@@ -20,4 +20,8 @@ public class RelicExtender {
         relicExtenderMotor.setPower(0.7);
     }
 
+    public DcMotor getMotor() {
+        return relicExtenderMotor;
+    }
+
 }

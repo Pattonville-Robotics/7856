@@ -30,18 +30,26 @@ public class GlyphGrabber {
 
     public void clamp() {
         leftServo.setPosition(0.7);
-        rightServo.setPosition((0.7));
+        rightServo.setPosition((0));
         position = Globals.GrabberPosition.CLAMPED;
     }
 
     public void release() {
         leftServo.setPosition(0);
-        rightServo.setPosition(0);
+        rightServo.setPosition(0.7);
         position = Globals.GrabberPosition.RELEASED;
     }
 
     public Globals.GrabberPosition getPosition() {
         return position;
+    }
+
+    public Servo getLeftServo() {
+        return leftServo;
+    }
+
+    public Servo getRightServo() {
+        return rightServo;
     }
 
 }
