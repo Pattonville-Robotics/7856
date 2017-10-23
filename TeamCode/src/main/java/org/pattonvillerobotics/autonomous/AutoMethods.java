@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.pattonvillerobotics.CustomRobotParameters;
 import org.pattonvillerobotics.Globals;
-import org.pattonvillerobotics.REVGyro;
+import org.pattonvillerobotics.mechanisms.REVGyro;
 import org.pattonvillerobotics.commoncode.enums.AllianceColor;
 import org.pattonvillerobotics.commoncode.enums.Direction;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.MecanumEncoderDrive;
@@ -78,13 +78,14 @@ public class AutoMethods {
             simpleMecanumDrive.moveFreely(angle, 0.3, 0);
         }
 
-
     }
 
 
     public void runAutonomousProcess() {
 
         linearOpMode.telemetry.addData(TAG, allianceColor +  " autonomous initialized!");
+
+
 
     }
 
