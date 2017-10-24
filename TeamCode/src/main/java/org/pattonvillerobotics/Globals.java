@@ -11,7 +11,7 @@ public class Globals {
     public static final double NEAR_DISTANCE = 28;
     public static final double MEDIUM_DISTANCE = 35;
     public static final double FAR_DISTANCE = 42;
-    public static final double DISTANCE_TO_JEWEL = 42;
+    public static final double DISTANCE_TO_JEWEL = 22;
 
     public enum GrabberPosition {
         CLAMPED, RELEASED
