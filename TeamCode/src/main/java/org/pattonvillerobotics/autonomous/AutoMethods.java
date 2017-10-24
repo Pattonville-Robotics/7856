@@ -5,11 +5,13 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.pattonvillerobotics.CustomRobotParameters;
 import org.pattonvillerobotics.Globals;
+import org.pattonvillerobotics.JewelColorSensor;
 import org.pattonvillerobotics.commoncode.enums.AllianceColor;
 import org.pattonvillerobotics.commoncode.enums.Direction;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.MecanumEncoderDrive;
 import org.pattonvillerobotics.commoncode.robotclasses.vuforia.VuforiaNavigation;
 import org.pattonvillerobotics.mechanisms.Glyphter;
+import org.pattonvillerobotics.mechanisms.JewelWhopper;
 
 /**
  * Created by pieperm on 10/5/17.
@@ -24,6 +26,8 @@ public class AutoMethods {
     private MecanumEncoderDrive drive;
     private Glyphter glyphter;
     private VuforiaNavigation vuforia;
+    private JewelWhopper jewelWhopper;
+    private JewelColorSensor jewelColorSensor;
 
     public AutoMethods(HardwareMap hardwareMap, LinearOpMode linearOpMode, AllianceColor allianceColor) {
 
@@ -42,7 +46,7 @@ public class AutoMethods {
 
     public void driveToColumn() {
 
-        Direction direction = allianceColor == AllianceColor.BLUE ? Direction.RIGHT : Direction.LEFT;
+        Direction direction = allianceColor == AllianceColor.BLUE ? Direction.LEFT : Direction.RIGHT;
 
         switch (vuforia.getCurrentVisibleRelic()) {
 
@@ -69,11 +73,22 @@ public class AutoMethods {
 
     }
 
+    public void park(){
+
+    }
+
+    public void driveToJewel(){
+        drive.moveInches(Direction.BACKWARD, Globals.DISTANCE_TO_JEWEL, .5);
+        jewelWhopper.knockOffJewel(allianceColor, jewelColorSensor);
+        drive.moveInches(Direction.FORWARD, Globals.DISTANCE_TO_JEWEL, .5);
+    }
 
     public void runAutonomousProcess() {
 
         linearOpMode.telemetry.addData(TAG, allianceColor +  " autonomous initialized!");
 
     }
+
+
 
 }
