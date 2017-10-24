@@ -26,10 +26,10 @@ public class Glyphter {
     private static final double CYLINDER_RADIUS = 1;
     private SimpleMecanumDrive mecanumDrive;
 
-    public Glyphter(HardwareMap hardwareMap, MecanumEncoderDrive mecanumEncoderDrive) {
+    public Glyphter(HardwareMap hardwareMap) {
 
         glyphterMotor = hardwareMap.dcMotor.get("glyphter-motor");
-        this.drive = mecanumEncoderDrive;
+        //this.drive = mecanumEncoderDrive;
         this.currentRow = 1;
         this.currentColumn = 2;
 
@@ -111,6 +111,10 @@ public class Glyphter {
 
     private boolean reachedTarget(int currentPosition, int targetPosition) {
         return FastMath.abs(currentPosition - targetPosition) < EncoderDrive.TARGET_REACHED_THRESHOLD;
+    }
+
+    public DcMotor getMotor() {
+        return glyphterMotor;
     }
 
 }
