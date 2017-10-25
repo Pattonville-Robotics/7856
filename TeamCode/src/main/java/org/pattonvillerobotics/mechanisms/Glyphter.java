@@ -7,12 +7,9 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.apache.commons.math3.util.FastMath;
 import org.pattonvillerobotics.Globals;
 import org.pattonvillerobotics.commoncode.enums.Direction;
-import org.pattonvillerobotics.commoncode.robotclasses.drive.AbstractDrive;
-import org.pattonvillerobotics.commoncode.robotclasses.drive.Drive;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.EncoderDrive;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.MecanumEncoderDrive;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.RobotParameters;
-import org.pattonvillerobotics.commoncode.robotclasses.drive.SimpleMecanumDrive;
 
 /**
  * Created by pieperm on 9/30/17.
@@ -21,46 +18,44 @@ import org.pattonvillerobotics.commoncode.robotclasses.drive.SimpleMecanumDrive;
 public class Glyphter {
 
     private DcMotor glyphterMotor;
-    private MecanumEncoderDrive drive;
-    private int currentRow, currentColumn;
     private static final double CYLINDER_RADIUS = 1;
-    private SimpleMecanumDrive mecanumDrive;
+    private MecanumEncoderDrive mecanumEncoderDrive;
 
     public Glyphter(HardwareMap hardwareMap) {
 
         glyphterMotor = hardwareMap.dcMotor.get("glyphter-motor");
-        //this.drive = mecanumEncoderDrive;
-        this.currentRow = 1;
-        this.currentColumn = 2;
 
     }
 
-    public void moveTo(int targetRow, int targetColumn) {
+    public Glyphter(HardwareMap hardwareMap, MecanumEncoderDrive mecanumEncoderDrive) {
 
-        moveToColumn(targetColumn);
-        moveToRow(targetRow);
+        this(hardwareMap);
+        this.mecanumEncoderDrive = mecanumEncoderDrive;
 
     }
 
-    public void moveToColumn(int targetColumn) {
+    public void moveTo(int currentRow, int targetRow, int currentColumn, int targetColumn) {
 
-        // TODO: Need a way to find the current column (perhaps with the pictograph)
+        moveToColumn(currentColumn, targetColumn);
+        moveToRow(currentRow, targetRow);
+
+    }
+
+    public void moveToColumn(int currentColumn, int targetColumn) {
 
         int columnVector = targetColumn - currentColumn;
         double inchesVector = columnVector * Globals.COLUMN_WIDTH;
 
         if(inchesVector > 0) {
-            drive.moveInches(Direction.RIGHT, FastMath.abs(inchesVector), 0.5);
+            mecanumEncoderDrive.moveInches(Direction.RIGHT, FastMath.abs(inchesVector), 0.5);
         }
         else if(inchesVector < 0) {
-            drive.moveInches(Direction.LEFT, FastMath.abs(inchesVector), 0.5);
+            mecanumEncoderDrive.moveInches(Direction.LEFT, FastMath.abs(inchesVector), 0.5);
         }
-
-        currentColumn = targetColumn;
 
     }
 
-    public void moveToRow(int targetRow) {
+    public void moveToRow(int currentRow, int targetRow) {
 
         int rowVector = targetRow - currentRow; // The number and direction of rows to travel
         double inchesVector = rowVector * Globals.ROW_HEIGHT; // Converts the number of rows into inches
@@ -72,7 +67,27 @@ public class Glyphter {
         }
         glyphterMotor.setPower(0);
 
-        currentRow = targetRow;
+    }
+
+    private void changeRow(double inches) {
+
+        int targetPosition = (int) FastMath.round(inchesToTicks(inches));
+        glyphterMotor.setTargetPosition(targetPosition);
+
+        while(glyphterMotor.isBusy() || !reachedTarget(glyphterMotor.getCurrentPosition(), targetPosition)) {
+            Thread.yield();
+        }
+        glyphterMotor.setPower(0);
+
+    }
+
+    private void changeColumn(double inches) {
+
+        try {
+            mecanumEncoderDrive.moveInches(inches > 0 ? Direction.RIGHT : Direction.LEFT, FastMath.abs(inches), 0.5);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -80,16 +95,16 @@ public class Glyphter {
 
         switch (direction) {
             case UP:
-                if(currentRow < 4) moveToRow(currentRow + 1);
+                changeRow(Globals.ROW_HEIGHT);
                 break;
             case DOWN:
-                if(currentRow > 1) moveToRow(currentRow - 1);
+                changeRow(-Globals.ROW_HEIGHT);
                 break;
             case LEFT:
-                if(currentColumn > 1) moveToColumn(currentColumn - 1);
+                changeColumn(-Globals.COLUMN_WIDTH);
                 break;
             case RIGHT:
-                if(currentColumn < 3) moveToColumn(currentColumn + 1);
+                changeColumn(Globals.COLUMN_WIDTH);
                 break;
             default:
                 throw new IllegalArgumentException("Direction must be UP, DOWN, LEFT, or RIGHT");

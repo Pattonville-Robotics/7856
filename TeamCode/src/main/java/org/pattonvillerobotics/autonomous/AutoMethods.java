@@ -98,10 +98,6 @@ public class AutoMethods {
 
         linearOpMode.telemetry.addData(TAG, allianceColor +  " autonomous initialized!");
 
-
-
     }
-
-
 
 }

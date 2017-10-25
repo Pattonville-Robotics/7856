@@ -43,14 +43,19 @@ public class GyroTester extends LinearOpMode {
 
         gyro = new REVGyro(hardwareMap);
         gamepad = new ListenableGamepad();
-        mecanumDrive = new SimpleMecanumDrive(this, hardwareMap);
+        try {
+            mecanumDrive = new SimpleMecanumDrive(this, hardwareMap);
+        } catch (IllegalArgumentException e) {
+            telemetry.addData("Gyro", "Cannot balance robot! Check configs for mecanum motors");
+        }
+
 
         gamepad.getButton(GamepadData.Button.X).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
             @Override
             public void run() {
                 telemetry.addData("Gyro", "Attempting to balance robot").setRetained(true);
                 telemetry.update();
-                gyro.balanceRobot(mecanumDrive);
+                //gyro.balanceRobot(mecanumDrive);
             }
         });
 
