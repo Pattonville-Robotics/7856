@@ -13,7 +13,7 @@ import org.pattonvillerobotics.commoncode.robotclasses.gamepad.ListenableGamepad
  * Created by trieud01 on 10/10/17.
  */
 
-@TeleOp(name = "ServoTester", group = OpModeGroups.DEBUG)
+@TeleOp(name = "ServoTester2", group = OpModeGroups.DEBUG)
 public class ServoTester extends LinearOpMode {
 
     private Servo testServo;
