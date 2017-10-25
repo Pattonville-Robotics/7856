@@ -53,18 +53,18 @@ public class MainTeleop extends LinearOpMode {
 
         addTelemetry("Initializing...");
 
-        glyphGrabber = new GlyphGrabber(hardwareMap, Globals.GrabberPosition.RELEASED);
+        glyphGrabber = new GlyphGrabber(hardwareMap, this, Globals.GrabberPosition.RELEASED);
         gamepad = new ListenableGamepad();
         simpleMecanumDrive = new SimpleMecanumDrive(this, hardwareMap);
 
         //mecanumEncoderDrive = new MecanumEncoderDrive(hardwareMap, this, CustomRobotParameters.ROBOT_PARAMETERS);
 
-        gyro = new REVGyro(hardwareMap);
+        gyro = new REVGyro(hardwareMap, this);
 
         addTelemetry("Gyro initialized");
 
         //relicGrabber = new RelicGrabber(hardwareMap, Globals.GrabberPosition.RELEASED);
-        glyphter = new Glyphter(hardwareMap);
+        glyphter = new Glyphter(hardwareMap, this);
 
         addTelemetry("Binding buttons");
 

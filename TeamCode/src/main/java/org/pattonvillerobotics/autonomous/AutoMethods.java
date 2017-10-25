@@ -40,8 +40,8 @@ public class AutoMethods {
         this.allianceColor = allianceColor;
 
         drive = new MecanumEncoderDrive(hardwareMap, linearOpMode, CustomRobotParameters.ROBOT_PARAMETERS);
-        glyphter = new Glyphter(hardwareMap); //, drive);
-        gyro = new REVGyro(hardwareMap);
+        glyphter = new Glyphter(hardwareMap, linearOpMode); //, drive);
+        gyro = new REVGyro(hardwareMap, linearOpMode);
         simpleMecanumDrive = new SimpleMecanumDrive(linearOpMode, hardwareMap);
         vuforia = new VuforiaNavigation(CustomRobotParameters.VUFORIA_PARAMETERS);
 

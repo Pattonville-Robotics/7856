@@ -17,7 +17,7 @@ public class GlyphterTester extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
 
-        glyphter = new Glyphter(hardwareMap);
+        glyphter = new Glyphter(hardwareMap, this);
 
         waitForStart();
 
