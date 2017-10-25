@@ -31,7 +31,7 @@ public class GyroTester extends LinearOpMode {
 
             gamepad.update(new GamepadData(gamepad1));
 
-            gyro.getGyroTelemetry(telemetry);
+            gyro.getGyroTelemetry();
 
             idle();
 
@@ -41,7 +41,7 @@ public class GyroTester extends LinearOpMode {
 
     private void initialize() {
 
-        gyro = new REVGyro(hardwareMap);
+        gyro = new REVGyro(hardwareMap, this);
         gamepad = new ListenableGamepad();
         try {
             mecanumDrive = new SimpleMecanumDrive(this, hardwareMap);

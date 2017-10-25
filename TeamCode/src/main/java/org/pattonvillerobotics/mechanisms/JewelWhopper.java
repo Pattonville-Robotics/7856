@@ -1,5 +1,6 @@
 package org.pattonvillerobotics.mechanisms;
 
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -10,12 +11,20 @@ import org.pattonvillerobotics.commoncode.enums.AllianceColor;
  * Created by martint08 on 10/12/17.
  */
 
-public class JewelWhopper {
+public class JewelWhopper extends AbstractMechanism {
 
+    public static final String TAG = JewelWhopper.class.getSimpleName();
     private Servo jewelWhopperServo;
 
-    public JewelWhopper(HardwareMap hardwareMap) {
-        jewelWhopperServo = hardwareMap.servo.get("jewel-whopper-servo");
+    public JewelWhopper(HardwareMap hardwareMap, LinearOpMode linearOpMode) {
+
+        super(hardwareMap, linearOpMode);
+        try {
+            jewelWhopperServo = hardwareMap.servo.get("jewel-whopper-servo");
+        } catch (IllegalArgumentException e) {
+            linearOpMode.telemetry.addData(TAG, e.getMessage());
+            linearOpMode.telemetry.update();
+        }
 
     }
 

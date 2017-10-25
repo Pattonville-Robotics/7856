@@ -8,12 +8,20 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
  * Created by martint08 on 10/12/17.
  */
 
-public class RelicExtender {
+public class RelicExtender extends AbstractMechanism {
 
+    public static final String TAG = RelicExtender.class.getSimpleName();
     private DcMotor relicExtenderMotor;
 
-    public RelicExtender(HardwareMap hardwareMap) {
-        relicExtenderMotor = hardwareMap.dcMotor.get("relic-extender-motor");
+    public RelicExtender(HardwareMap hardwareMap, LinearOpMode linearOpMode) {
+        super(hardwareMap, linearOpMode);
+        try {
+            relicExtenderMotor = hardwareMap.dcMotor.get("relic-extender-motor");
+        } catch (IllegalArgumentException e) {
+            linearOpMode.telemetry.addData(TAG, e.getMessage());
+            linearOpMode.telemetry.update();
+        }
+
     }
 
     public void extend() {

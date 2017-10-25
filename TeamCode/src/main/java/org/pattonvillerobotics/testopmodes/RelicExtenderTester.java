@@ -16,7 +16,7 @@ public class RelicExtenderTester extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
 
-        relicExtender = new RelicExtender(hardwareMap);
+        relicExtender = new RelicExtender(hardwareMap, this);
 
         waitForStart();
 

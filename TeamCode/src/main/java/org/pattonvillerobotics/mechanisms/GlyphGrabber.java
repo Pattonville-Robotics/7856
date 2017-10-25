@@ -10,20 +10,22 @@ import org.pattonvillerobotics.Globals;
  * Created by martint08 on 9/30/17.
  */
 
-public class GlyphGrabber {
+public class GlyphGrabber extends AbstractMechanism {
 
+    public static final String TAG = GlyphGrabber.class.getSimpleName();
     private Servo leftServo;
     private Servo rightServo;
     private Globals.GrabberPosition position;
 
-    public GlyphGrabber(HardwareMap hardwareMap, Globals.GrabberPosition initialPosition) {
+    public GlyphGrabber(HardwareMap hardwareMap, LinearOpMode linearOpMode, Globals.GrabberPosition initialPosition) {
+        super(hardwareMap, linearOpMode);
         try {
             leftServo = hardwareMap.servo.get("glyph-grabber-left");
             rightServo = hardwareMap.servo.get("glyph-grabber-right");
         } catch (IllegalArgumentException e) {
-            e.printStackTrace();
+            linearOpMode.telemetry.addData(TAG, e.getMessage());
+            linearOpMode.telemetry.update();
         }
-
 
         position = initialPosition;
     }

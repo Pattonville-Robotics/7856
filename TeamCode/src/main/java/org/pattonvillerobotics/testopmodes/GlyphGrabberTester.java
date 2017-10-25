@@ -19,7 +19,7 @@ public class GlyphGrabberTester extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
 
-        glyphGrabber = new GlyphGrabber(hardwareMap, Globals.GrabberPosition.RELEASED);
+        glyphGrabber = new GlyphGrabber(hardwareMap, this, Globals.GrabberPosition.RELEASED);
 
         waitForStart();
 

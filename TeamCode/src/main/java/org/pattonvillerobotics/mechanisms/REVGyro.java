@@ -2,6 +2,7 @@ package org.pattonvillerobotics.mechanisms;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -15,12 +16,15 @@ import org.pattonvillerobotics.commoncode.robotclasses.drive.SimpleMecanumDrive;
 
 import java.util.Locale;
 
-public class REVGyro {
+public class REVGyro extends AbstractMechanism {
 
+    public static final String TAG = REVGyro.class.getSimpleName();
     private BNO055IMU imu;
     private Orientation angles;
 
-    public REVGyro(HardwareMap hardwareMap) {
+    public REVGyro(HardwareMap hardwareMap, LinearOpMode linearOpMode) {
+
+        super(hardwareMap, linearOpMode);
 
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
@@ -30,8 +34,14 @@ public class REVGyro {
         parameters.loggingTag = "IMU";
         parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
 
-        imu = hardwareMap.get(BNO055IMU.class, "imu");
-        imu.initialize(parameters);
+        try {
+            imu = hardwareMap.get(BNO055IMU.class, "imu");
+            imu.initialize(parameters);
+        } catch (IllegalArgumentException e) {
+            linearOpMode.telemetry.addData(TAG, e.getMessage());
+            linearOpMode.telemetry.update();
+        }
+
 
         updateAngles();
 
@@ -67,13 +77,13 @@ public class REVGyro {
         return imu.getGravity().xAccel + ", " + imu.getGravity().yAccel + ", " + imu.getGravity().zAccel;
     }
 
-    public void getGyroTelemetry(Telemetry telemetry) {
+    public void getGyroTelemetry() {
         updateAngles();
-        telemetry.addData("Heading", getHeading());
-        telemetry.addData("Roll", getRoll());
-        telemetry.addData("Pitch", getPitch());
-        telemetry.addData("Gravity", getGravity());
-        telemetry.update();
+        linearOpMode.telemetry.addData("Heading", getHeading());
+        linearOpMode.telemetry.addData("Roll", getRoll());
+        linearOpMode.telemetry.addData("Pitch", getPitch());
+        linearOpMode.telemetry.addData("Gravity", getGravity());
+        linearOpMode.telemetry.update();
     }
 
     public void balanceRobot(SimpleMecanumDrive mecanumDrive) {
@@ -86,7 +96,7 @@ public class REVGyro {
         final double PITCH_MARGIN = 6;
         double balancingSpeed = 0.2;
 
-        //TODO moveFreely doesn't take in a Direction enum. Perhaps Common-Code was meant to be updated?
+        //TODO: Move directions based on roll and pitch
         while(getRoll() > ROLL_MARGIN) {
             //mecanumDrive.moveFreely(Direction.FORWARD, balancingSpeed, 0);
         }

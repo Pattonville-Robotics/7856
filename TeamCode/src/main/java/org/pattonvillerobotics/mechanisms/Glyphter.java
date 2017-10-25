@@ -15,21 +15,29 @@ import org.pattonvillerobotics.commoncode.robotclasses.drive.RobotParameters;
  * Created by pieperm on 9/30/17.
  */
 
-public class Glyphter {
+public class Glyphter extends AbstractMechanism {
 
+    public static final String TAG = Glyphter.class.getSimpleName();
     private DcMotor glyphterMotor;
     private static final double CYLINDER_RADIUS = 1;
     private MecanumEncoderDrive mecanumEncoderDrive;
 
-    public Glyphter(HardwareMap hardwareMap) {
+    public Glyphter(HardwareMap hardwareMap, LinearOpMode linearOpMode) {
 
-        glyphterMotor = hardwareMap.dcMotor.get("glyphter-motor");
+        super(hardwareMap, linearOpMode);
+        try {
+            glyphterMotor = hardwareMap.dcMotor.get("glyphter-motor");
+        } catch (IllegalArgumentException e) {
+            linearOpMode.telemetry.addData(TAG, e.getMessage());
+            linearOpMode.telemetry.update();
+        }
+
 
     }
 
-    public Glyphter(HardwareMap hardwareMap, MecanumEncoderDrive mecanumEncoderDrive) {
+    public Glyphter(HardwareMap hardwareMap, LinearOpMode linearOpMode, MecanumEncoderDrive mecanumEncoderDrive) {
 
-        this(hardwareMap);
+        this(hardwareMap, linearOpMode);
         this.mecanumEncoderDrive = mecanumEncoderDrive;
 
     }
