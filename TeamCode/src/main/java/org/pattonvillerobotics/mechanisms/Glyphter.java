@@ -19,7 +19,6 @@ public class Glyphter extends AbstractMechanism {
 
     public static final String TAG = Glyphter.class.getSimpleName();
     private DcMotor glyphterMotor;
-    private static final double CYLINDER_RADIUS = 1;
     private MecanumEncoderDrive mecanumEncoderDrive;
 
     public Glyphter(HardwareMap hardwareMap, LinearOpMode linearOpMode) {
@@ -129,7 +128,7 @@ public class Glyphter extends AbstractMechanism {
      * @return the number of encoder ticks
      */
     private double inchesToTicks(double inches) {
-        return (inches / CYLINDER_RADIUS) * (RobotParameters.TICKS_PER_REVOLUTION / (2 * FastMath.PI));
+        return (inches / Globals.CYLINDER_RADIUS) * (RobotParameters.TICKS_PER_REVOLUTION / (2 * FastMath.PI));
     }
 
     private boolean reachedTarget(int currentPosition, int targetPosition) {
