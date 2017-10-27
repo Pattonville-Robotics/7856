@@ -1,4 +1,4 @@
-package org.pattonvillerobotics;
+package org.pattonvillerobotics.testopmodes;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -13,7 +13,7 @@ import org.pattonvillerobotics.commoncode.robotclasses.gamepad.ListenableGamepad
  * Created by trieud01 on 10/10/17.
  */
 
-@TeleOp(name = "ServoTester", group = OpModeGroups.TESTING)
+@TeleOp(name = "ServoTester2", group = OpModeGroups.DEBUG)
 public class ServoTester extends LinearOpMode {
 
     private Servo testServo;
@@ -26,7 +26,8 @@ public class ServoTester extends LinearOpMode {
         testServo = hardwareMap.servo.get("test-servo");
 
         gamepad = new ListenableGamepad();
-        gamepad.getButton(GamepadData.Button.A).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
+
+        gamepad.getButton(GamepadData.Button.LEFT_BUMPER).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
             @Override
             public void run() {
                 testServo.setPosition(0);

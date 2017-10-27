@@ -5,13 +5,15 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.pattonvillerobotics.CustomRobotParameters;
 import org.pattonvillerobotics.Globals;
-import org.pattonvillerobotics.REVGyro;
+import org.pattonvillerobotics.JewelColorSensor;
+import org.pattonvillerobotics.mechanisms.REVGyro;
 import org.pattonvillerobotics.commoncode.enums.AllianceColor;
 import org.pattonvillerobotics.commoncode.enums.Direction;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.MecanumEncoderDrive;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.SimpleMecanumDrive;
 import org.pattonvillerobotics.commoncode.robotclasses.vuforia.VuforiaNavigation;
 import org.pattonvillerobotics.mechanisms.Glyphter;
+import org.pattonvillerobotics.mechanisms.JewelWhopper;
 
 /**
  * Created by pieperm on 10/5/17.
@@ -26,7 +28,10 @@ public class AutoMethods {
     private MecanumEncoderDrive drive;
     private Glyphter glyphter;
     private VuforiaNavigation vuforia;
-    private REVGyro revGyro;
+    private JewelWhopper jewelWhopper;
+    private JewelColorSensor jewelColorSensor;
+    private REVGyro gyro;
+
     private SimpleMecanumDrive simpleMecanumDrive;
 
     public AutoMethods(HardwareMap hardwareMap, LinearOpMode linearOpMode, AllianceColor allianceColor) {
@@ -35,24 +40,21 @@ public class AutoMethods {
         this.linearOpMode = linearOpMode;
         this.allianceColor = allianceColor;
 
-        vuforia.activateTracking();
-
-    }
-
-    public void initialize() {
-
         drive = new MecanumEncoderDrive(hardwareMap, linearOpMode, CustomRobotParameters.ROBOT_PARAMETERS);
-        glyphter = new Glyphter(hardwareMap, drive);
+        glyphter = new Glyphter(hardwareMap, linearOpMode); //, drive);
+        gyro = new REVGyro(hardwareMap, linearOpMode);
+        simpleMecanumDrive = new SimpleMecanumDrive(linearOpMode, hardwareMap);
         vuforia = new VuforiaNavigation(CustomRobotParameters.VUFORIA_PARAMETERS);
         simpleMecanumDrive = new SimpleMecanumDrive(linearOpMode, hardwareMap);
+
+        vuforia.activateTracking();
 
     }
 
 
     public void driveToColumn() {
 
-
-        Direction direction = allianceColor == AllianceColor.BLUE ? Direction.RIGHT : Direction.LEFT;
+        Direction direction = allianceColor == AllianceColor.BLUE ? Direction.LEFT : Direction.RIGHT;
 
         switch (vuforia.getCurrentVisibleRelic()) {
 
@@ -70,6 +72,28 @@ public class AutoMethods {
                 break;
         }
 
+    }
+
+
+    public void driveOffBalancingStone() {
+
+        drive.moveInches(allianceColor == AllianceColor.BLUE? Direction.LEFT: Direction.RIGHT, 1, 0.2);
+        double angleMargin = 3;
+        double angle = allianceColor == AllianceColor.BLUE ? 180 : 0;
+        while ((gyro.getRoll() > angleMargin ||  gyro.getRoll() < -angleMargin) && ( gyro.getPitch() > angleMargin || gyro.getPitch() < -angleMargin)){
+            simpleMecanumDrive.moveFreely(angle, 0.3, 0);
+        }
+
+    }
+
+    public void park(){
+
+    }
+
+    public void driveToJewel(){
+        drive.moveInches(Direction.BACKWARD, Globals.DISTANCE_TO_JEWEL, .5);
+        jewelWhopper.knockOffJewel(allianceColor, jewelColorSensor);
+        drive.moveInches(Direction.FORWARD, Globals.DISTANCE_TO_JEWEL, .5);
     }
 
     public void runAutonomousProcess() {
