@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.pattonvillerobotics.CustomRobotParameters;
+import org.pattonvillerobotics.Globals;
 import org.pattonvillerobotics.REVGyro;
 import org.pattonvillerobotics.commoncode.enums.AllianceColor;
 import org.pattonvillerobotics.commoncode.enums.Direction;
@@ -50,21 +51,19 @@ public class AutoMethods {
 
     public void driveToColumn() {
 
-        final double NEAR_DISTANCE = 28;
-        final double MEDIUM_DISTANCE = 35;
-        final double FAR_DISTANCE = 42;
+
         Direction direction = allianceColor == AllianceColor.BLUE ? Direction.RIGHT : Direction.LEFT;
 
         switch (vuforia.getCurrentVisibleRelic()) {
 
             case LEFT:
-                drive.moveInches(direction, allianceColor == AllianceColor.BLUE ? NEAR_DISTANCE : FAR_DISTANCE, 0.5);
+                drive.moveInches(direction, allianceColor == AllianceColor.BLUE ? Globals.NEAR_DISTANCE : Globals.FAR_DISTANCE, 0.5);
                 break;
             case CENTER:
-                drive.moveInches(direction, MEDIUM_DISTANCE, 0.5);
+                drive.moveInches(direction, Globals.MEDIUM_DISTANCE, 0.5);
                 break;
             case RIGHT:
-                drive.moveInches(direction, allianceColor == AllianceColor.BLUE ? FAR_DISTANCE : NEAR_DISTANCE, 0.5);
+                drive.moveInches(direction, allianceColor == AllianceColor.BLUE ? Globals.FAR_DISTANCE : Globals.NEAR_DISTANCE, 0.5);
                 break;
             default:
                 driveToColumn();
