@@ -3,18 +3,16 @@ package org.pattonvillerobotics.teleop;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.pattonvillerobotics.CustomRobotParameters;
 import org.pattonvillerobotics.Globals;
-import org.pattonvillerobotics.REVGyro;
+import org.pattonvillerobotics.mechanisms.REVGyro;
 import org.pattonvillerobotics.commoncode.enums.Direction;
-import org.pattonvillerobotics.commoncode.robotclasses.drive.MecanumEncoderDrive;
-import org.pattonvillerobotics.commoncode.robotclasses.drive.RobotParameters;
-import org.pattonvillerobotics.mechanisms.GlyphGrabber;
 import org.pattonvillerobotics.commoncode.opmodes.OpModeGroups;
+import org.pattonvillerobotics.commoncode.robotclasses.drive.MecanumEncoderDrive;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.SimpleMecanumDrive;
 import org.pattonvillerobotics.commoncode.robotclasses.gamepad.GamepadData;
 import org.pattonvillerobotics.commoncode.robotclasses.gamepad.ListenableButton;
 import org.pattonvillerobotics.commoncode.robotclasses.gamepad.ListenableGamepad;
+import org.pattonvillerobotics.mechanisms.GlyphGrabber;
 import org.pattonvillerobotics.mechanisms.Glyphter;
 import org.pattonvillerobotics.mechanisms.RelicExtender;
 import org.pattonvillerobotics.mechanisms.RelicGrabber;
@@ -25,6 +23,7 @@ import org.pattonvillerobotics.mechanisms.RelicGrabber;
 @TeleOp(name = "MainTeleop", group = OpModeGroups.MAIN)
 public class MainTeleop extends LinearOpMode {
 
+    private static final String TAG = MainTeleop.class.getSimpleName();
     private GlyphGrabber glyphGrabber;
     private SimpleMecanumDrive simpleMecanumDrive;
     private MecanumEncoderDrive mecanumEncoderDrive;
@@ -52,17 +51,30 @@ public class MainTeleop extends LinearOpMode {
 
     private void initialize() {
 
-        glyphGrabber = new GlyphGrabber(hardwareMap, Globals.GrabberPosition.RELEASED);
+        addTelemetry("Initializing...");
+
+        glyphGrabber = new GlyphGrabber(hardwareMap, this, Globals.GrabberPosition.RELEASED);
         gamepad = new ListenableGamepad();
         simpleMecanumDrive = new SimpleMecanumDrive(this, hardwareMap);
-        mecanumEncoderDrive = new MecanumEncoderDrive(hardwareMap, this, CustomRobotParameters.ROBOT_PARAMETERS);
-        gyro = new REVGyro(hardwareMap);
-        relicGrabber = new RelicGrabber(hardwareMap, Globals.GrabberPosition.RELEASED);
-        glyphter = new Glyphter(hardwareMap, mecanumEncoderDrive);
+
+        //mecanumEncoderDrive = new MecanumEncoderDrive(hardwareMap, this, CustomRobotParameters.ROBOT_PARAMETERS);
+
+        gyro = new REVGyro(hardwareMap, this);
+
+        addTelemetry("Gyro initialized");
+
+        //relicGrabber = new RelicGrabber(hardwareMap, Globals.GrabberPosition.RELEASED);
+        glyphter = new Glyphter(hardwareMap, this);
+
+        addTelemetry("Binding buttons");
 
         bindGamepadButtons();
 
-        glyphGrabber.release();
+        addTelemetry("Buttons bound");
+
+        //glyphGrabber.release();
+
+        addTelemetry("Done");
 
     }
 
@@ -112,6 +124,7 @@ public class MainTeleop extends LinearOpMode {
         gamepad.getButton(GamepadData.Button.DPAD_UP).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
             @Override
             public void run() {
+                addTelemetry("d-pad up");
                 glyphter.moveOneSpace(Direction.UP);
             }
         });
@@ -119,6 +132,7 @@ public class MainTeleop extends LinearOpMode {
         gamepad.getButton(GamepadData.Button.DPAD_DOWN).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
             @Override
             public void run() {
+                addTelemetry("d-pad down");
                 glyphter.moveOneSpace(Direction.DOWN);
             }
         });
@@ -144,6 +158,13 @@ public class MainTeleop extends LinearOpMode {
             }
         });
 
+
+    }
+
+    public void addTelemetry(Object value) {
+
+        telemetry.addData(TAG, value);
+        telemetry.update();
 
     }
 

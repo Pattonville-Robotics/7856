@@ -3,7 +3,7 @@ package org.pattonvillerobotics.teleop;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.pattonvillerobotics.REVGyro;
+import org.pattonvillerobotics.mechanisms.REVGyro;
 import org.pattonvillerobotics.commoncode.opmodes.OpModeGroups;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.SimpleMecanumDrive;
 import org.pattonvillerobotics.commoncode.robotclasses.gamepad.GamepadData;
@@ -31,7 +31,7 @@ public class GyroTester extends LinearOpMode {
 
             gamepad.update(new GamepadData(gamepad1));
 
-            gyro.getGyroTelemetry(telemetry);
+            gyro.getGyroTelemetry();
 
             idle();
 
@@ -41,16 +41,21 @@ public class GyroTester extends LinearOpMode {
 
     private void initialize() {
 
-        gyro = new REVGyro(hardwareMap);
+        gyro = new REVGyro(hardwareMap, this);
         gamepad = new ListenableGamepad();
-        mecanumDrive = new SimpleMecanumDrive(this, hardwareMap);
+        try {
+            mecanumDrive = new SimpleMecanumDrive(this, hardwareMap);
+        } catch (IllegalArgumentException e) {
+            telemetry.addData("Gyro", "Cannot balance robot! Check configs for mecanum motors");
+        }
+
 
         gamepad.getButton(GamepadData.Button.X).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
             @Override
             public void run() {
                 telemetry.addData("Gyro", "Attempting to balance robot").setRetained(true);
                 telemetry.update();
-                gyro.balanceRobot(mecanumDrive);
+                //gyro.balanceRobot(mecanumDrive);
             }
         });
 

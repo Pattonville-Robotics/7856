@@ -18,7 +18,6 @@ public class RedAutonomous extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
 
         autoMethods = new AutoMethods(hardwareMap, this, AllianceColor.RED);
-        autoMethods.initialize();
 
         waitForStart();
 
