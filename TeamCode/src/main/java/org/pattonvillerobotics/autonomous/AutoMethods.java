@@ -31,6 +31,7 @@ public class AutoMethods {
     private JewelWhopper jewelWhopper;
     private JewelColorSensor jewelColorSensor;
     private REVGyro gyro;
+
     private SimpleMecanumDrive simpleMecanumDrive;
 
     public AutoMethods(HardwareMap hardwareMap, LinearOpMode linearOpMode, AllianceColor allianceColor) {
@@ -44,6 +45,7 @@ public class AutoMethods {
         gyro = new REVGyro(hardwareMap, linearOpMode);
         simpleMecanumDrive = new SimpleMecanumDrive(linearOpMode, hardwareMap);
         vuforia = new VuforiaNavigation(CustomRobotParameters.VUFORIA_PARAMETERS);
+        simpleMecanumDrive = new SimpleMecanumDrive(linearOpMode, hardwareMap);
 
         vuforia.activateTracking();
 
@@ -98,6 +100,15 @@ public class AutoMethods {
 
         linearOpMode.telemetry.addData(TAG, allianceColor +  " autonomous initialized!");
 
+    }
+    private void driveOffBalancingStone (){
+        while (revGyro.getRoll() != 0 && revGyro.getPitch() != 0) {
+            if (allianceColor == AllianceColor.BLUE) {
+                simpleMecanumDrive.moveFreely(0,0.5,0);
+            }else {
+                simpleMecanumDrive.moveFreely(180,0.5,0);
+            }
+        }
     }
 
 }
