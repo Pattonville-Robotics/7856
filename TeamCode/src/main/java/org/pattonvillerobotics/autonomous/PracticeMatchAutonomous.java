@@ -5,11 +5,9 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.pattonvillerobotics.CustomRobotParameters;
 import org.pattonvillerobotics.Globals;
-import org.pattonvillerobotics.commoncode.enums.AllianceColor;
 import org.pattonvillerobotics.commoncode.enums.Direction;
 import org.pattonvillerobotics.commoncode.opmodes.OpModeGroups;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.MecanumEncoderDrive;
-import org.pattonvillerobotics.commoncode.robotclasses.drive.QuadEncoderDrive;
 import org.pattonvillerobotics.mechanisms.GlyphGrabber;
 
 /**
@@ -27,7 +25,7 @@ public class PracticeMatchAutonomous extends LinearOpMode {
 
         //AutoMethods autoMethods = new AutoMethods(hardwareMap, this, AllianceColor.BLUE);
         MecanumEncoderDrive drive = new MecanumEncoderDrive(hardwareMap, this, CustomRobotParameters.ROBOT_PARAMETERS);
-        GlyphGrabber glyphGrabber = new GlyphGrabber(hardwareMap, Globals.GrabberPosition.CLAMPED);
+        GlyphGrabber glyphGrabber = new GlyphGrabber(hardwareMap, this, Globals.GrabberPosition.CLAMPED);
 
 //        drive.moveInches(Direction.LEFT,35, .3);
 //
