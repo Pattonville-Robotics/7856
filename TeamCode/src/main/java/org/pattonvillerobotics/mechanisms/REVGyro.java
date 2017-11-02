@@ -48,6 +48,10 @@ public class REVGyro extends AbstractMechanism {
 
     }
 
+    public void setOrientation(AxesReference axesReference, AxesOrder axesOrder) {
+        angles = imu.getAngularOrientation(axesReference, axesOrder, AngleUnit.DEGREES);
+    }
+
     public void startAccelerationIntegration() {
         imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
     }

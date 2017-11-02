@@ -3,8 +3,6 @@ package org.pattonvillerobotics.autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-
-import org.apache.commons.math3.util.FastMath;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.AbstractDrive;
 
 /**
@@ -35,20 +33,20 @@ public class HolonomicDrive extends AbstractDrive {
 
             case LEFT_FRONT:
             case RIGHT_BACK:
-                iVector = 0.5 * power * FastMath.cos(angle) + 0.5 * power * FastMath.sin(angle);
-                jVector = 0.5 * power * FastMath.cos(angle) + 0.5 * power * FastMath.sin(angle);
+                iVector = 0.5 * power * Math.cos(angle) + 0.5 * power * Math.sin(angle);
+                jVector = 0.5 * power * Math.cos(angle) + 0.5 * power * Math.sin(angle);
                 break;
             case LEFT_BACK:
             case RIGHT_FRONT:
-                iVector = 0.5 * power * FastMath.cos(angle) - 0.5 * power * FastMath.sin(angle);
-                jVector = 0.5 * power * FastMath.cos(angle) - 0.5 * power * FastMath.sin(angle);
+                iVector = 0.5 * power * Math.cos(angle) - 0.5 * power * Math.sin(angle);
+                jVector = 0.5 * power * Math.cos(angle) - 0.5 * power * Math.sin(angle);
                 break;
             default:
                 throw new IllegalArgumentException("MotorPosition must be LEFT_FRONT, RIGHT_BACK, RIGHT_FRONT, or LEFT_BACK.");
 
         }
 
-        return FastMath.hypot(iVector, jVector);
+        return Math.hypot(iVector, jVector);
 
     }
 
@@ -68,8 +66,8 @@ public class HolonomicDrive extends AbstractDrive {
 
     public void drive(double x, double y) {
 
-        double angle = FastMath.atan2(y, x);
-        double power = FastMath.hypot(x, y);
+        double angle = Math.atan2(y, x);
+        double power = Math.hypot(x, y);
 
         move(angle, power);
 

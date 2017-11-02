@@ -3,8 +3,6 @@ package org.pattonvillerobotics.autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-
-import org.apache.commons.math3.util.FastMath;
 import org.pattonvillerobotics.commoncode.enums.Direction;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.QuadEncoderDrive;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.RobotParameters;
@@ -61,9 +59,9 @@ public class HolonomicEncoderDrive extends QuadEncoderDrive {
         super.storeMotorModes();
         super.resetMotorEncoders();
 
-        int deltaPosition = (int) FastMath.round(super.inchesToTicks(inches));
+        int deltaPosition = (int) Math.round(super.inchesToTicks(inches));
 
-        double iVectorLeft = deltaPosition * FastMath.pow(FastMath.cos(angle), 2) * FastMath.cos(45) + deltaPosition * FastMath.cos(angle) * FastMath.sin(angle) * FastMath.sin(45);
+        double iVectorLeft = deltaPosition * Math.pow(Math.cos(angle), 2) * Math.cos(45) + deltaPosition * Math.cos(angle) * Math.sin(angle) * Math.sin(45);
         double jVectorLeft;
 
     }

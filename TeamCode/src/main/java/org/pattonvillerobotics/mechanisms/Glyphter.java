@@ -3,8 +3,6 @@ package org.pattonvillerobotics.mechanisms;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-
-import org.apache.commons.math3.util.FastMath;
 import org.pattonvillerobotics.Globals;
 import org.pattonvillerobotics.commoncode.enums.Direction;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.EncoderDrive;
@@ -54,10 +52,10 @@ public class Glyphter extends AbstractMechanism {
         double inchesVector = columnVector * Globals.COLUMN_WIDTH;
 
         if(inchesVector > 0) {
-            mecanumEncoderDrive.moveInches(Direction.RIGHT, FastMath.abs(inchesVector), 0.5);
+            mecanumEncoderDrive.moveInches(Direction.RIGHT, Math.abs(inchesVector), 0.5);
         }
         else if(inchesVector < 0) {
-            mecanumEncoderDrive.moveInches(Direction.LEFT, FastMath.abs(inchesVector), 0.5);
+            mecanumEncoderDrive.moveInches(Direction.LEFT, Math.abs(inchesVector), 0.5);
         }
 
     }
@@ -66,7 +64,7 @@ public class Glyphter extends AbstractMechanism {
 
         int rowVector = targetRow - currentRow; // The number and direction of rows to travel
         double inchesVector = rowVector * Globals.ROW_HEIGHT; // Converts the number of rows into inches
-        int targetPosition = (int) FastMath.round(inchesToTicks(inchesVector)); // Obtains a target position for the motor
+        int targetPosition = (int) Math.round(inchesToTicks(inchesVector)); // Obtains a target position for the motor
         glyphterMotor.setTargetPosition(targetPosition);
 
         while(glyphterMotor.isBusy() || !reachedTarget(glyphterMotor.getCurrentPosition(), targetPosition)) {
@@ -78,7 +76,7 @@ public class Glyphter extends AbstractMechanism {
 
     private void changeRow(double inches) {
 
-        int targetPosition = (int) FastMath.round(inchesToTicks(inches));
+        int targetPosition = (int) Math.round(inchesToTicks(inches));
         glyphterMotor.setTargetPosition(targetPosition);
 
         while(glyphterMotor.isBusy() || !reachedTarget(glyphterMotor.getCurrentPosition(), targetPosition)) {
@@ -91,7 +89,7 @@ public class Glyphter extends AbstractMechanism {
     private void changeColumn(double inches) {
 
         try {
-            mecanumEncoderDrive.moveInches(inches > 0 ? Direction.RIGHT : Direction.LEFT, FastMath.abs(inches), 0.5);
+            mecanumEncoderDrive.moveInches(inches > 0 ? Direction.RIGHT : Direction.LEFT, Math.abs(inches), 0.5);
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
         }
@@ -128,11 +126,11 @@ public class Glyphter extends AbstractMechanism {
      * @return the number of encoder ticks
      */
     private double inchesToTicks(double inches) {
-        return (inches / Globals.CYLINDER_RADIUS) * (RobotParameters.TICKS_PER_REVOLUTION / (2 * FastMath.PI));
+        return (inches / Globals.CYLINDER_RADIUS) * (RobotParameters.TICKS_PER_REVOLUTION / (2 * Math.PI));
     }
 
     private boolean reachedTarget(int currentPosition, int targetPosition) {
-        return FastMath.abs(currentPosition - targetPosition) < EncoderDrive.TARGET_REACHED_THRESHOLD;
+        return Math.abs(currentPosition - targetPosition) < EncoderDrive.TARGET_REACHED_THRESHOLD;
     }
 
     public DcMotor getMotor() {
