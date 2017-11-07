@@ -2,6 +2,7 @@ package org.pattonvillerobotics.teleop;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.pattonvillerobotics.Globals;
 import org.pattonvillerobotics.mechanisms.REVGyro;
@@ -57,6 +58,8 @@ public class MainTeleop extends LinearOpMode {
         gamepad = new ListenableGamepad();
         simpleMecanumDrive = new SimpleMecanumDrive(this, hardwareMap);
 
+//        simpleMecanumDrive.leftDriveMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+
         //mecanumEncoderDrive = new MecanumEncoderDrive(hardwareMap, this, CustomRobotParameters.ROBOT_PARAMETERS);
 
         gyro = new REVGyro(hardwareMap, this);
@@ -100,23 +103,19 @@ public class MainTeleop extends LinearOpMode {
                 new ListenableButton.ButtonListener() {
                     @Override
                     public void run() {
-                        switch(relicGrabber.getPosition()) {
-                            case CLAMPED:
-                                relicGrabber.release();
-                                break;
-                            case RELEASED:
-                                relicGrabber.clamp();
-                                break;
-                        }
-                    }
-                }
-        );
+                        try {
 
-        gamepad.getButton(GamepadData.Button.X).addListener(ListenableButton.ButtonState.JUST_PRESSED,
-                new ListenableButton.ButtonListener() {
-                    @Override
-                    public void run() {
-                        gyro.balanceRobot(simpleMecanumDrive);
+                            switch (relicGrabber.getPosition()) {
+                                case CLAMPED:
+                                    relicGrabber.release();
+                                    break;
+                                case RELEASED:
+                                    relicGrabber.clamp();
+                                    break;
+                            }
+                        } catch (NullPointerException e) {
+                            addTelemetry(e.getMessage());
+                        }
                     }
                 }
         );

@@ -28,16 +28,25 @@ public class JewelWhopper extends AbstractMechanism {
 
     }
 
-    // TODO: find left and right servo values
+    public void moveUp() {
+        jewelWhopperServo.setPosition(1);
+    }
 
+    public void moveDown() {
+        jewelWhopperServo.setPosition(0);
+    }
+
+    @Deprecated
     public void moveLeft() {
         jewelWhopperServo.setPosition(0);
     }
 
+    @Deprecated
     public void moveRight() {
         jewelWhopperServo.setPosition(1);
     }
 
+    @Deprecated
     public void knockOffJewel(AllianceColor allianceColor, JewelColorSensor jewelColorSensor) {
 
         AllianceColor leftJewelColor = jewelColorSensor.leftJewelColor();
