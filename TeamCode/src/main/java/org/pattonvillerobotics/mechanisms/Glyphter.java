@@ -79,9 +79,12 @@ public class Glyphter extends AbstractMechanism {
         int targetPosition = (int) Math.round(inchesToTicks(inches));
         glyphterMotor.setTargetPosition(targetPosition);
 
+        displayTelemetry(TAG, "Set target position", true);
+
         while(glyphterMotor.isBusy() || !reachedTarget(glyphterMotor.getCurrentPosition(), targetPosition)) {
             Thread.yield();
         }
+        displayTelemetry(TAG, "Reached position", true);
         glyphterMotor.setPower(0);
 
     }
