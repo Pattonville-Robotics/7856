@@ -18,6 +18,7 @@ public class Glyphter extends AbstractMechanism {
     public static final String TAG = Glyphter.class.getSimpleName();
     private DcMotor glyphterMotor;
     private MecanumEncoderDrive mecanumEncoderDrive;
+    private DcMotor.RunMode glyphterMotorRunMode;
 
     public Glyphter(HardwareMap hardwareMap, LinearOpMode linearOpMode) {
 
@@ -25,10 +26,8 @@ public class Glyphter extends AbstractMechanism {
         try {
             glyphterMotor = hardwareMap.dcMotor.get("glyphter-motor");
         } catch (IllegalArgumentException e) {
-            linearOpMode.telemetry.addData(TAG, e.getMessage());
-            linearOpMode.telemetry.update();
+            displayTelemetry(TAG, "Could not initialize glyphter", true);
         }
-
 
     }
 
@@ -37,6 +36,18 @@ public class Glyphter extends AbstractMechanism {
         this(hardwareMap, linearOpMode);
         this.mecanumEncoderDrive = mecanumEncoderDrive;
 
+    }
+
+    public void moveUp() {
+        glyphterMotor.setPower(0.5);
+    }
+
+    public void moveDown() {
+        glyphterMotor.setPower(-0.5);
+    }
+
+    public void stop() {
+        glyphterMotor.setPower(0);
     }
 
     public void moveTo(int currentRow, int targetRow, int currentColumn, int targetColumn) {
@@ -62,26 +73,45 @@ public class Glyphter extends AbstractMechanism {
 
     public void moveToRow(int currentRow, int targetRow) {
 
+        glyphterMotorRunMode = glyphterMotor.getMode();
+        glyphterMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
         int rowVector = targetRow - currentRow; // The number and direction of rows to travel
         double inchesVector = rowVector * Globals.ROW_HEIGHT; // Converts the number of rows into inches
         int targetPosition = (int) Math.round(inchesToTicks(inchesVector)); // Obtains a target position for the motor
+
+        if(glyphterMotorRunMode != DcMotor.RunMode.RUN_TO_POSITION) {
+            glyphterMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        }
+
         glyphterMotor.setTargetPosition(targetPosition);
 
         while(glyphterMotor.isBusy() || !reachedTarget(glyphterMotor.getCurrentPosition(), targetPosition)) {
             Thread.yield();
         }
+
         glyphterMotor.setPower(0);
+        glyphterMotor.setMode(glyphterMotorRunMode);
 
     }
 
     private void changeRow(double inches) {
 
+        displayTelemetry(TAG, "Glyphter activated", true);
+
         int targetPosition = (int) Math.round(inchesToTicks(inches));
         glyphterMotor.setTargetPosition(targetPosition);
 
+        displayTelemetry(TAG, "Set target position", true);
+
         while(glyphterMotor.isBusy() || !reachedTarget(glyphterMotor.getCurrentPosition(), targetPosition)) {
+            displayTelemetry("isBusy", glyphterMotor.isBusy(), true);
+            displayTelemetry("Current Position", glyphterMotor.getCurrentPosition(), true);
+            displayTelemetry("Target Position", targetPosition, true);
+            displayTelemetry("Reached target", reachedTarget(glyphterMotor.getCurrentPosition(), targetPosition), true);
             Thread.yield();
         }
+        displayTelemetry(TAG, "Reached position", true);
         glyphterMotor.setPower(0);
 
     }

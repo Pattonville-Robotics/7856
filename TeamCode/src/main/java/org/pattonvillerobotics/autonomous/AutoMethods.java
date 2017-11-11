@@ -3,9 +3,16 @@ package org.pattonvillerobotics.autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.pattonvillerobotics.AbstractColorSensor;
+import org.pattonvillerobotics.BeaconColorSensor;
 import org.pattonvillerobotics.CustomRobotParameters;
 import org.pattonvillerobotics.Globals;
 import org.pattonvillerobotics.JewelColorSensor;
+import org.pattonvillerobotics.commoncode.enums.ColorSensorColor;
+import org.pattonvillerobotics.commoncode.robotclasses.opencv.ImageProcessor;
+import org.pattonvillerobotics.commoncode.robotclasses.opencv.JewelColorDetector;
+import org.pattonvillerobotics.commoncode.robotclasses.opencv.util.PhoneOrientation;
+import org.pattonvillerobotics.mechanisms.GlyphGrabber;
 import org.pattonvillerobotics.mechanisms.REVGyro;
 import org.pattonvillerobotics.commoncode.enums.AllianceColor;
 import org.pattonvillerobotics.commoncode.enums.Direction;
@@ -27,11 +34,13 @@ public class AutoMethods {
     private AllianceColor allianceColor;
     private MecanumEncoderDrive drive;
     private Glyphter glyphter;
+    private GlyphGrabber glyphGrabber;
     private VuforiaNavigation vuforia;
     private JewelWhopper jewelWhopper;
     private JewelColorSensor jewelColorSensor;
     private REVGyro gyro;
     private SimpleMecanumDrive simpleMecanumDrive;
+    private JewelColorDetector jewelColorDetector;
 
     public AutoMethods(HardwareMap hardwareMap, LinearOpMode linearOpMode, AllianceColor allianceColor) {
 
@@ -41,11 +50,14 @@ public class AutoMethods {
 
         drive = new MecanumEncoderDrive(hardwareMap, linearOpMode, CustomRobotParameters.ROBOT_PARAMETERS);
         glyphter = new Glyphter(hardwareMap, linearOpMode); //, drive);
+        glyphGrabber = new GlyphGrabber(hardwareMap, linearOpMode, Globals.GrabberPosition.RELEASED);
         gyro = new REVGyro(hardwareMap, linearOpMode);
         simpleMecanumDrive = new SimpleMecanumDrive(linearOpMode, hardwareMap);
         vuforia = new VuforiaNavigation(CustomRobotParameters.VUFORIA_PARAMETERS);
+        jewelColorDetector = new JewelColorDetector(PhoneOrientation.PORTRAIT);
 
         vuforia.activateTracking();
+        ImageProcessor.initOpenCV(hardwareMap, linearOpMode);
 
     }
 
@@ -94,9 +106,55 @@ public class AutoMethods {
         drive.moveInches(Direction.FORWARD, Globals.DISTANCE_TO_JEWEL, .5);
     }
 
+    public void detectJewelColor() {
+
+        while(jewelColorDetector.getAnalysis().leftJewelColor == null || jewelColorDetector.getAnalysis().rightJewelColor ==  null) {
+            jewelColorDetector.process(vuforia.getImage());
+        }
+
+        AllianceColor leftColor = AbstractColorSensor.toAllianceColor(jewelColorDetector.getAnalysis().leftJewelColor);
+        AllianceColor rightColor = AbstractColorSensor.toAllianceColor(jewelColorDetector.getAnalysis().rightJewelColor);
+
+        if(leftColor.equals(allianceColor) && !rightColor.equals(allianceColor)) {
+            drive.rotateDegrees(Direction.LEFT, 30, 0.2);
+            linearOpMode.sleep(1000);
+            drive.rotateDegrees(Direction.RIGHT, 30, 0.2);
+        } else if(rightColor.equals(allianceColor) && !rightColor.equals(allianceColor)) {
+            drive.rotateDegrees(Direction.RIGHT, 30, 0.2);
+            linearOpMode.sleep(1000);
+            drive.rotateDegrees(Direction.LEFT, 30, 0.2);
+        }
+        else {
+            linearOpMode.telemetry.addData("OpenCV", "Error detecting colors");
+        }
+
+
+    }
+
     public void runAutonomousProcess() {
 
-        linearOpMode.telemetry.addData(TAG, allianceColor +  " autonomous initialized!");
+        runTestProcess();
+//        linearOpMode.telemetry.addData(TAG, allianceColor +  " autonomous initialized!");
+//
+//        driveToJewel();
+//        driveOffBalancingStone();
+//        driveToColumn();
+
+
+    }
+
+    public void runTestProcess() {
+
+        linearOpMode.telemetry.addData(TAG, allianceColor + " test autonomous initialized!");
+
+        glyphGrabber.clamp();
+        drive.moveInches(Direction.LEFT, Globals.MEDIUM_DISTANCE, 0.5);
+        linearOpMode.sleep(1000);
+        drive.rotateDegrees(Direction.LEFT, 180, 0.3);
+        linearOpMode.sleep(1000);
+        glyphGrabber.release();
+
+        linearOpMode.telemetry.addData(TAG,  allianceColor + "test autonomous complete");
 
     }
 

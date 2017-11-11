@@ -17,4 +17,14 @@ public abstract class AbstractMechanism {
         this.linearOpMode = linearOpMode;
     }
 
+    public void displayTelemetry(String caption, Object value) {
+        linearOpMode.telemetry.addData(caption, value);
+        linearOpMode.telemetry.update();
+    }
+
+    public void displayTelemetry(String caption, Object value, boolean setRetained) {
+        linearOpMode.telemetry.addData(caption, value).setRetained(setRetained);
+        linearOpMode.telemetry.update();
+    }
+
 }

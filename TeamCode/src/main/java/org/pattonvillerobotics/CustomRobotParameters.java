@@ -15,7 +15,7 @@ public class CustomRobotParameters {
     public static RobotParameters ROBOT_PARAMETERS;
     public static VuforiaParameters VUFORIA_PARAMETERS;
 
-    // TODO: Find wheelBaseRadius
+    // TODO: Add REVGyro AxesOrder to ROBOT_PARAMETERS
 
     static {
 

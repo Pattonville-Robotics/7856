@@ -24,8 +24,7 @@ public class BlueAutonomous extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()) {
-//            autoMethods.runAutonomousProcess();
-            telemetry.addData("Vuforia", vuforia.getCurrentVisibleRelic());
+            autoMethods.runAutonomousProcess();
             idle();
         }
 
