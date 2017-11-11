@@ -43,7 +43,7 @@ public class MainTeleop extends LinearOpMode {
         while (opModeIsActive()) {
 
             gamepad.update(new GamepadData(gamepad1));
-            simpleMecanumDrive.driveWithJoysticks(gamepad1.left_stick_x, gamepad1.left_stick_y, gamepad1.right_stick_x);
+            simpleMecanumDrive.driveWithJoysticks(-gamepad1.left_stick_x, gamepad1.left_stick_y, gamepad1.right_stick_x);
             idle();
 
         }
@@ -57,25 +57,12 @@ public class MainTeleop extends LinearOpMode {
         glyphGrabber = new GlyphGrabber(hardwareMap, this, Globals.GrabberPosition.RELEASED);
         gamepad = new ListenableGamepad();
         simpleMecanumDrive = new SimpleMecanumDrive(this, hardwareMap);
-
-//        simpleMecanumDrive.leftDriveMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-
-        //mecanumEncoderDrive = new MecanumEncoderDrive(hardwareMap, this, CustomRobotParameters.ROBOT_PARAMETERS);
-
-        gyro = new REVGyro(hardwareMap, this);
-
-        addTelemetry("Gyro initialized");
-
-        //relicGrabber = new RelicGrabber(hardwareMap, Globals.GrabberPosition.RELEASED);
         glyphter = new Glyphter(hardwareMap, this);
+        gyro = new REVGyro(hardwareMap, this);
+        //relicGrabber = new RelicGrabber(hardwareMap, Globals.GrabberPosition.RELEASED);
 
         addTelemetry("Binding buttons");
-
         bindGamepadButtons();
-
-        addTelemetry("Buttons bound");
-
-        //glyphGrabber.release();
 
         addTelemetry("Done");
 
@@ -83,85 +70,38 @@ public class MainTeleop extends LinearOpMode {
 
     private void bindGamepadButtons() {
 
-        gamepad.getButton(GamepadData.Button.A).addListener(ListenableButton.ButtonState.JUST_PRESSED,
-                new ListenableButton.ButtonListener() {
-                    @Override
-                    public void run() {
-                        switch(glyphGrabber.getPosition()) {
-                            case CLAMPED:
-                                glyphGrabber.release();
-                                break;
-                            case RELEASED:
-                                glyphGrabber.clamp();
-                                break;
-                        }
+        gamepad.getButton(GamepadData.Button.A).addListener(ListenableButton.ButtonState.JUST_PRESSED, () -> {
+                    switch (glyphGrabber.getPosition()) {
+                        case CLAMPED:
+                            glyphGrabber.release();
+                            break;
+                        case RELEASED:
+                            glyphGrabber.clamp();
+                            break;
                     }
-                }
-        );
-
-        gamepad.getButton(GamepadData.Button.Y).addListener(ListenableButton.ButtonState.JUST_PRESSED,
-                new ListenableButton.ButtonListener() {
-                    @Override
-                    public void run() {
-                        try {
-
-                            switch (relicGrabber.getPosition()) {
-                                case CLAMPED:
-                                    relicGrabber.release();
-                                    break;
-                                case RELEASED:
-                                    relicGrabber.clamp();
-                                    break;
-                            }
-                        } catch (NullPointerException e) {
-                            addTelemetry(e.getMessage());
-                        }
-                    }
-                }
-        );
-
-        gamepad.getButton(GamepadData.Button.DPAD_UP).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
-            @Override
-            public void run() {
-                addTelemetry("d-pad up");
-                glyphter.moveOneSpace(Direction.UP);
-            }
         });
 
-        gamepad.getButton(GamepadData.Button.DPAD_DOWN).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
-            @Override
-            public void run() {
-                addTelemetry("d-pad down");
-                glyphter.moveOneSpace(Direction.DOWN);
-            }
+        gamepad.getButton(GamepadData.Button.DPAD_UP).addListener(ListenableButton.ButtonState.BEING_PRESSED, () -> {
+            glyphter.moveUp();
         });
 
-        gamepad.getButton(GamepadData.Button.DPAD_LEFT).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
-            @Override
-            public void run() {
-                glyphter.moveOneSpace(Direction.LEFT);
-            }
+        gamepad.getButton(GamepadData.Button.DPAD_UP).addListener(ListenableButton.ButtonState.JUST_RELEASED, () -> {
+            glyphter.stop();
         });
 
-        gamepad.getButton(GamepadData.Button.DPAD_RIGHT).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
-            @Override
-            public void run() {
-                glyphter.moveOneSpace(Direction.RIGHT);
-            }
+        gamepad.getButton(GamepadData.Button.DPAD_DOWN).addListener(ListenableButton.ButtonState.JUST_RELEASED, () -> {
+           glyphter.stop();
         });
 
-        gamepad.getButton(GamepadData.Button.RIGHT_BUMPER).addListener(ListenableButton.ButtonState.BEING_PRESSED, new ListenableButton.ButtonListener() {
-            @Override
-            public void run() {
-                relicExtender.extend();
-            }
+        gamepad.getButton(GamepadData.Button.DPAD_DOWN).addListener(ListenableButton.ButtonState.BEING_PRESSED, () -> {
+            glyphter.moveDown();
         });
 
     }
 
     public void addTelemetry(Object value) {
 
-        telemetry.addData(TAG, value);
+        telemetry.addData(TAG, value).setRetained(true);
         telemetry.update();
 
     }
