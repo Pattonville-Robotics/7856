@@ -15,6 +15,7 @@ public class JewelWhopper extends AbstractMechanism {
 
     public static final String TAG = JewelWhopper.class.getSimpleName();
     private Servo jewelWhopperServo;
+    private Position position;
 
     public JewelWhopper(HardwareMap hardwareMap, LinearOpMode linearOpMode) {
 
@@ -30,10 +31,12 @@ public class JewelWhopper extends AbstractMechanism {
 
     public void moveUp() {
         jewelWhopperServo.setPosition(1);
+     position = Position.UP;
     }
 
     public void moveDown() {
         jewelWhopperServo.setPosition(0);
+    position = Position.DOWN;
     }
 
     @Deprecated
@@ -61,5 +64,12 @@ public class JewelWhopper extends AbstractMechanism {
 
     }
 
+    public Position getPosition() {
+        return position;
+    }
+
+    public enum Position{
+        UP,DOWN
+    }
 
 }

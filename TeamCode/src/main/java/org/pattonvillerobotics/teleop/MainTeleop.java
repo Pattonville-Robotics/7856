@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.pattonvillerobotics.Globals;
+import org.pattonvillerobotics.mechanisms.JewelWhopper;
 import org.pattonvillerobotics.mechanisms.REVGyro;
 import org.pattonvillerobotics.commoncode.enums.Direction;
 import org.pattonvillerobotics.commoncode.opmodes.OpModeGroups;
@@ -33,6 +34,7 @@ public class MainTeleop extends LinearOpMode {
     private RelicGrabber relicGrabber;
     private Glyphter glyphter;
     private RelicExtender relicExtender;
+    private JewelWhopper jewelWhopper;
 
     public void runOpMode() throws InterruptedException {
 
@@ -80,6 +82,27 @@ public class MainTeleop extends LinearOpMode {
                             break;
                     }
         });
+
+         gamepad.getButton(GamepadData.Button.X).addListener(ListenableButton.ButtonState.JUST_PRESSED, () -> {
+             switch (jewelWhopper.getPosition()) {
+                 case UP:
+                     jewelWhopper.moveDown();
+                     break;
+                 case DOWN:
+                     jewelWhopper.moveUp();
+                     break;
+             }
+         });
+
+
+
+
+
+
+
+
+
+
 
         gamepad.getButton(GamepadData.Button.DPAD_UP).addListener(ListenableButton.ButtonState.BEING_PRESSED, () -> {
             glyphter.moveUp();
