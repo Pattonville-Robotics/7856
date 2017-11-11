@@ -4,23 +4,21 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.pattonvillerobotics.AbstractColorSensor;
-import org.pattonvillerobotics.BeaconColorSensor;
 import org.pattonvillerobotics.CustomRobotParameters;
 import org.pattonvillerobotics.Globals;
 import org.pattonvillerobotics.JewelColorSensor;
-import org.pattonvillerobotics.commoncode.enums.ColorSensorColor;
-import org.pattonvillerobotics.commoncode.robotclasses.opencv.ImageProcessor;
-import org.pattonvillerobotics.commoncode.robotclasses.opencv.JewelColorDetector;
-import org.pattonvillerobotics.commoncode.robotclasses.opencv.util.PhoneOrientation;
-import org.pattonvillerobotics.mechanisms.GlyphGrabber;
-import org.pattonvillerobotics.mechanisms.REVGyro;
 import org.pattonvillerobotics.commoncode.enums.AllianceColor;
 import org.pattonvillerobotics.commoncode.enums.Direction;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.MecanumEncoderDrive;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.SimpleMecanumDrive;
+import org.pattonvillerobotics.commoncode.robotclasses.opencv.ImageProcessor;
+import org.pattonvillerobotics.commoncode.robotclasses.opencv.JewelColorDetector;
+import org.pattonvillerobotics.commoncode.robotclasses.opencv.util.PhoneOrientation;
 import org.pattonvillerobotics.commoncode.robotclasses.vuforia.VuforiaNavigation;
+import org.pattonvillerobotics.mechanisms.GlyphGrabber;
 import org.pattonvillerobotics.mechanisms.Glyphter;
 import org.pattonvillerobotics.mechanisms.JewelWhopper;
+import org.pattonvillerobotics.mechanisms.REVGyro;
 
 /**
  * Created by pieperm on 10/5/17.
@@ -82,6 +80,7 @@ public class AutoMethods {
                 break;
         }
 
+        drive.rotateDegrees(Direction.LEFT, 180, 0.2);
     }
 
 
@@ -131,6 +130,15 @@ public class AutoMethods {
 
     }
 
+    public void placeGlyph() {
+
+        drive.moveInches(Direction.FORWARD, Globals.NEAR_DISTANCE-5, 0.5);
+        glyphGrabber.release();
+        drive.moveInches(Direction.BACKWARD, Globals.NEAR_DISTANCE-5, 0.5);
+        drive.rotateDegrees(Direction.CLOCKWISE, 180, 0.3);
+
+    }
+
     public void runAutonomousProcess() {
 
         runTestProcess();
@@ -155,6 +163,11 @@ public class AutoMethods {
         glyphGrabber.release();
 
         linearOpMode.telemetry.addData(TAG,  allianceColor + "test autonomous complete");
+
+        driveToJewel();
+        driveOffBalancingStone();
+        driveToColumn();
+        placeGlyph();
 
     }
 
