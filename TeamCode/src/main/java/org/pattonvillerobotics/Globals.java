@@ -9,7 +9,7 @@ public class Globals {
     public static final double COLUMN_WIDTH = 7;
     public static final double ROW_HEIGHT = 6.5;
     public static final double NEAR_DISTANCE = 28;
-    public static final double MEDIUM_DISTANCE = 35;
+    public static final double MEDIUM_DISTANCE = 30;
     public static final double FAR_DISTANCE = 42;
     public static final double DISTANCE_TO_JEWEL = 22;
     public static final int CYLINDER_RADIUS = 1;

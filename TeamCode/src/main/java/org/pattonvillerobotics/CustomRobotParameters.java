@@ -23,7 +23,7 @@ public class CustomRobotParameters {
                 .driveGearRatio(2)
                 .encodersEnabled(true)
                 .wheelBaseRadius(10)
-                .wheelRadius(2.5)
+                .wheelRadius(1.25)
                 .build();
 
         VUFORIA_PARAMETERS = new VuforiaParameters.Builder()
