@@ -3,6 +3,7 @@ package org.pattonvillerobotics.autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 import org.pattonvillerobotics.AbstractColorSensor;
 import org.pattonvillerobotics.CustomRobotParameters;
 import org.pattonvillerobotics.Globals;
@@ -37,8 +38,8 @@ public class AutoMethods {
     private JewelWhopper jewelWhopper;
     private JewelColorSensor jewelColorSensor;
     private REVGyro gyro;
-    private SimpleMecanumDrive simpleMecanumDrive;
     private JewelColorDetector jewelColorDetector;
+    private RelicRecoveryVuMark pictographKey;
 
     public AutoMethods(HardwareMap hardwareMap, LinearOpMode linearOpMode, AllianceColor allianceColor) {
 
@@ -46,25 +47,77 @@ public class AutoMethods {
         this.linearOpMode = linearOpMode;
         this.allianceColor = allianceColor;
 
+        ImageProcessor.initOpenCV(hardwareMap, linearOpMode);
+
         drive = new MecanumEncoderDrive(hardwareMap, linearOpMode, CustomRobotParameters.ROBOT_PARAMETERS);
-        glyphter = new Glyphter(hardwareMap, linearOpMode); //, drive);
+        glyphter = new Glyphter(hardwareMap, linearOpMode);
         glyphGrabber = new GlyphGrabber(hardwareMap, linearOpMode, Globals.GrabberPosition.RELEASED);
         gyro = new REVGyro(hardwareMap, linearOpMode);
-        simpleMecanumDrive = new SimpleMecanumDrive(linearOpMode, hardwareMap);
         vuforia = new VuforiaNavigation(CustomRobotParameters.VUFORIA_PARAMETERS);
         jewelColorDetector = new JewelColorDetector(PhoneOrientation.PORTRAIT);
 
         vuforia.activateTracking();
-        ImageProcessor.initOpenCV(hardwareMap, linearOpMode);
+
+        displayTelemetry(allianceColor + " autonomous initialized", true);
 
     }
 
+    public void readVuforiaValues() {
+
+        pictographKey = vuforia.getCurrentVisibleRelic();
+
+        jewelColorDetector.process(vuforia.getImage());
+        while(jewelColorDetector.getAnalysis().leftJewelColor == null || jewelColorDetector.getAnalysis().rightJewelColor ==  null) {
+            jewelColorDetector.process(vuforia.getImage());
+        }
+
+    }
+
+    public void knockOffJewel() {
+
+        jewelWhopper.moveDown();
+        sleep(1);
+
+        AllianceColor leftColor = AbstractColorSensor.toAllianceColor(jewelColorDetector.getAnalysis().leftJewelColor);
+        AllianceColor rightColor = AbstractColorSensor.toAllianceColor(jewelColorDetector.getAnalysis().rightJewelColor);
+
+        if(leftColor.equals(allianceColor) && !rightColor.equals(allianceColor)) {
+            drive.rotateDegrees(Direction.RIGHT, 30, 0.2);
+            sleep(1);
+            drive.rotateDegrees(Direction.LEFT, 30, 0.2);
+        } else if(rightColor.equals(allianceColor) && !rightColor.equals(allianceColor)) {
+            drive.rotateDegrees(Direction.LEFT, 30, 0.2);
+            sleep(1);
+            drive.rotateDegrees(Direction.RIGHT, 30, 0.2);
+        }
+        else {
+            linearOpMode.telemetry.addData("OpenCV", "Error detecting colors");
+        }
+
+        jewelWhopper.moveUp();
+
+
+    }
+
+    public void driveOffBalancingStone() {
+
+        Direction direction = allianceColor == AllianceColor.BLUE ? Direction.LEFT : Direction.RIGHT;
+
+        drive.moveInches(direction, 1, 0.2);
+        double angleMargin = 3;
+        while ((gyro.getRoll() > angleMargin ||  gyro.getRoll() < -angleMargin) && ( gyro.getPitch() > angleMargin || gyro.getPitch() < -angleMargin)) {
+            displayTelemetry("Roll: " + gyro.getRoll());
+            displayTelemetry("Pitch: " + gyro.getPitch());
+            drive.move(direction, 0.2);
+        }
+
+    }
 
     public void driveToColumn() {
 
         Direction direction = allianceColor == AllianceColor.BLUE ? Direction.LEFT : Direction.RIGHT;
 
-        switch (vuforia.getCurrentVisibleRelic()) {
+        switch (pictographKey) {
 
             case LEFT:
                 drive.moveInches(direction, allianceColor == AllianceColor.BLUE ? Globals.NEAR_DISTANCE : Globals.FAR_DISTANCE, 0.5);
@@ -83,92 +136,99 @@ public class AutoMethods {
         drive.rotateDegrees(Direction.LEFT, 180, 0.2);
     }
 
-
-    public void driveOffBalancingStone() {
-
-        drive.moveInches(allianceColor == AllianceColor.BLUE? Direction.LEFT: Direction.RIGHT, 1, 0.2);
-        double angleMargin = 3;
-        double angle = allianceColor == AllianceColor.BLUE ? 180 : 0;
-        while ((gyro.getRoll() > angleMargin ||  gyro.getRoll() < -angleMargin) && ( gyro.getPitch() > angleMargin || gyro.getPitch() < -angleMargin)){
-            simpleMecanumDrive.moveFreely(angle, 0.3, 0);
-        }
-
-    }
-
-    public void park(){
-
-    }
-
-    public void driveToJewel(){
-        drive.moveInches(Direction.BACKWARD, Globals.DISTANCE_TO_JEWEL, .5);
-        jewelWhopper.knockOffJewel(allianceColor, jewelColorSensor);
-        drive.moveInches(Direction.FORWARD, Globals.DISTANCE_TO_JEWEL, .5);
-    }
-
-    public void detectJewelColor() {
-
-        while(jewelColorDetector.getAnalysis().leftJewelColor == null || jewelColorDetector.getAnalysis().rightJewelColor ==  null) {
-            jewelColorDetector.process(vuforia.getImage());
-        }
-
-        AllianceColor leftColor = AbstractColorSensor.toAllianceColor(jewelColorDetector.getAnalysis().leftJewelColor);
-        AllianceColor rightColor = AbstractColorSensor.toAllianceColor(jewelColorDetector.getAnalysis().rightJewelColor);
-
-        if(leftColor.equals(allianceColor) && !rightColor.equals(allianceColor)) {
-            drive.rotateDegrees(Direction.LEFT, 30, 0.2);
-            linearOpMode.sleep(1000);
-            drive.rotateDegrees(Direction.RIGHT, 30, 0.2);
-        } else if(rightColor.equals(allianceColor) && !rightColor.equals(allianceColor)) {
-            drive.rotateDegrees(Direction.RIGHT, 30, 0.2);
-            linearOpMode.sleep(1000);
-            drive.rotateDegrees(Direction.LEFT, 30, 0.2);
-        }
-        else {
-            linearOpMode.telemetry.addData("OpenCV", "Error detecting colors");
-        }
-
-
-    }
-
     public void placeGlyph() {
 
         drive.moveInches(Direction.FORWARD, Globals.NEAR_DISTANCE-5, 0.5);
         glyphGrabber.release();
         drive.moveInches(Direction.BACKWARD, Globals.NEAR_DISTANCE-5, 0.5);
-        drive.rotateDegrees(Direction.CLOCKWISE, 180, 0.3);
 
+    }
+
+    public void park(){
+        switch (pictographKey) {
+            case LEFT:
+                drive.moveInches(Direction.RIGHT, 5, 0.5);
+                break;
+            case RIGHT:
+                drive.moveInches(Direction.LEFT, 5, 0.5);
+                break;
+            default:
+                break;
+        }
+        sleep(1);
+        drive.rotateDegrees(Direction.LEFT, 180, 0.5);
     }
 
     public void runAutonomousProcess() {
 
-        runTestProcess();
-//        linearOpMode.telemetry.addData(TAG, allianceColor +  " autonomous initialized!");
-//
-//        driveToJewel();
-//        driveOffBalancingStone();
-//        driveToColumn();
+        displayTelemetry("Running " + allianceColor + " autonomous", true);
 
+        readVuforiaValues();
+
+        glyphGrabber.clamp();
+        sleep(1);
+
+        knockOffJewel();
+        sleep(1);
+
+        driveToColumn();
+        sleep(1);
+
+        placeGlyph();
+        sleep(1);
+
+        park();
+
+        displayTelemetry("Autonomous complete", true);
+        sleep(1);
+        linearOpMode.stop();
+
+        displayTelemetry("Completed " + allianceColor + " autonomous", true);
 
     }
 
     public void runTestProcess() {
 
-        linearOpMode.telemetry.addData(TAG, allianceColor + " test autonomous initialized!");
+        displayTelemetry("Running " + allianceColor + " test autonomous", true);
+
+        sleep(2);
 
         glyphGrabber.clamp();
-        drive.moveInches(Direction.LEFT, Globals.MEDIUM_DISTANCE, 0.5);
-        linearOpMode.sleep(1000);
-        drive.rotateDegrees(Direction.LEFT, 180, 0.3);
-        linearOpMode.sleep(1000);
+
+        sleep(2);
+
+        drive.moveInches(Direction.RIGHT, Globals.MEDIUM_DISTANCE, 0.5);
+
+        sleep(2);
+
+        drive.rotateDegrees(Direction.LEFT, 180, 0.5);
+
+        sleep(2);
+
+        drive.moveInches(Direction.BACKWARD, 10, 0.3);
+
+        sleep(2);
+
         glyphGrabber.release();
 
-        linearOpMode.telemetry.addData(TAG,  allianceColor + "test autonomous complete");
+        sleep(2);
 
-        driveToJewel();
-        driveOffBalancingStone();
-        driveToColumn();
-        placeGlyph();
 
+
+    }
+
+    private void displayTelemetry(Object value) {
+        linearOpMode.telemetry.addData(TAG, value);
+        linearOpMode.telemetry.update();
+    }
+
+    private void displayTelemetry(Object value, boolean setRetained) {
+        linearOpMode.telemetry.addData(TAG, value).setRetained(setRetained);
+        linearOpMode.telemetry.update();
+    }
+
+    private void sleep(double seconds) {
+        linearOpMode.sleep((long)seconds * 1000);
     }
 
 }
