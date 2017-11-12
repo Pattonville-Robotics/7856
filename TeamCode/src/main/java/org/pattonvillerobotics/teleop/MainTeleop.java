@@ -46,6 +46,7 @@ public class MainTeleop extends LinearOpMode {
 
             gamepad.update(new GamepadData(gamepad1));
             simpleMecanumDrive.driveWithJoysticks(-gamepad1.left_stick_x, gamepad1.left_stick_y, gamepad1.right_stick_x);
+            glyphter.getMotor().setPower(gamepad1.right_trigger - gamepad1.left_trigger);
             idle();
 
         }
@@ -61,7 +62,7 @@ public class MainTeleop extends LinearOpMode {
         simpleMecanumDrive = new SimpleMecanumDrive(this, hardwareMap);
         glyphter = new Glyphter(hardwareMap, this);
         gyro = new REVGyro(hardwareMap, this);
-        //relicGrabber = new RelicGrabber(hardwareMap, Globals.GrabberPosition.RELEASED);
+        jewelWhopper = new JewelWhopper(hardwareMap, this);
 
         addTelemetry("Binding buttons");
         bindGamepadButtons();
@@ -93,32 +94,6 @@ public class MainTeleop extends LinearOpMode {
                      break;
              }
          });
-
-
-
-
-
-
-
-
-
-
-
-        gamepad.getButton(GamepadData.Button.DPAD_UP).addListener(ListenableButton.ButtonState.BEING_PRESSED, () -> {
-            glyphter.moveUp();
-        });
-
-        gamepad.getButton(GamepadData.Button.DPAD_UP).addListener(ListenableButton.ButtonState.JUST_RELEASED, () -> {
-            glyphter.stop();
-        });
-
-        gamepad.getButton(GamepadData.Button.DPAD_DOWN).addListener(ListenableButton.ButtonState.JUST_RELEASED, () -> {
-           glyphter.stop();
-        });
-
-        gamepad.getButton(GamepadData.Button.DPAD_DOWN).addListener(ListenableButton.ButtonState.BEING_PRESSED, () -> {
-            glyphter.moveDown();
-        });
 
     }
 
