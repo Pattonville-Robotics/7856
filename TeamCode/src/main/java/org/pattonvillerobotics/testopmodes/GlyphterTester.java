@@ -18,10 +18,15 @@ public class GlyphterTester extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
 
         glyphter = new Glyphter(hardwareMap, this);
+        telemetry.addData("Glyphter", "init");
+        telemetry.update();
 
         waitForStart();
 
         while(opModeIsActive()) {
+
+            telemetry.addData("Motor power", glyphter.getMotor().getPower());
+            telemetry.update();
 
             glyphter.getMotor().setPower(gamepad1.right_stick_y);
 
