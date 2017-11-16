@@ -23,8 +23,9 @@ public class BlueAutonomous extends LinearOpMode {
 
         waitForStart();
 
-        while (opModeIsActive()) {
-            autoMethods.runAutonomousProcess();
+        autoMethods.runAutonomousProcess();
+
+        while(opModeIsActive()) {
             idle();
         }
 

@@ -1,5 +1,6 @@
 package org.pattonvillerobotics.teleop;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -14,6 +15,7 @@ import org.pattonvillerobotics.commoncode.robotclasses.gamepad.ListenableGamepad
  * Created by pieperm on 10/12/17.
  */
 @TeleOp(name = "GyroTester", group = OpModeGroups.TESTING)
+@Disabled
 public class GyroTester extends LinearOpMode {
 
     private REVGyro gyro;

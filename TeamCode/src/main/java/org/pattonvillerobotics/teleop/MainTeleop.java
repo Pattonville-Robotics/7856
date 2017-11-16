@@ -28,12 +28,9 @@ public class MainTeleop extends LinearOpMode {
     private static final String TAG = MainTeleop.class.getSimpleName();
     private GlyphGrabber glyphGrabber;
     private SimpleMecanumDrive simpleMecanumDrive;
-    private MecanumEncoderDrive mecanumEncoderDrive;
     private ListenableGamepad gamepad;
     private REVGyro gyro;
-    private RelicGrabber relicGrabber;
     private Glyphter glyphter;
-    private RelicExtender relicExtender;
     private JewelWhopper jewelWhopper;
 
     public void runOpMode() throws InterruptedException {
@@ -55,16 +52,15 @@ public class MainTeleop extends LinearOpMode {
 
     private void initialize() {
 
-        addTelemetry("Initializing...");
+        addTelemetry("Initializing MainTeleOp...");
 
         glyphGrabber = new GlyphGrabber(hardwareMap, this, Globals.GrabberPosition.RELEASED);
         gamepad = new ListenableGamepad();
         simpleMecanumDrive = new SimpleMecanumDrive(this, hardwareMap);
         glyphter = new Glyphter(hardwareMap, this);
         gyro = new REVGyro(hardwareMap, this);
-        jewelWhopper = new JewelWhopper(hardwareMap, this);
+        jewelWhopper = new JewelWhopper(hardwareMap, this, JewelWhopper.Position.UP);
 
-        addTelemetry("Binding buttons");
         bindGamepadButtons();
 
         addTelemetry("Done");
@@ -94,6 +90,18 @@ public class MainTeleop extends LinearOpMode {
                      break;
              }
          });
+
+         gamepad.getButton(GamepadData.Button.DPAD_UP).addListener(ListenableButton.ButtonState.JUST_PRESSED, () -> {
+            jewelWhopper.incrementPosition();
+            telemetry.addData("Servo pos", jewelWhopper.getServo().getPosition()).setRetained(true);
+            telemetry.update();
+         });
+
+        gamepad.getButton(GamepadData.Button.DPAD_DOWN).addListener(ListenableButton.ButtonState.JUST_PRESSED, () -> {
+            jewelWhopper.decrementPosition();
+            telemetry.addData("Servo pos", jewelWhopper.getServo().getPosition()).setRetained(true);
+            telemetry.update();
+        });
 
     }
 

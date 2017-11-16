@@ -1,6 +1,7 @@
 package org.pattonvillerobotics.autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.pattonvillerobotics.CustomRobotParameters;
@@ -14,7 +15,8 @@ import org.pattonvillerobotics.mechanisms.GlyphGrabber;
  * Created by trieud01 on 10/26/17.
  */
 
-@Autonomous(name = "PracticeMatchAutonomius", group = OpModeGroups.TESTING)
+@Autonomous(name = "PracticeMatchAutonomous", group = OpModeGroups.TESTING)
+@Disabled
 public class PracticeMatchAutonomous extends LinearOpMode {
 
     private MecanumEncoderDrive drive;

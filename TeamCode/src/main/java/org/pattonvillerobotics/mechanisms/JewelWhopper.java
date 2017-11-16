@@ -17,26 +17,34 @@ public class JewelWhopper extends AbstractMechanism {
     private Servo jewelWhopperServo;
     private Position position;
 
-    public JewelWhopper(HardwareMap hardwareMap, LinearOpMode linearOpMode) {
+    public JewelWhopper(HardwareMap hardwareMap, LinearOpMode linearOpMode, Position initialPosition) {
 
         super(hardwareMap, linearOpMode);
         try {
             jewelWhopperServo = hardwareMap.servo.get("jewel-whopper-servo");
         } catch (IllegalArgumentException e) {
-            linearOpMode.telemetry.addData(TAG, e.getMessage());
-            linearOpMode.telemetry.update();
+            displayTelemetry(TAG, "IllegalArgumentException: " + e.getMessage(), true);
         }
+        position = initialPosition;
 
     }
 
     public void moveUp() {
-        jewelWhopperServo.setPosition(1);
-     position = Position.UP;
+        jewelWhopperServo.setPosition(0.15);
+        position = Position.UP;
     }
 
     public void moveDown() {
-        jewelWhopperServo.setPosition(0);
-    position = Position.DOWN;
+        jewelWhopperServo.setPosition(0.9);
+        position = Position.DOWN;
+    }
+
+    public void incrementPosition() {
+        jewelWhopperServo.setPosition(jewelWhopperServo.getPosition() + 0.1);
+    }
+
+    public void decrementPosition() {
+        jewelWhopperServo.setPosition(jewelWhopperServo.getPosition() - 0.1);
     }
 
     @Deprecated
@@ -70,6 +78,10 @@ public class JewelWhopper extends AbstractMechanism {
 
     public enum Position{
         UP,DOWN
+    }
+
+    public Servo getServo() {
+        return jewelWhopperServo;
     }
 
 }

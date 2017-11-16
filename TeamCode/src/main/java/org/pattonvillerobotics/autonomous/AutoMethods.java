@@ -3,6 +3,8 @@ package org.pattonvillerobotics.autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 import org.pattonvillerobotics.AbstractColorSensor;
 import org.pattonvillerobotics.CustomRobotParameters;
@@ -36,10 +38,10 @@ public class AutoMethods {
     private GlyphGrabber glyphGrabber;
     private VuforiaNavigation vuforia;
     private JewelWhopper jewelWhopper;
-    private JewelColorSensor jewelColorSensor;
     private REVGyro gyro;
     private JewelColorDetector jewelColorDetector;
     private RelicRecoveryVuMark pictographKey;
+    private JewelColorDetector.Analysis analysis;
 
     public AutoMethods(HardwareMap hardwareMap, LinearOpMode linearOpMode, AllianceColor allianceColor) {
 
@@ -47,14 +49,20 @@ public class AutoMethods {
         this.linearOpMode = linearOpMode;
         this.allianceColor = allianceColor;
 
+        displayTelemetry("Wait for Vuforia to initialize...", true);
+
         ImageProcessor.initOpenCV(hardwareMap, linearOpMode);
 
         drive = new MecanumEncoderDrive(hardwareMap, linearOpMode, CustomRobotParameters.ROBOT_PARAMETERS);
         glyphter = new Glyphter(hardwareMap, linearOpMode);
         glyphGrabber = new GlyphGrabber(hardwareMap, linearOpMode, Globals.GrabberPosition.RELEASED);
+        jewelWhopper = new JewelWhopper(hardwareMap, linearOpMode, JewelWhopper.Position.UP);
         gyro = new REVGyro(hardwareMap, linearOpMode);
         vuforia = new VuforiaNavigation(CustomRobotParameters.VUFORIA_PARAMETERS);
-        jewelColorDetector = new JewelColorDetector(PhoneOrientation.PORTRAIT);
+        jewelColorDetector = new JewelColorDetector(PhoneOrientation.LANDSCAPE_INVERSE);
+
+        jewelWhopper.moveUp();
+        glyphGrabber.release();
 
         vuforia.activateTracking();
 
@@ -65,33 +73,59 @@ public class AutoMethods {
     public void readVuforiaValues() {
 
         pictographKey = vuforia.getCurrentVisibleRelic();
-
-        jewelColorDetector.process(vuforia.getImage());
-        while(jewelColorDetector.getAnalysis().leftJewelColor == null || jewelColorDetector.getAnalysis().rightJewelColor ==  null) {
-            jewelColorDetector.process(vuforia.getImage());
+        while(pictographKey == null || pictographKey.equals(RelicRecoveryVuMark.UNKNOWN)) {
+            pictographKey = vuforia.getCurrentVisibleRelic();
         }
 
+        jewelColorDetector.process(vuforia.getImage());
+        try {
+            analysis = jewelColorDetector.getAnalysis();
+            displayTelemetry("Left color: " + analysis.leftJewelColor, true);
+            displayTelemetry("Right color: " + analysis.rightJewelColor, true);
+        } catch (NullPointerException n) {
+            displayTelemetry(n.getMessage(), true);
+        }
+
+//        while(analysis.leftJewelColor == null || analysis.rightJewelColor ==  null) {
+//            jewelColorDetector.process(vuforia.getImage());
+//        }
+
+        displayTelemetry("Driving to " + pictographKey + " column", true);
+
+
+    }
+
+    public void pickUpGlyph() {
+        glyphGrabber.clamp();
+        sleep(0.5);
+        glyphter.getMotor().setPower(0.5);
+        sleep(1);
+        glyphter.getMotor().setPower(0);
     }
 
     public void knockOffJewel() {
 
         jewelWhopper.moveDown();
-        sleep(1);
 
-        AllianceColor leftColor = AbstractColorSensor.toAllianceColor(jewelColorDetector.getAnalysis().leftJewelColor);
-        AllianceColor rightColor = AbstractColorSensor.toAllianceColor(jewelColorDetector.getAnalysis().rightJewelColor);
+        try {
 
-        if(leftColor.equals(allianceColor) && !rightColor.equals(allianceColor)) {
-            drive.rotateDegrees(Direction.RIGHT, 30, 0.2);
-            sleep(1);
-            drive.rotateDegrees(Direction.LEFT, 30, 0.2);
-        } else if(rightColor.equals(allianceColor) && !rightColor.equals(allianceColor)) {
-            drive.rotateDegrees(Direction.LEFT, 30, 0.2);
-            sleep(1);
-            drive.rotateDegrees(Direction.RIGHT, 30, 0.2);
-        }
-        else {
-            linearOpMode.telemetry.addData("OpenCV", "Error detecting colors");
+            AllianceColor leftColor = AbstractColorSensor.toAllianceColor(analysis.leftJewelColor);
+            AllianceColor rightColor = AbstractColorSensor.toAllianceColor(analysis.rightJewelColor);
+
+            if (leftColor.equals(allianceColor) && !rightColor.equals(allianceColor)) {
+                drive.rotateDegrees(Direction.LEFT, 30, 0.2);
+                sleep(1);
+                drive.rotateDegrees(Direction.RIGHT, 30, 0.2);
+            } else if (rightColor.equals(allianceColor) && !rightColor.equals(allianceColor)) {
+                drive.rotateDegrees(Direction.RIGHT, 30, 0.2);
+                sleep(1);
+                drive.rotateDegrees(Direction.LEFT, 30, 0.2);
+            } else {
+                linearOpMode.telemetry.addData("OpenCV", "Error detecting colors");
+            }
+
+        } catch(NullPointerException n) {
+            displayTelemetry(n.getMessage(), true);
         }
 
         jewelWhopper.moveUp();
@@ -117,6 +151,10 @@ public class AutoMethods {
 
         Direction direction = allianceColor == AllianceColor.BLUE ? Direction.LEFT : Direction.RIGHT;
 
+        if(pictographKey == null) {
+            pictographKey = RelicRecoveryVuMark.CENTER;
+        }
+
         switch (pictographKey) {
 
             case LEFT:
@@ -129,22 +167,26 @@ public class AutoMethods {
                 drive.moveInches(direction, allianceColor == AllianceColor.BLUE ? Globals.FAR_DISTANCE : Globals.NEAR_DISTANCE, 0.5);
                 break;
             default:
-                driveToColumn();
+                displayTelemetry("No pictograph key detected; driving to center column by default", true);
+                drive.moveInches(direction, Globals.MEDIUM_DISTANCE, 0.5);
                 break;
         }
 
-        drive.rotateDegrees(Direction.LEFT, 180, 0.2);
+        drive.rotateDegrees(Direction.LEFT, 170, 0.5);
     }
 
     public void placeGlyph() {
 
-        drive.moveInches(Direction.FORWARD, Globals.NEAR_DISTANCE-5, 0.5);
+        drive.moveInches(Direction.BACKWARD, Globals.DISTANCE_TO_CRYPTOBOX, 0.5);
+        glyphter.getMotor().setPower(-0.5);
+        sleep(0.5);
+        glyphter.getMotor().setPower(0);
         glyphGrabber.release();
-        drive.moveInches(Direction.BACKWARD, Globals.NEAR_DISTANCE-5, 0.5);
+        drive.moveInches(Direction.FORWARD, Globals.DISTANCE_TO_CRYPTOBOX, 0.5);
 
     }
 
-    public void park(){
+    public void park() {
         switch (pictographKey) {
             case LEFT:
                 drive.moveInches(Direction.RIGHT, 5, 0.5);
@@ -156,7 +198,7 @@ public class AutoMethods {
                 break;
         }
         sleep(1);
-        drive.rotateDegrees(Direction.LEFT, 180, 0.5);
+        drive.rotateDegrees(Direction.LEFT, 170, 0.5);
     }
 
     public void runAutonomousProcess() {
@@ -165,8 +207,7 @@ public class AutoMethods {
 
         readVuforiaValues();
 
-        glyphGrabber.clamp();
-        sleep(1);
+        pickUpGlyph();
 
         knockOffJewel();
         sleep(1);
@@ -179,7 +220,6 @@ public class AutoMethods {
 
         park();
 
-        displayTelemetry("Autonomous complete", true);
         sleep(1);
         linearOpMode.stop();
 
@@ -193,7 +233,7 @@ public class AutoMethods {
 
         sleep(2);
 
-        glyphGrabber.clamp();
+        pickUpGlyph();
 
         sleep(2);
 
@@ -230,5 +270,10 @@ public class AutoMethods {
     private void sleep(double seconds) {
         linearOpMode.sleep((long)seconds * 1000);
     }
+
+    public MecanumEncoderDrive getMecanumEncoderDrive() {
+        return drive;
+    }
+
 
 }

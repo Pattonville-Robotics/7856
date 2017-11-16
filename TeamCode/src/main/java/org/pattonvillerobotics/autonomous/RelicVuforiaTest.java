@@ -1,6 +1,7 @@
 package org.pattonvillerobotics.autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.pattonvillerobotics.CustomRobotParameters;
@@ -12,6 +13,7 @@ import org.pattonvillerobotics.commoncode.robotclasses.vuforia.VuforiaNavigation
  */
 
 @Autonomous(name = "RelicVuforiaTest", group = OpModeGroups.TESTING)
+@Disabled
 public class RelicVuforiaTest extends LinearOpMode {
 
     private VuforiaNavigation vuforia;

@@ -24,7 +24,6 @@ public class DriveTester extends LinearOpMode {
         waitForStart();
 
         while(opModeIsActive()) {
-            drive.moveInches(Direction.FORWARD, 10, 0.5);
             sleep(2000);
             drive.rotateDegrees(Direction.LEFT, 180, 0.5);
         }
