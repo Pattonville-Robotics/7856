@@ -77,14 +77,14 @@ public class AutoMethods {
             pictographKey = vuforia.getCurrentVisibleRelic();
         }
 
-        jewelColorDetector.process(vuforia.getImage());
-        try {
-            analysis = jewelColorDetector.getAnalysis();
-            displayTelemetry("Left color: " + analysis.leftJewelColor, true);
-            displayTelemetry("Right color: " + analysis.rightJewelColor, true);
-        } catch (NullPointerException n) {
-            displayTelemetry(n.getMessage(), true);
-        }
+//        jewelColorDetector.process(vuforia.getImage());
+//        try {
+//            analysis = jewelColorDetector.getAnalysis();
+//            displayTelemetry("Left color: " + analysis.leftJewelColor, true);
+//            displayTelemetry("Right color: " + analysis.rightJewelColor, true);
+//        } catch (NullPointerException n) {
+//            displayTelemetry(n.getMessage(), true);
+//        }
 
 //        while(analysis.leftJewelColor == null || analysis.rightJewelColor ==  null) {
 //            jewelColorDetector.process(vuforia.getImage());
@@ -209,7 +209,7 @@ public class AutoMethods {
 
         pickUpGlyph();
 
-        knockOffJewel();
+        //knockOffJewel();
         sleep(1);
 
         driveToColumn();
