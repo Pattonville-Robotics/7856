@@ -1,19 +1,16 @@
 package org.pattonvillerobotics.autonomous;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.pattonvillerobotics.CustomRobotParameters;
-import org.pattonvillerobotics.Globals;
 import org.pattonvillerobotics.commoncode.enums.AllianceColor;
 import org.pattonvillerobotics.commoncode.enums.Direction;
-import org.pattonvillerobotics.commoncode.robotclasses.drive.MecanumEncoderDrive;
-import org.pattonvillerobotics.mechanisms.GlyphGrabber;
-import org.pattonvillerobotics.mechanisms.Glyphter;
+import org.pattonvillerobotics.commoncode.opmodes.OpModeGroups;
 
 /**
  * Created by pieperm on 11/16/17.
  */
-
+@Autonomous(name = "AltBlueAutonomous", group = OpModeGroups.DEBUG)
 public class AltBlueAutonomous extends LinearOpMode {
 
     private AutoMethods autoMethods;
@@ -27,7 +24,8 @@ public class AltBlueAutonomous extends LinearOpMode {
 
         autoMethods.pickUpGlyph();
         sleep(500);
-        autoMethods.getMecanumEncoderDrive().moveInches(Direction.BACKWARD, Globals.ALT_DISTANCE_TO_CRYPTOBOX, 0.5);
+        autoMethods.getMecanumEncoderDrive().moveInches(Direction.BACKWARD, 14, 0.5);
+        autoMethods.getMecanumEncoderDrive().moveInches(Direction.RIGHT, 10, 0.5);
         sleep(500);
         autoMethods.placeGlyph();
 

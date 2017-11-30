@@ -2,26 +2,17 @@ package org.pattonvillerobotics.teleop;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
-import org.apache.commons.math3.util.IntegerSequence;
-import org.opencv.core.Range;
 import org.pattonvillerobotics.Globals;
-import org.pattonvillerobotics.mechanisms.JewelWhopper;
-import org.pattonvillerobotics.mechanisms.REVGyro;
-import org.pattonvillerobotics.commoncode.enums.Direction;
 import org.pattonvillerobotics.commoncode.opmodes.OpModeGroups;
-import org.pattonvillerobotics.commoncode.robotclasses.drive.MecanumEncoderDrive;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.SimpleMecanumDrive;
 import org.pattonvillerobotics.commoncode.robotclasses.gamepad.GamepadData;
 import org.pattonvillerobotics.commoncode.robotclasses.gamepad.ListenableButton;
 import org.pattonvillerobotics.commoncode.robotclasses.gamepad.ListenableGamepad;
 import org.pattonvillerobotics.mechanisms.GlyphGrabber;
 import org.pattonvillerobotics.mechanisms.Glyphter;
-import org.pattonvillerobotics.mechanisms.RelicExtender;
-import org.pattonvillerobotics.mechanisms.RelicGrabber;
-
-import java.awt.font.NumericShaper;
+import org.pattonvillerobotics.mechanisms.JewelWhopper;
+import org.pattonvillerobotics.mechanisms.REVGyro;
 
 /**
  * Created by martint08 on 9/30/17.
@@ -47,7 +38,7 @@ public class MainTeleop extends LinearOpMode {
 
             gamepad.update(new GamepadData(gamepad1));
             simpleMecanumDrive.driveWithJoysticks(-gamepad1.left_stick_x, gamepad1.left_stick_y, gamepad1.right_stick_x);
-            glyphter.getMotor().setPower(gamepad1.right_trigger / 2 - gamepad1.left_trigger / 2);
+            glyphter.getMotor().setPower(gamepad1.right_trigger / 2 - gamepad1.left_trigger / 4);
             idle();
 
         }
