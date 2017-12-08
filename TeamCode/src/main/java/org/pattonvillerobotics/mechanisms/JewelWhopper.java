@@ -17,6 +17,13 @@ public class JewelWhopper extends AbstractMechanism {
     private Servo jewelWhopperServo;
     private Position position;
 
+    /**
+     * Constructs a JewelWhopper mechanism designed to knock off the jewels
+     *
+     * @param hardwareMap     a HardwareMap
+     * @param linearOpMode    a LinearOpMode
+     * @param initialPosition the initial {@link Position} of the servo
+     */
     public JewelWhopper(HardwareMap hardwareMap, LinearOpMode linearOpMode, Position initialPosition) {
 
         super(hardwareMap, linearOpMode);
@@ -30,12 +37,12 @@ public class JewelWhopper extends AbstractMechanism {
     }
 
     public void moveUp() {
-        jewelWhopperServo.setPosition(0.15);
+        jewelWhopperServo.setPosition(0.1);
         position = Position.UP;
     }
 
     public void moveDown() {
-        jewelWhopperServo.setPosition(0.9);
+        jewelWhopperServo.setPosition(0.85);
         position = Position.DOWN;
     }
 
@@ -76,12 +83,12 @@ public class JewelWhopper extends AbstractMechanism {
         return position;
     }
 
-    public enum Position{
-        UP,DOWN
-    }
-
     public Servo getServo() {
         return jewelWhopperServo;
+    }
+
+    public enum Position {
+        UP,DOWN
     }
 
 }

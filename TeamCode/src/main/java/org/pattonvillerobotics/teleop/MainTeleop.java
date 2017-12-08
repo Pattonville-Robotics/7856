@@ -2,6 +2,7 @@ package org.pattonvillerobotics.teleop;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.pattonvillerobotics.Globals;
 import org.pattonvillerobotics.commoncode.opmodes.OpModeGroups;
@@ -57,6 +58,7 @@ public class MainTeleop extends LinearOpMode {
         jewelWhopper = new JewelWhopper(hardwareMap, this, JewelWhopper.Position.UP);
 
         bindGamepadButtons();
+        glyphter.getMotor().setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         addTelemetry("Done");
 

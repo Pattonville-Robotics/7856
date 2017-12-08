@@ -4,12 +4,9 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.pattonvillerobotics.mechanisms.REVGyro;
+import org.pattonvillerobotics.autonomous.AutoMethods;
+import org.pattonvillerobotics.commoncode.enums.AllianceColor;
 import org.pattonvillerobotics.commoncode.opmodes.OpModeGroups;
-import org.pattonvillerobotics.commoncode.robotclasses.drive.SimpleMecanumDrive;
-import org.pattonvillerobotics.commoncode.robotclasses.gamepad.GamepadData;
-import org.pattonvillerobotics.commoncode.robotclasses.gamepad.ListenableButton;
-import org.pattonvillerobotics.commoncode.robotclasses.gamepad.ListenableGamepad;
 
 /**
  * Created by pieperm on 10/12/17.
@@ -18,48 +15,20 @@ import org.pattonvillerobotics.commoncode.robotclasses.gamepad.ListenableGamepad
 @Disabled
 public class GyroTester extends LinearOpMode {
 
-    private REVGyro gyro;
-    private ListenableGamepad gamepad;
-    private SimpleMecanumDrive mecanumDrive;
+    private AutoMethods autoMethods;
 
     @Override
     public void runOpMode() throws InterruptedException {
 
-        initialize();
+        autoMethods = new AutoMethods(hardwareMap, this, AllianceColor.RED);
 
         waitForStart();
 
         while (opModeIsActive()) {
 
-            gamepad.update(new GamepadData(gamepad1));
-
-            gyro.getGyroTelemetry();
-
             idle();
 
         }
-
-    }
-
-    private void initialize() {
-
-        gyro = new REVGyro(hardwareMap, this);
-        gamepad = new ListenableGamepad();
-        try {
-            mecanumDrive = new SimpleMecanumDrive(this, hardwareMap);
-        } catch (IllegalArgumentException e) {
-            telemetry.addData("Gyro", "Cannot balance robot! Check configs for mecanum motors");
-        }
-
-
-        gamepad.getButton(GamepadData.Button.X).addListener(ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
-            @Override
-            public void run() {
-                telemetry.addData("Gyro", "Attempting to balance robot").setRetained(true);
-                telemetry.update();
-                //gyro.balanceRobot(mecanumDrive);
-            }
-        });
 
     }
 
