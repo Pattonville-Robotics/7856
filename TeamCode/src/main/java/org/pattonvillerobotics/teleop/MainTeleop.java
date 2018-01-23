@@ -89,8 +89,8 @@ public class MainTeleop extends LinearOpMode {
          });
 
         gamepad.getButton(GamepadData.Button.B).addListener(ListenableButton.ButtonState.JUST_PRESSED, () -> {
-            glyphGrabber.getLeftServo().setPosition(0.5);
-            glyphGrabber.getRightServo().setPosition(0.5);
+            glyphGrabber.getLeftServo().setPosition(0.35);
+            glyphGrabber.getRightServo().setPosition(0.75);
         });
 
         gamepad.getButton(GamepadData.Button.LEFT_BUMPER).addListener(ListenableButton.ButtonState.JUST_PRESSED, () -> {
