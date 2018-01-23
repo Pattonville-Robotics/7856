@@ -31,14 +31,14 @@ public class GlyphGrabber extends AbstractMechanism {
     }
 
     public void clamp() {
-        leftServo.setPosition(0);
-        rightServo.setPosition((0.7));
+        leftServo.setPosition(0.8);
+        rightServo.setPosition((0.3));
         position = Globals.GrabberPosition.CLAMPED;
     }
 
     public void release() {
-        leftServo.setPosition(0.7);
-        rightServo.setPosition(0);
+        leftServo.setPosition(0.3);
+        rightServo.setPosition(0.8);
         position = Globals.GrabberPosition.RELEASED;
     }
 
