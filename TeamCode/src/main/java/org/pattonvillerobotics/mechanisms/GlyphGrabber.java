@@ -42,7 +42,23 @@ public class GlyphGrabber extends AbstractMechanism {
         position = Globals.GrabberPosition.RELEASED;
     }
 
-    public Globals.GrabberPosition getPosition() {
+    public void incrementLeftPosition() {
+        leftServo.setPosition(leftServo.getPosition() + 0.05);
+    }
+
+    public void incrementRightPosition() {
+        rightServo.setPosition(rightServo.getPosition() + 0.05);
+    }
+
+    public void decrementLeftPosition() {
+        leftServo.setPosition(leftServo.getPosition() - 0.05);
+    }
+
+    public void decrementRightPosition() {
+        rightServo.setPosition(rightServo.getPosition() - 0.05);
+    }
+
+    public Globals.GrabberPosition getGrabberPosition() {
         return position;
     }
 

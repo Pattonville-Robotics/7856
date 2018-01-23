@@ -37,7 +37,7 @@ public class JewelWhopper extends AbstractMechanism {
     }
 
     public void moveUp() {
-        jewelWhopperServo.setPosition(0.1);
+        jewelWhopperServo.setPosition(0.05);
         position = Position.UP;
     }
 
@@ -47,11 +47,11 @@ public class JewelWhopper extends AbstractMechanism {
     }
 
     public void incrementPosition() {
-        jewelWhopperServo.setPosition(jewelWhopperServo.getPosition() + 0.1);
+        jewelWhopperServo.setPosition(jewelWhopperServo.getPosition() + 0.05);
     }
 
     public void decrementPosition() {
-        jewelWhopperServo.setPosition(jewelWhopperServo.getPosition() - 0.1);
+        jewelWhopperServo.setPosition(jewelWhopperServo.getPosition() - 0.05);
     }
 
     @Deprecated
