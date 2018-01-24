@@ -2,6 +2,7 @@ package org.pattonvillerobotics.autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
@@ -69,6 +70,11 @@ public class AutoMethods {
         glyphGrabber.release();
         glyphter.getMotor().setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
+        drive.leftRearMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+        drive.rightRearMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        drive.leftDriveMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+        drive.rightDriveMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+
         vuforia.activateTracking();
 
         displayTelemetry(allianceColor + " autonomous initialized", true);
@@ -77,13 +83,10 @@ public class AutoMethods {
 
     /**
      * Continously retrieves data from Vuforia and OpenCV until all values are detected
-     *
-     * @param detectPictograph boolean that determines whether to read the pictograph
-     * @param detectJewel      boolean that determines whether to read the jewel set
      */
-    public void readVuforiaValues(boolean detectPictograph, boolean detectJewel) {
+    public void readVuforiaValues() {
 
-        drive.rotateDegrees(Direction.RIGHT, 10, 0.5);
+        drive.rotateDegrees(Direction.LEFT, 10, 0.5);
 
         pictographKey = vuforia.getCurrentVisibleRelic();
         while (pictographKey == null || pictographKey.equals(RelicRecoveryVuMark.UNKNOWN)) {
@@ -92,7 +95,7 @@ public class AutoMethods {
 
         displayTelemetry("Column Key:  " + pictographKey, true);
 
-        drive.rotateDegrees(Direction.LEFT, 10, 0.5);
+        drive.rotateDegrees(Direction.RIGHT, 10, 0.5);
 
         jewelColorDetector.process(vuforia.getImage());
         analysis = jewelColorDetector.getAnalysis();
@@ -130,17 +133,17 @@ public class AutoMethods {
             AllianceColor rightColor = AbstractColorSensor.toAllianceColor(analysis.rightJewelColor);
 
             if (leftColor.equals(allianceColor)) {
-                displayTelemetry("Turning left", true);
-                drive.rotateDegrees(Direction.LEFT, 30, 0.2);
+                displayTelemetry("Turning right to knock off " + rightColor + " jewel", true);
+                drive.rotateDegrees(Direction.RIGHT, 30, 0.2);
                 sleep(0.1);
                 jewelWhopper.moveUp();
-                drive.rotateDegrees(Direction.RIGHT, 30, 0.2);
+                drive.rotateDegrees(Direction.LEFT, 30, 0.2);
             } else if (rightColor.equals(allianceColor)) {
-                displayTelemetry("Turning right", true);
-                drive.rotateDegrees(Direction.RIGHT, 30, 0.2);
+                displayTelemetry("Turning left to knock off " + leftColor + " jewel", true);
+                drive.rotateDegrees(Direction.LEFT, 30, 0.2);
                 sleep(0.1);
                 jewelWhopper.moveUp();
-                drive.rotateDegrees(Direction.LEFT, 30, 0.2);
+                drive.rotateDegrees(Direction.RIGHT, 30, 0.2);
             } else {
                 displayTelemetry("Error detecting colors", true);
             }
@@ -181,45 +184,47 @@ public class AutoMethods {
             pictographKey = RelicRecoveryVuMark.CENTER;
         }
 
+        Direction direction = allianceColor == AllianceColor.BLUE ? Direction.FORWARD : Direction.BACKWARD;
+
         switch (pictographKey) {
 
             case LEFT:
-                drive.moveInches(Direction.FORWARD, allianceColor == AllianceColor.BLUE ? Globals.NEAR_DISTANCE : Globals.FAR_DISTANCE, 0.5);
+                drive.moveInches(direction, allianceColor == AllianceColor.BLUE ? Globals.NEAR_DISTANCE : Globals.FAR_DISTANCE, 0.5);
                 break;
             case CENTER:
-                drive.moveInches(Direction.FORWARD, Globals.MEDIUM_DISTANCE, 0.5);
+                drive.moveInches(direction, Globals.MEDIUM_DISTANCE, 0.5);
                 break;
             case RIGHT:
-                drive.moveInches(Direction.FORWARD, allianceColor == AllianceColor.BLUE ? Globals.FAR_DISTANCE : Globals.NEAR_DISTANCE, 0.5);
+                drive.moveInches(direction, allianceColor == AllianceColor.BLUE ? Globals.FAR_DISTANCE : Globals.NEAR_DISTANCE, 0.5);
                 break;
             default:
                 displayTelemetry("No pictograph key detected; driving to center column by default", true);
-                drive.moveInches(Direction.FORWARD, Globals.MEDIUM_DISTANCE, 0.5);
+                drive.moveInches(direction, Globals.MEDIUM_DISTANCE, 0.5);
                 break;
         }
 
         sleep(0.2);
-        drive.rotateDegrees(allianceColor == AllianceColor.BLUE ? Direction.LEFT : Direction.RIGHT, 90, 0.5);
+        drive.rotateDegrees(Direction.LEFT, 90, 0.5);
     }
 
     public void placeGlyph() {
 
-        drive.moveInches(Direction.BACKWARD, Globals.DISTANCE_TO_CRYPTOBOX, 0.5);
+        drive.moveInches(Direction.FORWARD, Globals.DISTANCE_TO_CRYPTOBOX, 0.5);
         glyphter.getMotor().setPower(-0.5);
         sleep(1);
         glyphter.getMotor().setPower(0);
         glyphGrabber.slightRelease();
-        drive.moveInches(Direction.FORWARD, Globals.DISTANCE_TO_CRYPTOBOX, 0.5);
+        drive.moveInches(Direction.BACKWARD, Globals.DISTANCE_TO_CRYPTOBOX, 0.5);
 
     }
 
     public void park() {
         switch (pictographKey) {
             case LEFT:
-                drive.moveInches(Direction.RIGHT, 5, 0.5);
+                drive.moveInches(Direction.LEFT, 5, 0.5);
                 break;
             case RIGHT:
-                drive.moveInches(Direction.LEFT, 5, 0.5);
+                drive.moveInches(Direction.RIGHT, 5, 0.5);
                 break;
             default:
                 break;
@@ -235,7 +240,7 @@ public class AutoMethods {
 
         pickUpGlyph();
 
-        readVuforiaValues(false, true);
+        readVuforiaValues();
 
         sleep(0.5);
 
@@ -282,6 +287,28 @@ public class AutoMethods {
 
         sleep(2);
 
+
+    }
+
+    public void driveTest() {
+
+        displayTelemetry("Driving " + Direction.FORWARD, true);
+        drive.moveInches(Direction.FORWARD, 10, 0.5);
+
+        sleep(0.5);
+
+        displayTelemetry("Driving " + Direction.BACKWARD, true);
+        drive.moveInches(Direction.BACKWARD, 10, 0.5);
+
+        sleep(0.5);
+
+        displayTelemetry("Turning " + Direction.LEFT, true);
+        drive.rotateDegrees(Direction.LEFT, 90, 0.5);
+
+        sleep(0.5);
+
+        displayTelemetry("Turning " + Direction.RIGHT, true);
+        drive.rotateDegrees(Direction.RIGHT, 90, 0.5);
 
     }
 
