@@ -83,34 +83,27 @@ public class AutoMethods {
      */
     public void readVuforiaValues(boolean detectPictograph, boolean detectJewel) {
 
-        int tries = 0;
+        drive.rotateDegrees(Direction.RIGHT, 10, 0.5);
 
-        if (detectJewel) {
+        pictographKey = vuforia.getCurrentVisibleRelic();
+        while (pictographKey == null || pictographKey.equals(RelicRecoveryVuMark.UNKNOWN)) {
+            pictographKey = vuforia.getCurrentVisibleRelic();
+        }
+
+        displayTelemetry("Column Key:  " + pictographKey, true);
+
+        drive.rotateDegrees(Direction.LEFT, 10, 0.5);
+
+        jewelColorDetector.process(vuforia.getImage());
+        analysis = jewelColorDetector.getAnalysis();
+
+        while ((analysis.leftJewelColor == null || analysis.rightJewelColor == null)) {
             jewelColorDetector.process(vuforia.getImage());
             analysis = jewelColorDetector.getAnalysis();
-
-            while ((analysis.leftJewelColor == null || analysis.rightJewelColor == null) && tries < 30) {
-                jewelColorDetector.process(vuforia.getImage());
-                analysis = jewelColorDetector.getAnalysis();
-                tries++;
-            }
-            displayTelemetry("Left color: " + analysis.leftJewelColor, true);
-            displayTelemetry("Right color: " + analysis.rightJewelColor, true);
-
         }
 
-        if (detectPictograph) {
-            drive.rotateDegrees(Direction.RIGHT, 20, 0.5);
-            sleep(1);
-            pictographKey = vuforia.getCurrentVisibleRelic();
-            while (pictographKey == null || pictographKey.equals(RelicRecoveryVuMark.UNKNOWN)) {
-                pictographKey = vuforia.getCurrentVisibleRelic();
-            }
-            displayTelemetry("Column Key:  " + pictographKey, true);
-            drive.rotateDegrees(Direction.LEFT, 20, 0.5);
-        }
-
-
+        displayTelemetry("Left color: " + analysis.leftJewelColor, true);
+        displayTelemetry("Right color: " + analysis.rightJewelColor, true);
 
     }
 
@@ -154,8 +147,9 @@ public class AutoMethods {
 
             displayTelemetry("Done whopping jewel", true);
 
-        } catch (Error error) {
-            displayTelemetry("Error detecting jewels: " + error.getMessage(), true);
+        } catch (Exception exception) {
+            displayTelemetry(exception.getMessage());
+            jewelWhopper.moveUp();
         }
 
     }
@@ -165,6 +159,7 @@ public class AutoMethods {
      */
     public void driveOffBalancingStone() {
 
+        drive.rotateDegrees(allianceColor == AllianceColor.BLUE ? Direction.RIGHT : Direction.LEFT, 90, 0.5);
         drive.moveInches(Direction.BACKWARD, 5, 0.2);
         double angleMargin = 3;
         while ((gyro.getRoll() > angleMargin || gyro.getRoll() < -angleMargin) && (gyro.getPitch() > angleMargin || gyro.getPitch() < -angleMargin)) {
@@ -179,6 +174,8 @@ public class AutoMethods {
      */
     public void driveToColumn() {
 
+        jewelWhopper.moveUp();
+        sleep(0.2);
 
         if (pictographKey == null) {
             pictographKey = RelicRecoveryVuMark.CENTER;
@@ -201,6 +198,7 @@ public class AutoMethods {
                 break;
         }
 
+        sleep(0.2);
         drive.rotateDegrees(allianceColor == AllianceColor.BLUE ? Direction.LEFT : Direction.RIGHT, 90, 0.5);
     }
 
@@ -210,7 +208,7 @@ public class AutoMethods {
         glyphter.getMotor().setPower(-0.5);
         sleep(1);
         glyphter.getMotor().setPower(0);
-        glyphGrabber.release();
+        glyphGrabber.slightRelease();
         drive.moveInches(Direction.FORWARD, Globals.DISTANCE_TO_CRYPTOBOX, 0.5);
 
     }
@@ -226,8 +224,6 @@ public class AutoMethods {
             default:
                 break;
         }
-        sleep(1);
-        drive.rotateDegrees(Direction.LEFT, 170, 0.5);
     }
 
     /**
@@ -239,7 +235,7 @@ public class AutoMethods {
 
         pickUpGlyph();
 
-        readVuforiaValues(true, true);
+        readVuforiaValues(false, true);
 
         sleep(0.5);
 
@@ -255,9 +251,8 @@ public class AutoMethods {
         park();
 
         sleep(1);
-        linearOpMode.stop();
-
         displayTelemetry("Completed " + allianceColor + " autonomous", true);
+        linearOpMode.stop();
 
     }
 

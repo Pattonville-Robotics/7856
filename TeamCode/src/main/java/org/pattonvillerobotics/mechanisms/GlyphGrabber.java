@@ -42,6 +42,11 @@ public class GlyphGrabber extends AbstractMechanism {
         position = Globals.GrabberPosition.RELEASED;
     }
 
+    public void slightRelease() {
+        leftServo.setPosition(0.35);
+        rightServo.setPosition(0.75);
+    }
+
     public void incrementLeftPosition() {
         leftServo.setPosition(leftServo.getPosition() + 0.05);
     }
