@@ -28,6 +28,7 @@ public class MainTeleop extends LinearOpMode {
     private REVGyro gyro;
     private Glyphter glyphter;
     private JewelWhopper jewelWhopper;
+    private double rotationFactor = 1;
 
     public void runOpMode() throws InterruptedException {
 
@@ -38,7 +39,7 @@ public class MainTeleop extends LinearOpMode {
         while (opModeIsActive()) {
 
             gamepad.update(new GamepadData(gamepad1));
-            simpleMecanumDrive.driveWithJoysticks(-gamepad1.left_stick_x, gamepad1.left_stick_y, gamepad1.right_stick_x);
+            simpleMecanumDrive.driveWithJoysticks(-gamepad1.left_stick_x, gamepad1.left_stick_y, gamepad1.right_stick_x / rotationFactor);
             glyphter.getMotor().setPower(gamepad1.right_trigger / 2 - gamepad1.left_trigger / 4);
             idle();
 
@@ -87,6 +88,14 @@ public class MainTeleop extends LinearOpMode {
                      break;
              }
          });
+
+        gamepad.getButton(GamepadData.Button.STICK_BUTTON_RIGHT).addListener(ListenableButton.ButtonState.JUST_PRESSED, () -> {
+            if (rotationFactor == 1) {
+                rotationFactor = 2;
+            } else {
+                rotationFactor = 1;
+            }
+        });
 
         gamepad.getButton(GamepadData.Button.B).addListener(ListenableButton.ButtonState.JUST_PRESSED, () -> {
             glyphGrabber.slightRelease();

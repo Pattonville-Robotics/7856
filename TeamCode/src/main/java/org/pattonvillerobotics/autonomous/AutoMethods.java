@@ -13,6 +13,7 @@ import org.pattonvillerobotics.commoncode.enums.AllianceColor;
 import org.pattonvillerobotics.commoncode.enums.Direction;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.MecanumEncoderDrive;
 import org.pattonvillerobotics.commoncode.robotclasses.opencv.ImageProcessor;
+import org.pattonvillerobotics.commoncode.robotclasses.opencv.relicrecovery.jewels.JewelAnalysisMode;
 import org.pattonvillerobotics.commoncode.robotclasses.opencv.relicrecovery.jewels.JewelColorDetector;
 import org.pattonvillerobotics.commoncode.robotclasses.opencv.util.PhoneOrientation;
 import org.pattonvillerobotics.commoncode.robotclasses.vuforia.VuforiaNavigation;
@@ -77,6 +78,8 @@ public class AutoMethods {
 
         vuforia.activateTracking();
 
+        jewelColorDetector.setAnalysisMode(JewelAnalysisMode.COMPLEX);
+
         displayTelemetry(allianceColor + " autonomous initialized", true);
 
     }
@@ -95,7 +98,7 @@ public class AutoMethods {
 
         displayTelemetry("Column Key:  " + pictographKey, true);
 
-        drive.rotateDegrees(Direction.RIGHT, 10, 0.5);
+        drive.rotateDegrees(Direction.RIGHT, 15, 0.5);
 
         jewelColorDetector.process(vuforia.getImage());
         analysis = jewelColorDetector.getAnalysis();
@@ -107,6 +110,8 @@ public class AutoMethods {
 
         displayTelemetry("Left color: " + analysis.leftJewelColor, true);
         displayTelemetry("Right color: " + analysis.rightJewelColor, true);
+
+        drive.rotateDegrees(Direction.LEFT, 5, 0.5);
 
     }
 
@@ -131,19 +136,20 @@ public class AutoMethods {
 
             AllianceColor leftColor = AbstractColorSensor.toAllianceColor(analysis.leftJewelColor);
             AllianceColor rightColor = AbstractColorSensor.toAllianceColor(analysis.rightJewelColor);
+            double whopAngle = 20;
 
             if (leftColor.equals(allianceColor)) {
                 displayTelemetry("Turning right to knock off " + rightColor + " jewel", true);
-                drive.rotateDegrees(Direction.RIGHT, 30, 0.2);
+                drive.rotateDegrees(Direction.RIGHT, whopAngle, 0.2);
                 sleep(0.1);
                 jewelWhopper.moveUp();
-                drive.rotateDegrees(Direction.LEFT, 30, 0.2);
+                drive.rotateDegrees(Direction.LEFT, whopAngle, 0.2);
             } else if (rightColor.equals(allianceColor)) {
                 displayTelemetry("Turning left to knock off " + leftColor + " jewel", true);
-                drive.rotateDegrees(Direction.LEFT, 30, 0.2);
+                drive.rotateDegrees(Direction.LEFT, whopAngle, 0.2);
                 sleep(0.1);
                 jewelWhopper.moveUp();
-                drive.rotateDegrees(Direction.RIGHT, 30, 0.2);
+                drive.rotateDegrees(Direction.RIGHT, whopAngle, 0.2);
             } else {
                 displayTelemetry("Error detecting colors", true);
             }
@@ -209,12 +215,12 @@ public class AutoMethods {
 
     public void placeGlyph() {
 
-        drive.moveInches(Direction.FORWARD, Globals.DISTANCE_TO_CRYPTOBOX, 0.5);
         glyphter.getMotor().setPower(-0.5);
         sleep(1);
         glyphter.getMotor().setPower(0);
+        drive.moveInches(Direction.FORWARD, Globals.DISTANCE_TO_CRYPTOBOX, 0.5);
         glyphGrabber.slightRelease();
-        drive.moveInches(Direction.BACKWARD, Globals.DISTANCE_TO_CRYPTOBOX, 0.5);
+        drive.moveInches(Direction.BACKWARD, 6, 0.5);
 
     }
 
