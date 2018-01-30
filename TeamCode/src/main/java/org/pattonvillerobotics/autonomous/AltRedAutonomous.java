@@ -24,11 +24,17 @@ public class AltRedAutonomous extends LinearOpMode {
         waitForStart();
 
         autoMethods.pickUpGlyph();
+        autoMethods.readVuforiaValues();
+        autoMethods.knockOffJewel();
+
         sleep(500);
-        autoMethods.getMecanumEncoderDrive().moveInches(Direction.BACKWARD, 14, 0.5);
-        autoMethods.getMecanumEncoderDrive().moveInches(Direction.LEFT, 10, 0.5);
-        sleep(500);
-        autoMethods.placeGlyph();
+        autoMethods.getMecanumEncoderDrive().moveInches(Direction.BACKWARD, 20, 0.5);
+
+//        sleep(500);
+//        autoMethods.getMecanumEncoderDrive().moveInches(Direction.BACKWARD, 14, 0.5);
+//        autoMethods.getMecanumEncoderDrive().moveInches(Direction.LEFT, 10, 0.5);
+//        sleep(500);
+//        autoMethods.placeGlyph();
 
     }
 }

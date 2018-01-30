@@ -89,7 +89,7 @@ public class AutoMethods {
      */
     public void readVuforiaValues() {
 
-        drive.rotateDegrees(Direction.LEFT, 10, 0.5);
+        drive.rotateDegrees(Direction.LEFT, 13, 0.5); // was 10 degrees
 
         pictographKey = vuforia.getCurrentVisibleRelic();
         while (pictographKey == null || pictographKey.equals(RelicRecoveryVuMark.UNKNOWN)) {
@@ -98,7 +98,7 @@ public class AutoMethods {
 
         displayTelemetry("Column Key:  " + pictographKey, true);
 
-        drive.rotateDegrees(Direction.RIGHT, 15, 0.5);
+        drive.rotateDegrees(Direction.RIGHT, 18, 0.5); // was 15 degrees
 
         jewelColorDetector.process(vuforia.getImage());
         analysis = jewelColorDetector.getAnalysis();
@@ -219,7 +219,7 @@ public class AutoMethods {
         sleep(1);
         glyphter.getMotor().setPower(0);
         drive.moveInches(Direction.FORWARD, Globals.DISTANCE_TO_CRYPTOBOX, 0.5);
-        glyphGrabber.slightRelease();
+        glyphGrabber.release();
         drive.moveInches(Direction.BACKWARD, 6, 0.5);
 
     }
