@@ -1,6 +1,7 @@
 package org.pattonvillerobotics.mechanisms;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -13,8 +14,8 @@ import org.pattonvillerobotics.Globals;
 public class GlyphGrabber extends AbstractMechanism {
 
     public static final String TAG = GlyphGrabber.class.getSimpleName();
-    private Servo leftServo;
-    private Servo rightServo;
+    private Servo leftServo, rightServo;
+    private CRServo leftCRServo, rightCRServo;
     private Globals.GrabberPosition position;
 
     public GlyphGrabber(HardwareMap hardwareMap, LinearOpMode linearOpMode, Globals.GrabberPosition initialPosition) {
@@ -28,6 +29,14 @@ public class GlyphGrabber extends AbstractMechanism {
         }
 
         position = initialPosition;
+    }
+
+    public void collect() {
+
+    }
+
+    public void eject() {
+
     }
 
     public void clamp() {
