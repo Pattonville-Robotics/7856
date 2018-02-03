@@ -6,7 +6,6 @@ import com.qualcomm.robotcore.hardware.CRServo;
 
 import org.pattonvillerobotics.commoncode.opmodes.OpModeGroups;
 import org.pattonvillerobotics.commoncode.robotclasses.gamepad.GamepadData;
-import org.pattonvillerobotics.commoncode.robotclasses.gamepad.ListenableButton;
 import org.pattonvillerobotics.commoncode.robotclasses.gamepad.ListenableGamepad;
 
 /**
@@ -31,15 +30,17 @@ public class ActiveIntakeTest extends LinearOpMode {
 
             gamepad.update(new GamepadData(gamepad1));
 
-            gamepad.getButton(GamepadData.Button.A).addListener(ListenableButton.ButtonState.BEING_PRESSED, () -> {
+            if (gamepad1.a) {
                 leftServo.setPower(0.5);
                 rightServo.setPower(0.5);
-            });
+            } else if (gamepad1.b) {
+                leftServo.setPower(0.5);
+                rightServo.setPower(0.5);
+            } else {
+                leftServo.setPower(0);
+                rightServo.setPower(0);
+            }
 
-            gamepad.getButton(GamepadData.Button.B).addListener(ListenableButton.ButtonState.BEING_PRESSED, () -> {
-                leftServo.setPower(0.5);
-                rightServo.setPower(0.5);
-            });
 
         }
 
