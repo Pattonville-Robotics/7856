@@ -213,6 +213,39 @@ public class AutoMethods {
         drive.rotateDegrees(Direction.LEFT, 90, 0.5);
     }
 
+    public void driveToColumnAlt() {
+
+        jewelWhopper.moveUp();
+        sleep(0.2);
+
+        if (pictographKey == null) {
+            pictographKey = RelicRecoveryVuMark.CENTER;
+        }
+
+        Direction direction = allianceColor == AllianceColor.BLUE ? Direction.LEFT : Direction.RIGHT;
+
+        drive.moveInches(Direction.FORWARD, 20, .5);
+
+        switch (pictographKey) {
+
+            case LEFT:
+                drive.moveInches(direction, allianceColor == AllianceColor.BLUE ? Globals.ALT_NEAR_DISTANCE : Globals.ALT_FAR_DISTANCE, 0.5);
+                break;
+            case CENTER:
+                drive.moveInches(direction, Globals.ALT_MEDIUM_DISTANCE, 0.5);
+                break;
+            case RIGHT:
+                drive.moveInches(direction, allianceColor == AllianceColor.BLUE ? Globals.ALT_FAR_DISTANCE : Globals.ALT_NEAR_DISTANCE, 0.5);
+                break;
+            default:
+                displayTelemetry("No pictograph key detected; driving to center column by default", true);
+                drive.moveInches(direction, Globals.ALT_MEDIUM_DISTANCE, 0.5);
+                break;
+        }
+
+        sleep(0.2);
+    }
+
     public void placeGlyph() {
 
         glyphter.getMotor().setPower(-0.5);
@@ -254,6 +287,33 @@ public class AutoMethods {
         sleep(0.5);
 
         driveToColumn();
+        sleep(0.5);
+
+        placeGlyph();
+        sleep(0.5);
+
+        park();
+
+        sleep(1);
+        displayTelemetry("Completed " + allianceColor + " autonomous", true);
+        linearOpMode.stop();
+
+    }
+
+    public void runAutonomousProcessAlt() {
+
+        displayTelemetry("Running " + allianceColor + " autonomous ALT", true);
+
+        pickUpGlyph();
+
+        readVuforiaValues();
+
+        sleep(0.5);
+
+        knockOffJewel();
+        sleep(0.5);
+
+        driveToColumnAlt();
         sleep(0.5);
 
         placeGlyph();

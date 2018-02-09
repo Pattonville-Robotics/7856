@@ -4,7 +4,6 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.pattonvillerobotics.commoncode.enums.AllianceColor;
-import org.pattonvillerobotics.commoncode.enums.Direction;
 import org.pattonvillerobotics.commoncode.opmodes.OpModeGroups;
 
 /**
@@ -22,16 +21,11 @@ public class AltBlueAutonomous extends LinearOpMode {
 
         waitForStart();
 
-        autoMethods.pickUpGlyph();
-        autoMethods.readVuforiaValues();
-        autoMethods.knockOffJewel();
-        sleep(500);
-        autoMethods.getMecanumEncoderDrive().moveInches(Direction.FORWARD , 20, 0.5);
-        //autoMethods.getMecanumEncoderD drive().moveInches(Direction.RIGHT, 10, 0.5);
-        sleep(500);
-        //autoMethods.placeGlyph();
+        autoMethods.runAutonomousProcessAlt();
 
-
+        while(opModeIsActive()) {
+            idle();
+        }
 
     }
 }

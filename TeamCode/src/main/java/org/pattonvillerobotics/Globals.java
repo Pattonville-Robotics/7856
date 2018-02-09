@@ -16,6 +16,10 @@ public class Globals {
     public static final double RED_MEDIUM_DISTANCE = 26;
     public static final double RED_FAR_DISTANCE = 32.5;
     public static final int CYLINDER_RADIUS = 1;
+    public static final double ALT_NEAR_DISTANCE = 5.5;
+    public static final double ALT_MEDIUM_DISTANCE = 13.5;
+    public static final double ALT_FAR_DISTANCE = 19;
+
 
     public enum GrabberPosition {
         CLAMPED, RELEASED
