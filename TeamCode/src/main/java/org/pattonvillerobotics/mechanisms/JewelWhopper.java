@@ -37,12 +37,12 @@ public class JewelWhopper extends AbstractMechanism {
     }
 
     public void moveUp() {
-        jewelWhopperServo.setPosition(0.6);
+        jewelWhopperServo.setPosition(1);
         position = Position.UP;
     }
 
     public void moveDown() {
-        jewelWhopperServo.setPosition(0.05);
+        jewelWhopperServo.setPosition(0.45);
         position = Position.DOWN;
     }
 
