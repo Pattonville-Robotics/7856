@@ -14,6 +14,10 @@ import org.pattonvillerobotics.Globals;
 public class GlyphGrabber extends AbstractMechanism {
 
     public static final String TAG = GlyphGrabber.class.getSimpleName();
+    public static final double LEFT_MAX = 0.8;
+    public static final double LEFT_MIN = 0.3;
+    public static final double RIGHT_MAX = 0.8;
+    public static final double RIGHT_MIN = 0.3;
     private Servo leftServo, rightServo;
     private CRServo leftCRServo, rightCRServo;
     private Globals.GrabberPosition position;
@@ -40,14 +44,14 @@ public class GlyphGrabber extends AbstractMechanism {
     }
 
     public void clamp() {
-        leftServo.setPosition(0.8);
-        rightServo.setPosition((0.3));
+        leftServo.setPosition(LEFT_MAX);
+        rightServo.setPosition((RIGHT_MIN));
         position = Globals.GrabberPosition.CLAMPED;
     }
 
     public void release() {
-        leftServo.setPosition(0.3);
-        rightServo.setPosition(0.8);
+        leftServo.setPosition(LEFT_MIN);
+        rightServo.setPosition(RIGHT_MAX);
         position = Globals.GrabberPosition.RELEASED;
     }
 
@@ -70,6 +74,13 @@ public class GlyphGrabber extends AbstractMechanism {
 
     public void decrementRightPosition() {
         rightServo.setPosition(rightServo.getPosition() - 0.05);
+    }
+
+    public boolean inBounds() {
+        return leftServo.getPosition() > LEFT_MIN
+                && leftServo.getPosition() < LEFT_MAX
+                && rightServo.getPosition() > RIGHT_MIN
+                && rightServo.getPosition() < RIGHT_MAX;
     }
 
     public Globals.GrabberPosition getGrabberPosition() {

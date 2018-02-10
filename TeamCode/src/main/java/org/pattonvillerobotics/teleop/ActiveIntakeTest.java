@@ -3,6 +3,7 @@ package org.pattonvillerobotics.teleop;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.pattonvillerobotics.commoncode.opmodes.OpModeGroups;
 import org.pattonvillerobotics.commoncode.robotclasses.gamepad.GamepadData;
@@ -31,9 +32,11 @@ public class ActiveIntakeTest extends LinearOpMode {
             gamepad.update(new GamepadData(gamepad1));
 
             if (gamepad1.a) {
+                leftServo.setDirection(DcMotorSimple.Direction.FORWARD);
                 leftServo.setPower(0.5);
                 rightServo.setPower(0.5);
             } else if (gamepad1.b) {
+                leftServo.setDirection(DcMotorSimple.Direction.REVERSE);
                 leftServo.setPower(0.5);
                 rightServo.setPower(0.5);
             } else {
