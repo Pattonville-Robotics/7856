@@ -21,7 +21,7 @@ public class AltBlueAutonomous extends LinearOpMode {
 
         waitForStart();
 
-        autoMethods.runAutonomousProcessAlt();
+        autoMethods.runAutonomousProcessAltBlue();
 
         while(opModeIsActive()) {
             idle();

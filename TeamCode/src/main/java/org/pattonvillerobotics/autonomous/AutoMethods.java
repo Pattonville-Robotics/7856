@@ -225,7 +225,11 @@ public class AutoMethods {
 
         Direction direction = allianceColor == AllianceColor.BLUE ? Direction.LEFT : Direction.RIGHT;
 
-        drive.moveInches(Direction.FORWARD, 20, .5);
+        drive.moveInches(allianceColor == AllianceColor.BLUE ? Direction.FORWARD : Direction.BACKWARD, 20, .5);
+
+        if(allianceColor == AllianceColor.RED) {
+            drive.rotateDegrees(Direction.RIGHT, 180, .5);
+        }
 
         switch (pictographKey) {
 
@@ -301,7 +305,34 @@ public class AutoMethods {
 
     }
 
-    public void runAutonomousProcessAlt() {
+    public void runAutonomousProcessAltBlue() {
+
+        displayTelemetry("Running " + allianceColor + " autonomous ALT", true);
+
+        pickUpGlyph();
+
+        readVuforiaValues();
+
+        sleep(0.5);
+
+        knockOffJewel();
+        sleep(0.5);
+
+        driveToColumnAlt();
+        sleep(0.5);
+
+        placeGlyph();
+        sleep(0.5);
+
+        park();
+
+        sleep(1);
+        displayTelemetry("Completed " + allianceColor + " autonomous", true);
+        linearOpMode.stop();
+
+    }
+
+    public void runAutonomousProcessAltRed() {
 
         displayTelemetry("Running " + allianceColor + " autonomous ALT", true);
 
