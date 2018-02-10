@@ -8,9 +8,9 @@ public class Globals {
 
     public static final double COLUMN_WIDTH = 7;
     public static final double ROW_HEIGHT = 6.5;
-    public static final double NEAR_DISTANCE = 22;
-    public static final double MEDIUM_DISTANCE = 28; //was 27
-    public static final double FAR_DISTANCE = 34.5;
+    public static final double BLUE_NEAR_DISTANCE = 22;
+    public static final double BLUE_MEDIUM_DISTANCE = 28; //was 27
+    public static final double BLUE_FAR_DISTANCE = 34.5;
     public static final double DISTANCE_TO_CRYPTOBOX = 6;
     public static final double RED_NEAR_DISTANCE = 20;
     public static final double RED_MEDIUM_DISTANCE = 26;

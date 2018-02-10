@@ -136,7 +136,7 @@ public class AutoMethods {
 
             AllianceColor leftColor = AbstractColorSensor.toAllianceColor(analysis.leftJewelColor);
             AllianceColor rightColor = AbstractColorSensor.toAllianceColor(analysis.rightJewelColor);
-            double whopAngle = 20;
+            double whopAngle = 23;
 
             if (leftColor.equals(allianceColor)) {
                 displayTelemetry("Turning right to knock off " + rightColor + " jewel", true);
@@ -196,17 +196,17 @@ public class AutoMethods {
         switch (pictographKey) {
 
             case LEFT:
-                drive.moveInches(direction, allianceColor == AllianceColor.BLUE ? Globals.NEAR_DISTANCE : Globals.RED_FAR_DISTANCE, 0.5);
+                drive.moveInches(direction, allianceColor == AllianceColor.BLUE ? Globals.BLUE_NEAR_DISTANCE : Globals.RED_FAR_DISTANCE, 0.5);
                 break;
             case CENTER:
-                drive.moveInches(direction, allianceColor == AllianceColor.BLUE ? Globals.MEDIUM_DISTANCE : Globals.RED_MEDIUM_DISTANCE, 0.5);
+                drive.moveInches(direction, allianceColor == AllianceColor.BLUE ? Globals.BLUE_MEDIUM_DISTANCE : Globals.RED_MEDIUM_DISTANCE, 0.5);
                 break;
             case RIGHT:
-                drive.moveInches(direction, allianceColor == AllianceColor.BLUE ? Globals.FAR_DISTANCE : Globals.RED_NEAR_DISTANCE, 0.5);
+                drive.moveInches(direction, allianceColor == AllianceColor.BLUE ? Globals.BLUE_FAR_DISTANCE : Globals.RED_NEAR_DISTANCE, 0.5);
                 break;
             default:
                 displayTelemetry("No pictograph key detected; driving to center column by default", true);
-                drive.moveInches(direction, allianceColor == AllianceColor.BLUE ? Globals.MEDIUM_DISTANCE : Globals.RED_MEDIUM_DISTANCE, 0.5);
+                drive.moveInches(direction, allianceColor == AllianceColor.BLUE ? Globals.BLUE_MEDIUM_DISTANCE : Globals.RED_MEDIUM_DISTANCE, 0.5);
                 break;
         }
 
@@ -338,7 +338,7 @@ public class AutoMethods {
 
         sleep(2);
 
-        drive.moveInches(Direction.RIGHT, Globals.MEDIUM_DISTANCE, 0.5);
+        drive.moveInches(Direction.RIGHT, Globals.BLUE_MEDIUM_DISTANCE, 0.5);
 
         sleep(2);
 

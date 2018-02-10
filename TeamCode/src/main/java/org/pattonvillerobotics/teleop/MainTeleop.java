@@ -114,16 +114,6 @@ public class MainTeleop extends LinearOpMode {
             glyphGrabber.slightRelease();
         });
 
-        gamepad.getButton(GamepadData.Button.LEFT_BUMPER).addListener(ListenableButton.ButtonState.JUST_PRESSED, () -> {
-            jewelWhopper.incrementPosition();
-            addTelemetry("whopper pos", jewelWhopper.getServo().getPosition());
-         });
-
-        gamepad.getButton(GamepadData.Button.RIGHT_BUMPER).addListener(ListenableButton.ButtonState.JUST_PRESSED, () -> {
-            jewelWhopper.decrementPosition();
-            addTelemetry("whopper pos", jewelWhopper.getServo().getPosition());
-        });
-
         gamepad.getButton(GamepadData.Button.DPAD_UP).addListener(ListenableButton.ButtonState.JUST_PRESSED, () -> {
             glyphGrabber.decrementLeftPosition();
             addTelemetry("left grabber pos", glyphGrabber.getLeftServo().getPosition());
