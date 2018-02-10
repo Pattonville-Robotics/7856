@@ -41,6 +41,19 @@ public class MainTeleop extends LinearOpMode {
             gamepad.update(new GamepadData(gamepad1));
             simpleMecanumDrive.driveWithJoysticks(-gamepad1.left_stick_x, gamepad1.left_stick_y, gamepad1.right_stick_x / rotationFactor);
             glyphter.getMotor().setPower(gamepad1.right_trigger / 2 - gamepad1.left_trigger / 4);
+
+            if (gamepad1.left_bumper && glyphGrabber.inBounds()) {
+
+                glyphGrabber.decrementLeftPosition();
+                glyphGrabber.incrementRightPosition();
+
+            } else if (gamepad1.right_bumper && glyphGrabber.inBounds()) {
+
+                glyphGrabber.incrementLeftPosition();
+                glyphGrabber.decrementRightPosition();
+
+            }
+
             idle();
 
         }

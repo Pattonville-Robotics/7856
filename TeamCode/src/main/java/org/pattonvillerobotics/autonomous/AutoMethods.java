@@ -168,12 +168,13 @@ public class AutoMethods {
      */
     public void driveOffBalancingStone() {
 
-        drive.rotateDegrees(allianceColor == AllianceColor.BLUE ? Direction.RIGHT : Direction.LEFT, 90, 0.5);
-        drive.moveInches(Direction.BACKWARD, 5, 0.2);
+        Direction direction = allianceColor == AllianceColor.BLUE ? Direction.FORWARD : Direction.BACKWARD;
+
+        drive.moveInches(direction, 5, 0.2);
         double angleMargin = 3;
-        while ((gyro.getRoll() > angleMargin || gyro.getRoll() < -angleMargin) && (gyro.getPitch() > angleMargin || gyro.getPitch() < -angleMargin)) {
+        while (Math.abs(gyro.getRoll()) > angleMargin && Math.abs(gyro.getPitch()) > angleMargin) {
             gyro.getGyroTelemetry();
-            drive.move(Direction.BACKWARD, 0.5);
+            drive.move(direction, 0.5);
         }
 
     }
