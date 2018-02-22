@@ -13,13 +13,13 @@ import org.pattonvillerobotics.mechanisms.GlyphGrabber;
 @TeleOp(name = "GlyphGrabberTester", group = OpModeGroups.DEBUG)
 public class GlyphGrabberTester extends LinearOpMode {
 
-    private GlyphGrabber glyphGrabber;
     private static final String TAG = GlyphGrabberTester.class.getSimpleName();
+    private GlyphGrabber glyphGrabber;
 
     @Override
     public void runOpMode() throws InterruptedException {
 
-        glyphGrabber = new GlyphGrabber(hardwareMap, this, Globals.GrabberPosition.RELEASED);
+        glyphGrabber = new GlyphGrabber(hardwareMap, this, Globals.GrabberState.RELEASED);
 
         waitForStart();
 
@@ -28,8 +28,8 @@ public class GlyphGrabberTester extends LinearOpMode {
 
         while(opModeIsActive()) {
 
-            glyphGrabber.getLeftServo().setPosition(gamepad1.left_trigger);
-            glyphGrabber.getRightServo().setPosition(gamepad1.right_trigger);
+            glyphGrabber.getLeftTopServo().setPosition(gamepad1.left_trigger);
+            glyphGrabber.getRightTopServo().setPosition(gamepad1.right_trigger);
 
             idle();
 

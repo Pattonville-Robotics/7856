@@ -21,7 +21,7 @@ public class Globals {
     public static final double ALT_FAR_DISTANCE = 19;
 
 
-    public enum GrabberPosition {
+    public enum GrabberState {
         CLAMPED, RELEASED
     }
 

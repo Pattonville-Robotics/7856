@@ -61,14 +61,14 @@ public class AutoMethods {
 
         drive = new MecanumEncoderDrive(hardwareMap, linearOpMode, CustomRobotParameters.ROBOT_PARAMETERS);
         glyphter = new Glyphter(hardwareMap, linearOpMode);
-        glyphGrabber = new GlyphGrabber(hardwareMap, linearOpMode, Globals.GrabberPosition.RELEASED);
+        glyphGrabber = new GlyphGrabber(hardwareMap, linearOpMode, Globals.GrabberState.RELEASED);
         jewelWhopper = new JewelWhopper(hardwareMap, linearOpMode, JewelWhopper.Position.UP);
         gyro = new REVGyro(hardwareMap, linearOpMode);
         vuforia = new VuforiaNavigation(CustomRobotParameters.VUFORIA_PARAMETERS);
         jewelColorDetector = new JewelColorDetector(PhoneOrientation.PORTRAIT_INVERSE);
 
         jewelWhopper.moveUp();
-        glyphGrabber.release();
+        glyphGrabber.releaseTop();
         glyphter.getMotor().setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         drive.leftRearMotor.setDirection(DcMotorSimple.Direction.FORWARD);
@@ -89,7 +89,7 @@ public class AutoMethods {
      */
     public void readVuforiaValues() {
 
-        drive.rotateDegrees(Direction.LEFT, 13, 0.5); // was 10 degrees
+        drive.rotateDegrees(Direction.LEFT, 15, 0.5); // was 10 degrees
 
         pictographKey = vuforia.getCurrentVisibleRelic();
         while (pictographKey == null || pictographKey.equals(RelicRecoveryVuMark.UNKNOWN)) {
@@ -98,7 +98,7 @@ public class AutoMethods {
 
         displayTelemetry("Column Key:  " + pictographKey, true);
 
-        drive.rotateDegrees(Direction.RIGHT, 18, 0.5); // was 15 degrees
+        drive.rotateDegrees(Direction.RIGHT, 20, 0.5);
 
         jewelColorDetector.process(vuforia.getImage());
         analysis = jewelColorDetector.getAnalysis();
@@ -116,7 +116,7 @@ public class AutoMethods {
     }
 
     public void pickUpGlyph() {
-        glyphGrabber.clamp();
+        glyphGrabber.clampTop();
         sleep(1);
         glyphter.getMotor().setPower(0.5);
         sleep(1);
@@ -257,7 +257,7 @@ public class AutoMethods {
         sleep(1);
         glyphter.getMotor().setPower(0);
         drive.moveInches(Direction.FORWARD, Globals.DISTANCE_TO_CRYPTOBOX, 0.5);
-        glyphGrabber.release();
+        glyphGrabber.releaseTop();
         drive.moveInches(Direction.BACKWARD, 6, 0.5);
 
     }
@@ -381,7 +381,7 @@ public class AutoMethods {
 
         sleep(2);
 
-        glyphGrabber.release();
+        glyphGrabber.releaseTop();
 
         sleep(2);
 

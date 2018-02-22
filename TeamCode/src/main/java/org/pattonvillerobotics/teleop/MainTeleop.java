@@ -42,18 +42,6 @@ public class MainTeleop extends LinearOpMode {
             simpleMecanumDrive.driveWithJoysticks(-gamepad1.left_stick_x, gamepad1.left_stick_y, gamepad1.right_stick_x / rotationFactor);
             glyphter.getMotor().setPower(gamepad1.right_trigger / 2 - gamepad1.left_trigger / 4);
 
-            if (gamepad1.left_bumper && glyphGrabber.inBounds()) {
-
-                glyphGrabber.decrementLeftPosition();
-                glyphGrabber.incrementRightPosition();
-
-            } else if (gamepad1.right_bumper && glyphGrabber.inBounds()) {
-
-                glyphGrabber.incrementLeftPosition();
-                glyphGrabber.decrementRightPosition();
-
-            }
-
             idle();
 
         }
@@ -64,7 +52,7 @@ public class MainTeleop extends LinearOpMode {
 
         addTelemetry("Initializing MainTeleOp...");
 
-        glyphGrabber = new GlyphGrabber(hardwareMap, this, Globals.GrabberPosition.RELEASED);
+        glyphGrabber = new GlyphGrabber(hardwareMap, this, Globals.GrabberState.RELEASED);
         gamepad = new ListenableGamepad();
         simpleMecanumDrive = new SimpleMecanumDrive(this, hardwareMap);
         glyphter = new Glyphter(hardwareMap, this);
@@ -81,17 +69,36 @@ public class MainTeleop extends LinearOpMode {
     private void bindGamepadButtons() {
 
         gamepad.getButton(GamepadData.Button.A).addListener(ListenableButton.ButtonState.JUST_PRESSED, () -> {
-            switch (glyphGrabber.getGrabberPosition()) {
+            switch (glyphGrabber.getGrabberBottomState()) {
                         case CLAMPED:
-                            glyphGrabber.release();
+                            glyphGrabber.releaseBottom();
                             break;
                         case RELEASED:
-                            glyphGrabber.clamp();
+                            glyphGrabber.clampBottom();
                             break;
                     }
         });
 
-         gamepad.getButton(GamepadData.Button.X).addListener(ListenableButton.ButtonState.JUST_PRESSED, () -> {
+        gamepad.getButton(GamepadData.Button.Y).addListener(ListenableButton.ButtonState.JUST_PRESSED, () -> {
+            switch (glyphGrabber.getGrabberTopState()) {
+                case CLAMPED:
+                    glyphGrabber.releaseTop();
+                    break;
+                case RELEASED:
+                    glyphGrabber.clampTop();
+                    break;
+            }
+        });
+
+        gamepad.getButton(GamepadData.Button.B).addListener(ListenableButton.ButtonState.JUST_PRESSED, () -> {
+            glyphGrabber.releaseBoth();
+        });
+
+        gamepad.getButton(GamepadData.Button.X).addListener(ListenableButton.ButtonState.JUST_PRESSED, () -> {
+            glyphGrabber.clampBoth();
+        });
+
+        gamepad.getButton(GamepadData.Button.DPAD_UP).addListener(ListenableButton.ButtonState.JUST_PRESSED, () -> {
              switch (jewelWhopper.getPosition()) {
                  case UP:
                      jewelWhopper.moveDown();
@@ -108,30 +115,6 @@ public class MainTeleop extends LinearOpMode {
             } else {
                 rotationFactor = 1;
             }
-        });
-
-        gamepad.getButton(GamepadData.Button.B).addListener(ListenableButton.ButtonState.JUST_PRESSED, () -> {
-            glyphGrabber.slightRelease();
-        });
-
-        gamepad.getButton(GamepadData.Button.DPAD_UP).addListener(ListenableButton.ButtonState.JUST_PRESSED, () -> {
-            glyphGrabber.decrementLeftPosition();
-            addTelemetry("left grabber pos", glyphGrabber.getLeftServo().getPosition());
-        });
-
-        gamepad.getButton(GamepadData.Button.DPAD_DOWN).addListener(ListenableButton.ButtonState.JUST_PRESSED, () -> {
-            glyphGrabber.incrementLeftPosition();
-            addTelemetry("left grabber pos", glyphGrabber.getLeftServo().getPosition());
-        });
-
-        gamepad.getButton(GamepadData.Button.DPAD_LEFT).addListener(ListenableButton.ButtonState.JUST_PRESSED, () -> {
-            glyphGrabber.decrementRightPosition();
-            addTelemetry("right grabber pos", glyphGrabber.getRightServo().getPosition());
-        });
-
-        gamepad.getButton(GamepadData.Button.DPAD_RIGHT).addListener(ListenableButton.ButtonState.JUST_PRESSED, () -> {
-            glyphGrabber.incrementRightPosition();
-            addTelemetry("right grabber pos", glyphGrabber.getRightServo().getPosition());
         });
 
     }

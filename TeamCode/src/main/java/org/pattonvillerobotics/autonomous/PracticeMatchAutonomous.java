@@ -27,7 +27,7 @@ public class PracticeMatchAutonomous extends LinearOpMode {
 
         //AutoMethods autoMethods = new AutoMethods(hardwareMap, this, AllianceColor.BLUE);
         MecanumEncoderDrive drive = new MecanumEncoderDrive(hardwareMap, this, CustomRobotParameters.ROBOT_PARAMETERS);
-        GlyphGrabber glyphGrabber = new GlyphGrabber(hardwareMap, this, Globals.GrabberPosition.CLAMPED);
+        GlyphGrabber glyphGrabber = new GlyphGrabber(hardwareMap, this, Globals.GrabberState.CLAMPED);
 
 //        drive.moveInches(Direction.LEFT,35, .3);
 //
@@ -40,7 +40,7 @@ public class PracticeMatchAutonomous extends LinearOpMode {
             sleep(1000);
             drive.moveInches(Direction.FORWARD, 10, 0.3);
             sleep(1000);
-            glyphGrabber.release();
+            glyphGrabber.releaseTop();
 
             idle();
 

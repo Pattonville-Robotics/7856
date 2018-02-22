@@ -1,7 +1,6 @@
 package org.pattonvillerobotics.mechanisms;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -14,85 +13,95 @@ import org.pattonvillerobotics.Globals;
 public class GlyphGrabber extends AbstractMechanism {
 
     public static final String TAG = GlyphGrabber.class.getSimpleName();
-    public static final double LEFT_MAX = 0.8;
-    public static final double LEFT_MIN = 0.3;
-    public static final double RIGHT_MAX = 0.8;
-    public static final double RIGHT_MIN = 0.3;
-    private Servo leftServo, rightServo;
-    private CRServo leftCRServo, rightCRServo;
-    private Globals.GrabberPosition position;
+    public static final double LEFT_TOP_CLAMP = 0.8;
+    public static final double LEFT_TOP_RELEASE = 0.3;
+    public static final double RIGHT_TOP_CLAMP = 0.3;
+    public static final double RIGHT_TOP_RELEASE = 0.8;
+    public static final double LEFT_BOTTOM_CLAMP = 0.2;
+    public static final double LEFT_BOTTOM_RELEASE = 0.1;
+    public static final double RIGHT_BOTTOM_CLAMP = 0.4;
+    public static final double RIGHT_BOTTOM_RELEASE = 0.3;
 
-    public GlyphGrabber(HardwareMap hardwareMap, LinearOpMode linearOpMode, Globals.GrabberPosition initialPosition) {
+    private Servo leftTopServo, rightTopServo, leftBottomServo, rightBottomServo;
+    private Globals.GrabberState topState, bottomState;
+
+    public GlyphGrabber(HardwareMap hardwareMap, LinearOpMode linearOpMode, Globals.GrabberState initialPosition) {
         super(hardwareMap, linearOpMode);
         try {
-            leftServo = hardwareMap.servo.get("glyph-grabber-left");
-            rightServo = hardwareMap.servo.get("glyph-grabber-right");
+            leftTopServo = hardwareMap.servo.get("glyph-grabber-top-left");
+            rightTopServo = hardwareMap.servo.get("glyph-grabber-top-right");
+            leftBottomServo = hardwareMap.servo.get("glyph-grabber-bottom-left");
+            rightBottomServo = hardwareMap.servo.get("glyph-grabber-bottom-right");
         } catch (IllegalArgumentException e) {
             linearOpMode.telemetry.addData(TAG, e.getMessage());
             linearOpMode.telemetry.update();
         }
 
-        position = initialPosition;
+        topState = initialPosition;
+        bottomState = initialPosition;
     }
 
-    public void collect() {
-
+    public void clampTop() {
+        leftTopServo.setPosition(LEFT_TOP_CLAMP);
+        rightTopServo.setPosition((RIGHT_TOP_CLAMP));
+        topState = Globals.GrabberState.CLAMPED;
     }
 
-    public void eject() {
-
+    public void clampBottom() {
+        leftBottomServo.setPosition(LEFT_BOTTOM_CLAMP);
+        rightBottomServo.setPosition(RIGHT_BOTTOM_CLAMP);
+        bottomState = Globals.GrabberState.CLAMPED;
     }
 
-    public void clamp() {
-        leftServo.setPosition(LEFT_MAX);
-        rightServo.setPosition((RIGHT_MIN));
-        position = Globals.GrabberPosition.CLAMPED;
+    public void releaseTop() {
+        leftTopServo.setPosition(LEFT_TOP_RELEASE);
+        rightTopServo.setPosition(RIGHT_TOP_RELEASE);
+        topState = Globals.GrabberState.RELEASED;
     }
 
-    public void release() {
-        leftServo.setPosition(LEFT_MIN);
-        rightServo.setPosition(RIGHT_MAX);
-        position = Globals.GrabberPosition.RELEASED;
+    public void releaseBottom() {
+        leftBottomServo.setPosition(LEFT_BOTTOM_RELEASE);
+        rightBottomServo.setPosition(RIGHT_BOTTOM_RELEASE);
+        bottomState = Globals.GrabberState.RELEASED;
+    }
+
+    public void clampBoth() {
+        clampBottom();
+        clampTop();
+    }
+
+    public void releaseBoth() {
+        releaseBottom();
+        releaseTop();
     }
 
     public void slightRelease() {
-        leftServo.setPosition(0.70);
-        rightServo.setPosition(0.35);
+        leftTopServo.setPosition(0.70);
+        rightTopServo.setPosition(0.35);
     }
 
-    public void incrementLeftPosition() {
-        leftServo.setPosition(leftServo.getPosition() + 0.05);
+    public Globals.GrabberState getGrabberTopState() {
+        return topState;
     }
 
-    public void incrementRightPosition() {
-        rightServo.setPosition(rightServo.getPosition() + 0.05);
+    public Globals.GrabberState getGrabberBottomState() {
+        return bottomState;
     }
 
-    public void decrementLeftPosition() {
-        leftServo.setPosition(leftServo.getPosition() - 0.05);
+    public Servo getLeftTopServo() {
+        return leftTopServo;
     }
 
-    public void decrementRightPosition() {
-        rightServo.setPosition(rightServo.getPosition() - 0.05);
+    public Servo getRightTopServo() {
+        return rightTopServo;
     }
 
-    public boolean inBounds() {
-        return leftServo.getPosition() > LEFT_MIN
-                && leftServo.getPosition() < LEFT_MAX
-                && rightServo.getPosition() > RIGHT_MIN
-                && rightServo.getPosition() < RIGHT_MAX;
+    public Servo getLeftBottomServo() {
+        return leftBottomServo;
     }
 
-    public Globals.GrabberPosition getGrabberPosition() {
-        return position;
-    }
-
-    public Servo getLeftServo() {
-        return leftServo;
-    }
-
-    public Servo getRightServo() {
-        return rightServo;
+    public Servo getRightBottomServo() {
+        return rightBottomServo;
     }
 
 }

@@ -14,9 +14,9 @@ public class RelicGrabber extends AbstractMechanism {
 
     public static final String TAG = RelicGrabber.class.getSimpleName();
     private Servo servo;
-    private Globals.GrabberPosition position;
+    private Globals.GrabberState position;
 
-    public RelicGrabber(HardwareMap hardwareMap, LinearOpMode linearOpMode, Globals.GrabberPosition initialPosition) {
+    public RelicGrabber(HardwareMap hardwareMap, LinearOpMode linearOpMode, Globals.GrabberState initialPosition) {
 
         super(hardwareMap, linearOpMode);
         try {
@@ -31,14 +31,14 @@ public class RelicGrabber extends AbstractMechanism {
     }
 
     public void clamp() {
-        position = Globals.GrabberPosition.CLAMPED;
+        position = Globals.GrabberState.CLAMPED;
     }
 
     public void release() {
-        position = Globals.GrabberPosition.RELEASED;
+        position = Globals.GrabberState.RELEASED;
     }
 
-    public Globals.GrabberPosition getPosition() {
+    public Globals.GrabberState getPosition() {
         return position;
     }
 
