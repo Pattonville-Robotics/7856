@@ -17,13 +17,18 @@ public class GlyphGrabber extends AbstractMechanism {
     public static final double LEFT_TOP_RELEASE = 0.3;
     public static final double RIGHT_TOP_CLAMP = 0.3;
     public static final double RIGHT_TOP_RELEASE = 0.8;
-    public static final double LEFT_BOTTOM_CLAMP = 0.2;
-    public static final double LEFT_BOTTOM_RELEASE = 0.1;
-    public static final double RIGHT_BOTTOM_CLAMP = 0.4;
-    public static final double RIGHT_BOTTOM_RELEASE = 0.3;
+    public static final double LEFT_BOTTOM_CLAMP = 0.65;
+    public static final double LEFT_BOTTOM_RELEASE = 1;
+    public static final double RIGHT_BOTTOM_CLAMP = 1;
+    public static final double RIGHT_BOTTOM_RELEASE = 0.5;
+    public static double servo_value = 0 ;
+
+    public static double getServo_value() {
+        return servo_value;
+    }
 
     private Servo leftTopServo, rightTopServo, leftBottomServo, rightBottomServo;
-    private Globals.GrabberState topState, bottomState;
+    private Globals.GrabberState topState, bottomState, bothState;
 
     public GlyphGrabber(HardwareMap hardwareMap, LinearOpMode linearOpMode, Globals.GrabberState initialPosition) {
         super(hardwareMap, linearOpMode);
@@ -65,14 +70,25 @@ public class GlyphGrabber extends AbstractMechanism {
         bottomState = Globals.GrabberState.RELEASED;
     }
 
+    public void TestBottomRightIncrease(){
+        leftBottomServo.setPosition(servo_value += .05);
+    }
+
+    public void TestBottomRightDecrease(){
+        leftBottomServo.setPosition(servo_value -= .05);
+    }
+
     public void clampBoth() {
         clampBottom();
         clampTop();
+        bothState = Globals.GrabberState.CLAMPED;
     }
 
     public void releaseBoth() {
         releaseBottom();
         releaseTop();
+        bothState = Globals.GrabberState.RELEASED;
+
     }
 
     public void slightRelease() {

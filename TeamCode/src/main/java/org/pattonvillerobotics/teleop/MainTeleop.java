@@ -39,8 +39,8 @@ public class MainTeleop extends LinearOpMode {
         while (opModeIsActive()) {
 
             gamepad.update(new GamepadData(gamepad1));
-            simpleMecanumDrive.driveWithJoysticks(-gamepad1.left_stick_x, gamepad1.left_stick_y, gamepad1.right_stick_x / rotationFactor);
-            glyphter.getMotor().setPower(gamepad1.right_trigger / 2 - gamepad1.left_trigger / 4);
+            simpleMecanumDrive. driveWithJoysticks(-gamepad1.left_stick_x, gamepad1.left_stick_y, gamepad1.right_stick_x / rotationFactor);
+            glyphter.getMotor().setPower(gamepad1.right_trigger - gamepad1.left_trigger / 2);
 
             idle();
 
@@ -91,11 +91,18 @@ public class MainTeleop extends LinearOpMode {
         });
 
         gamepad.getButton(GamepadData.Button.B).addListener(ListenableButton.ButtonState.JUST_PRESSED, () -> {
-            glyphGrabber.releaseBoth();
+            //Extra
         });
 
         gamepad.getButton(GamepadData.Button.X).addListener(ListenableButton.ButtonState.JUST_PRESSED, () -> {
-            glyphGrabber.clampBoth();
+            switch (glyphGrabber.getGrabberBottomState()) {
+                case CLAMPED:
+                    glyphGrabber.releaseBoth();
+                    break;
+                case RELEASED:
+                    glyphGrabber.clampBoth();
+                    break;
+            }
         });
 
         gamepad.getButton(GamepadData.Button.DPAD_UP).addListener(ListenableButton.ButtonState.JUST_PRESSED, () -> {
@@ -108,6 +115,16 @@ public class MainTeleop extends LinearOpMode {
                      break;
              }
          });
+
+        gamepad.getButton(GamepadData.Button.DPAD_LEFT).addListener(ListenableButton.ButtonState.JUST_PRESSED, () -> {
+            glyphGrabber.TestBottomRightIncrease();
+            addTelemetry("Bottom Right Servo Value: " + glyphGrabber.servo_value);
+        });
+
+        gamepad.getButton(GamepadData.Button.DPAD_RIGHT).addListener(ListenableButton.ButtonState.JUST_PRESSED, () -> {
+            glyphGrabber.TestBottomRightDecrease();
+            addTelemetry("Bottom Right Servo Value: " + glyphGrabber.servo_value);
+        });
 
         gamepad.getButton(GamepadData.Button.STICK_BUTTON_RIGHT).addListener(ListenableButton.ButtonState.JUST_PRESSED, () -> {
             if (rotationFactor == 1) {

@@ -18,7 +18,7 @@ public class Globals {
     public static final int CYLINDER_RADIUS = 1;
     public static final double ALT_NEAR_DISTANCE = 5.5;
     public static final double ALT_MEDIUM_DISTANCE = 13.5;
-    public static final double ALT_FAR_DISTANCE = 19;
+    public static final double ALT_FAR_DISTANCE = 17;
 
 
     public enum GrabberState {

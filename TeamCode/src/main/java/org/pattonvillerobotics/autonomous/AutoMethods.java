@@ -116,10 +116,10 @@ public class AutoMethods {
     }
 
     public void pickUpGlyph() {
-        glyphGrabber.clampTop();
+        glyphGrabber.clampBottom();
         sleep(1);
         glyphter.getMotor().setPower(0.5);
-        sleep(1);
+        sleep(2);
         glyphter.getMotor().setPower(0);
     }
 
@@ -176,7 +176,6 @@ public class AutoMethods {
             gyro.getGyroTelemetry();
             drive.move(direction, 0.5);
         }
-
     }
 
     /**
@@ -254,12 +253,11 @@ public class AutoMethods {
     public void placeGlyph() {
 
         glyphter.getMotor().setPower(-0.5);
-        sleep(1);
+        sleep(2);
         glyphter.getMotor().setPower(0);
         drive.moveInches(Direction.FORWARD, Globals.DISTANCE_TO_CRYPTOBOX, 0.5);
-        glyphGrabber.releaseTop();
+        glyphGrabber.releaseBottom();
         drive.moveInches(Direction.BACKWARD, 6, 0.5);
-
     }
 
     public void park() {
@@ -302,7 +300,6 @@ public class AutoMethods {
         sleep(1);
         displayTelemetry("Completed " + allianceColor + " autonomous", true);
         linearOpMode.stop();
-
     }
 
     public void runAutonomousProcessAltBlue() {
