@@ -91,7 +91,14 @@ public class MainTeleop extends LinearOpMode {
         });
 
         gamepad.getButton(GamepadData.Button.B).addListener(ListenableButton.ButtonState.JUST_PRESSED, () -> {
-            //Extra
+            switch (jewelWhopper.getPosition()) {
+                case UP:
+                    jewelWhopper.moveDown();
+                    break;
+                case DOWN:
+                    jewelWhopper.moveUp();
+                    break;
+            }
         });
 
         gamepad.getButton(GamepadData.Button.X).addListener(ListenableButton.ButtonState.JUST_PRESSED, () -> {
@@ -106,14 +113,7 @@ public class MainTeleop extends LinearOpMode {
         });
 
         gamepad.getButton(GamepadData.Button.DPAD_UP).addListener(ListenableButton.ButtonState.JUST_PRESSED, () -> {
-             switch (jewelWhopper.getPosition()) {
-                 case UP:
-                     jewelWhopper.moveDown();
-                     break;
-                 case DOWN:
-                     jewelWhopper.moveUp();
-                     break;
-             }
+
          });
 
         gamepad.getButton(GamepadData.Button.DPAD_LEFT).addListener(ListenableButton.ButtonState.JUST_PRESSED, () -> {

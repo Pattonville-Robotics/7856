@@ -9,7 +9,7 @@ dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
 
-    implementation "com.github.Pattonville-Robotics:Common-Code:$ftc_version.3"
+    implementation "com.github.Pattonville-Robotics:Common-Code:$ftc_version.3.4"
 
     // https://mvnrepository.com/artifact/org.apache.commons/commons-math3
     implementation group: 'org.apache.commons', name: 'commons-math3', version: '3.6.1'
