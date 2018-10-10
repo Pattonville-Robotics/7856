@@ -1,3 +1,8 @@
+/**
+ * Top-level build file for ftc_app project.
+ *
+ * It is extraordinarily rare that you will ever need to edit this file.
+ */
 buildscript {
     ext.kotlin_version = '1.2.61'
     ext.ftc_version = '4.0'
@@ -23,5 +28,3 @@ buildscript {
         }
     }
 }
-
-
