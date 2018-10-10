@@ -1,1 +1,9 @@
 include ':TeamCode'
+
+if (false) {
+    includeBuild('../Common-Code') {
+        dependencySubstitution {
+            substitute module('com.github.Pattonville-Robotics:Common-Code') with project(':library')
+        }
+    }
+}
