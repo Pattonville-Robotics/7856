@@ -1,29 +1,17 @@
 #-verbose
 -dontobfuscate
 
+#Keep annotations
+-keepattributes *Annotation*
+
 #Team Code
 -keep,includedescriptorclasses class org.pattonvillerobotics.** {
     *;
 }
 
--keep,includedescriptorclasses class com.vuforia.** {
-    *;
-}
-
--keep,includedescriptorclasses class org.firstinspires.** {
-    *;
-}
-
--keep,includedescriptorclasses class com.qualcomm.** {
-    *;
-}
-
 -dontwarn com.sun.tools.**
--dontwarn org.pattonvillerobotics.commoncode.**
+-dontwarn com.google.common.**
 -dontwarn com.google.gson.**
--dontwarn com.vuforia.ar.pl.**
--dontwarn org.firstinspires.ftc.robotcore.**
+-dontwarn com.google.errorprone.**
 -dontwarn com.qualcomm.analytics.**
--dontwarn sun.misc.Unsafe**
--dontwarn java.lang.ClassValue**
--dontwarn java.awt.geom.**
+-dontwarn org.apache.commons.math3.geometry.euclidean.twod.Line

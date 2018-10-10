@@ -1,7 +1,5 @@
-include ':FtcRobotController'
 include ':TeamCode'
 
-//noinspection GroovyConstantIfStatement
 if (false) {
     includeBuild('../Common-Code') {
         dependencySubstitution {
