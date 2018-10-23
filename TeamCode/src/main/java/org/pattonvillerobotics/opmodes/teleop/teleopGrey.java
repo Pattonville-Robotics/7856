@@ -26,7 +26,7 @@ public class teleopGrey extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-            gamepad.update(new GamepadData(gamepad1));
+            gamepad.update(new GamepadD2ata(gamepad1));
             drive.moveFreely(-gamepad1.left_stick_x, gamepad1.left_stick_y);
 
         }
