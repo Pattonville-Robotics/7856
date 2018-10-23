@@ -1,4 +1,5 @@
-package org.pattonvillerobotics.opmodes.autonomous.teleop;
+package org.pattonvillerobotics.teleop;
+
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -14,6 +15,7 @@ public class TestTeleop extends LinearOpMode {
     public SimpleDrive drive;
     public ListenableGamepad gamepad;
     private double rotationFactor = 1;
+    private org.pattonvillerobotics.opmodes.autonomous.robotclasses.HookLiftingMechanism hookLifter;
 
 
 
@@ -34,9 +36,11 @@ public class TestTeleop extends LinearOpMode {
     }
 
     private void initialize() {
-        hookLifter = new org.pattonvillerobotics.opmodes.autonomous.robotclasses.HookLiftingMechanism
 
-        
+        hookLifter = new org.pattonvillerobotics.opmodes.autonomous.robotclasses.HookLiftingMechanism (hardwareMap, this );
+
+
+
 
 
     }
