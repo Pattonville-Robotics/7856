@@ -14,6 +14,8 @@ public class HookLiftingMechanism extends AbstractMechanism{
         super(hardwareMap, linearOpMode);
         motor1 = hardwareMap.dcMotor.get("hook_lifting_mechanism") ;
         motor2 = hardwareMap.dcMotor.get("hook_lifting_mechanism") ;
+//        linearOpMode.telemetry.addData();
+        linearOpMode.telemetry.update() ;
 
     }
 
@@ -35,4 +37,5 @@ public class HookLiftingMechanism extends AbstractMechanism{
     }
         motor1.setPower(0);
     }
+    public
 }

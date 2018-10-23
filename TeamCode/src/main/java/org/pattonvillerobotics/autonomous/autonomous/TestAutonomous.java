@@ -23,6 +23,8 @@ public class TestAutonomous extends LinearOpMode {
 
     }
     public void initialize() {
+        simpleDrive = new SimpleDrive(this, hardwareMap);
+
         hooklifter.lower();
 
     }
