@@ -27,6 +27,7 @@ public class TestAutonomous extends LinearOpMode {
 
         hooklifter.lower();
 
+
     }
 
 }
