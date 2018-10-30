@@ -35,8 +35,8 @@ public HookLiftingMechanism hooklifter;
 
         }
 
-    public void initialize() {
-        drive = new SimpleDrive(this, hardwareMap);
+    public void initialize() {drive = new SimpleDrive(this, hardwareMap);
+
         rateOfRotation = gyro.getRotation();
 
         motor[motorD] = 50;

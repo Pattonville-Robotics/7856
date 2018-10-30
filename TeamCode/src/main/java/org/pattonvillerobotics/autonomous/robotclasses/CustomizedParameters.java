@@ -24,10 +24,10 @@ public class CustomizedParameters extends LinearOpMode {
                 .driveGearRatio(2)
                 .build();
 
-//        VUFORIA_PARAMETERS = new VuforiaParameters.Builder()
-//                .phoneLocation(0, 0,  0, AxesOrder.XYX, 90, -90, 0)
-//                .cameraDirection(VuforiaLocalizer.CameraDirection.BACK)
-//                .cameraMonitorViewId(R.id.ca);
+        VUFORIA_PARAMETERS = new VuforiaParameters.Builder()
+               .phoneLocation(0, 0,  0, AxesOrder.XYX, 90, -90, 0)
+               .cameraDirection(VuforiaLocalizer.CameraDirection.BACK)
+               .cameraMonitorViewId(R.id.ca);
     }
 
     @Override
