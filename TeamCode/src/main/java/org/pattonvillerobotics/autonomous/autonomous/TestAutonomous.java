@@ -33,6 +33,9 @@ public class TestAutonomous extends LinearOpMode {
 
         rateOfRotation = gyro.getRotation();
 
+            simpleDrive.leftDriveMotor(-50)
+            simpleDrive.rightDriveMotor(50)
+
         motor[motorD] = 50;
         motor[motorE] = 50;
         wait1Msec(30);
