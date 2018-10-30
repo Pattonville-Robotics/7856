@@ -31,10 +31,12 @@ public class TestAutonomous extends LinearOpMode {
     public void initialize() {
         simpleDrive = new SimpleDrive(this, hardwareMap);
 
+            hooklifter.lower(30);
+
         rateOfRotation = gyro.getRotation();
 
-            simpleDrive.leftDriveMotor(-50)
-            simpleDrive.rightDriveMotor(50)
+            simpleDrive.leftDriveMotor(-50);
+            simpleDrive.rightDriveMotor(50); //has to get to left three inches after slight right
 
         motor[motorD] = 50;
         motor[motorE] = 50;
