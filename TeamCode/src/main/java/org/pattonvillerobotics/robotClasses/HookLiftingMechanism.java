@@ -1,9 +1,8 @@
-package org.pattonvillerobotics.opmodes.autonomous.robotclasses;
+package org.pattonvillerobotics.robotClasses;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import org.pattonvillerobotics.opmodes.autonomous.robotclasses.AbstractMechanism;
 
 public class HookLiftingMechanism extends AbstractMechanism{
 
@@ -14,7 +13,7 @@ public class HookLiftingMechanism extends AbstractMechanism{
         super(hardwareMap, linearOpMode);
         motor1 = hardwareMap.dcMotor.get("hook_lifting_mechanism") ;
         motor2 = hardwareMap.dcMotor.get("hook_lifting_mechanism") ;
-//        linearOpMode.telemetry.addData();
+        //linearOpMode.telemetry.addData("hook position", hook.motor1.getC);
         linearOpMode.telemetry.update() ;
 
     }
@@ -37,5 +36,4 @@ public class HookLiftingMechanism extends AbstractMechanism{
     }
         motor1.setPower(0);
     }
-    public
 }

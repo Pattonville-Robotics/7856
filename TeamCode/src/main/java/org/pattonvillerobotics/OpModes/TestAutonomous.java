@@ -1,11 +1,12 @@
-package org.pattonvillerobotics.opmodes.autonomous.autonomous;
+package org.pattonvillerobotics.OpModes;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.pattonvillerobotics.commoncode.opmodes.OpModeGroups;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.SimpleDrive;
-import org.pattonvillerobotics.opmodes.autonomous.robotclasses.HookLiftingMechanism;
+import org.pattonvillerobotics.robotClasses.HookLiftingMechanism;
+
 
 @Autonomous (name = "TestAutonomous", group = OpModeGroups.TESTING)
 public class TestAutonomous extends LinearOpMode {
