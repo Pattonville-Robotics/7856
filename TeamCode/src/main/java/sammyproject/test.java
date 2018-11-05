@@ -5,14 +5,14 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
-import org.pattonvillerobotics.commoncode.enums.Direction;
+
 import org.pattonvillerobotics.commoncode.robotclasses.drive.MecanumEncoderDrive;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.RobotParameters;
 
 
 
 @Autonomous(name = "Test", group = "superMario")
-public class Test extends LinearOpMode {
+public class test extends LinearOpMode {
     public MecanumEncoderDrive drive;
 
     private RobotParameters parameters = new RobotParameters.Builder()
@@ -25,8 +25,8 @@ public class Test extends LinearOpMode {
             .rightDriveMotorDirection(DcMotorSimple.Direction.FORWARD)
             .build();
 
-            DcMotor motor1;
-            DcMotor motor2;
+           private DcMotor motor1;
+           private DcMotor motor2;
 
 
     @Override
@@ -34,14 +34,21 @@ public class Test extends LinearOpMode {
         motor1 = hardwareMap.dcMotor.get("motor1");
         motor2 = hardwareMap.dcMotor.get("Motor2");
 
-        waitForStart(); //wait for the play to click the start button from the phone before the robot start going
+        motor1.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        waitForStart(); //wait for the play to click the start button from the  phone before the robot start going
+
 
         motor1.setPower(5);
-        motor2.setPower(1);
+        motor2.setPower(5);
 
         //direction
-        drive.move(Direction.BACKWARD,0.5);
-        drive.move(Direction.LEFT,1);
-        drive.move(Direction.);
+        motor1.setDirection();
+
+
+    }
+
+    public void initialize() {
+        drive = new MecanumEncoderDrive(hardwareMap, this, parameters);
     }
 }
