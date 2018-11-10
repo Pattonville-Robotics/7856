@@ -1,12 +1,8 @@
 package sammyproject;
 
-import com.qualcomm.ftcrobotcontroller.opmodes;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorController;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.Range;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 
   /*Programmed by Caleb Fahlgren
     FTC Autonomous Robot Program
@@ -14,7 +10,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
     Used thru 2015/2016 Academic Year */
 
 
-public class Autonomous extends LinearOpMode {
+public class autonomous extends LinearOpMode {
     DcMotor motorLeft;
     DcMotor motorRight;
     DcMotor motorArm;
@@ -52,15 +48,15 @@ public class Autonomous extends LinearOpMode {
         sleep(3000);
 
         // Turns right for 1.5 seconds at half speed
-        leftMotor.setPower(0.5);
-        rightMotor.setPower(-0.5);
+        motorLeft.setPower(0.5);
+        motorRight.setPower(-0.5);
 
         sleep(1500);
 
 
         // Drives backward for 3 seconds at half speed
        motorLeft.setPower(-5);
-        rightMotor.setPower(-0.5);
+        motorRight.setPower(-0.5);
 
         sleep(3000);
 

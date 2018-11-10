@@ -10,7 +10,7 @@ import org.pattonvillerobotics.commoncode.robotclasses.drive.RobotParameters;
 
 
 @Autonomous(name = "SammyMainAutonomous", group = "SuperTeam")
-public class SammyMainAutonmous extends LinearOpMode {
+public class SammyMainAutonomous extends LinearOpMode {
 
     public MecanumEncoderDrive drive;
 
