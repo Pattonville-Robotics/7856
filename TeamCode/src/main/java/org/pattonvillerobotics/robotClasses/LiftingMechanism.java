@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import org.pattonvillerobotics.autonomous.robotclasses.AbstractMechanism;
+import org.pattonvillerobotics.robotclasses.AbstractMechanism;
 public class LiftingMechanism extends AbstractMechanism{
 
     public DcMotor MotorSuper;

@@ -1,17 +1,16 @@
-package org.pattonvillerobotics.opmodes;
+package org.pattonvillerobotics.opmodes.autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.pattonvillerobotics.commoncode.opmodes.OpModeGroups;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.SimpleDrive;
-import org.pattonvillerobotics.robotClasses.HookLiftingMechanism;
 
 
 @Autonomous (name = "TestAutonomous", group = OpModeGroups.TESTING)
 public class TestAutonomous extends LinearOpMode {
     public SimpleDrive simpleDrive;
-    public HookLiftingMechanism hooklifter;
+  // public HookLiftingMechanism hooklifter;
 
 
     @Override
@@ -20,13 +19,13 @@ public class TestAutonomous extends LinearOpMode {
 
         waitForStart();
 
-        telemetry.addData("hook position", hooklifter);
+    //    telemetry.addData("hook position", hooklifter);
 
     }
     public void initialize() {
         simpleDrive = new SimpleDrive(this, hardwareMap);
 
-        hooklifter.lower();
+       //hooklifter.lower(300);
 
     }
 
