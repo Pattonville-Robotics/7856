@@ -27,16 +27,16 @@ public class Autonomous extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
 
         // Gets left and right motors from the configuration file
-        MotorLeft = hardwareMap.dcMotor.get("motorLeft");
-        rightMotor = hardwareMap.dcMotor.get("motorRight");
+        motorLeft = hardwareMap.dcMotor.get("motorLeft");
+        motorRight = hardwareMap.dcMotor.get("motorRight");
         claw = hardwareMap.servo.get("servo_1");
 
 
-        rightMotor.setDirection(DcMotor.Direction.REVERSE);
+        motorRight.setDirection(DcMotor.Direction.REVERSE);
 
         // Motors are set to run without encoders
-        motorLeft.setChannelMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
-        motorRight.setChannelMode(DcMotorController.RunMode.RUN_WITHOUT_ENCODERS);
+        motorLeft.setPower(5);
+        motorRight.setPower(5);
 
         // Variable showing that the claw position starts at 0.5
         clawPosition = 0;
@@ -46,8 +46,8 @@ public class Autonomous extends LinearOpMode {
 
         sleep(5000);
         // Drive forward for 3 seconds at half speed
-        leftMotor.setPower(0.5);
-        rightMotor.setPower(0.5);
+        motorLeft.setPower(0.5);
+        motorRight.setPower(0.5);
 
         sleep(3000);
 
@@ -59,7 +59,7 @@ public class Autonomous extends LinearOpMode {
 
 
         // Drives backward for 3 seconds at half speed
-        leftMotor.setPower(-0.5);
+       motorLeft.setPower(-5);
         rightMotor.setPower(-0.5);
 
         sleep(3000);

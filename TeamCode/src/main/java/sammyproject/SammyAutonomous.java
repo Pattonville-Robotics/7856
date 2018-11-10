@@ -13,12 +13,8 @@ import org.pattonvillerobotics.commoncode.robotclasses.drive.RobotParameters;
 
 @Autonomous(name = "SammyAutonomous", group = "SuperTeam")
 public class SammyAutonomous extends LinearOpMode {
-    public DcMotor MotorLeft;
-    public DcMotor MotorRight;
-    public DcMotor Hooker;
-    Servo MightyHooker
-
-
+    DcMotor MotorLeft;
+    DcMotor MotorRight;
 
     public MecanumEncoderDrive drive;
 
@@ -37,7 +33,6 @@ public class SammyAutonomous extends LinearOpMode {
 
         MotorLeft = hardwareMap.dcMotor.get("MotorLeft");
         MotorRight = hardwareMap.dcMotor.get("MotorRight;");
-        Hooker = hardwareMap.servo.get("Hooker");
 
         initialize();
 
