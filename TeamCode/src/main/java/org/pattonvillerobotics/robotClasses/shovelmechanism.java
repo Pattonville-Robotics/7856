@@ -11,8 +11,8 @@ public class shovelmechanism {
     public Servo wrist;
 
     public shovelmechanism (HardwareMap hardwareMap, LinearOpMode linearOpMode) {
-        //baseMotor = hardwareMap.get("baseMotor");
+        baseMotor = hardwareMap.get("baseMotor");
 
     }
-        //public void
+        public void 
 }
