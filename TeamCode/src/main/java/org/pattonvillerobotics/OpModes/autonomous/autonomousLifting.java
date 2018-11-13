@@ -5,8 +5,8 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.pattonvillerobotics.commoncode.robotclasses.drive.SimpleDrive;
 
-@Autonomous(name = "ExampleAutonomous", group = "Examples")
-public class ExampleAutonomous extends LinearOpMode {
+@Autonomous(name = "SammyAutonomous", group = "Autonomous")
+public class SammyAutonomous extends LinearOpMode {
 
     public SimpleDrive drive;
 
@@ -17,7 +17,7 @@ public class ExampleAutonomous extends LinearOpMode {
 
         waitForStart();
 
-        //Here is where you run methods for the robot to do things
+
 
     }
 
