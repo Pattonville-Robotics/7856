@@ -20,7 +20,7 @@ public class LiftingMechanism extends AbstractMechanism{
         }
         MotorSuper.setPower(0);
     }
-
+//pee pee
     public void raise() {
         MotorSuper.setTargetPosition(MotorSuper.getCurrentPosition()-(1440*6));
         while(Math.abs(MotorSuper.getCurrentPosition()-MotorSuper.getTargetPosition()) > 16) {
