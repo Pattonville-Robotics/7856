@@ -1,4 +1,4 @@
-package org.pattonvillerobotics.OpModes.teleop;
+package org.pattonvillerobotics.opmodes.teleop;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -6,16 +6,14 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.pattonvillerobotics.commoncode.opmodes.OpModeGroups;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.SimpleDrive;
 import org.pattonvillerobotics.commoncode.robotclasses.gamepad.GamepadData;
+import org.pattonvillerobotics.commoncode.robotclasses.gamepad.ListenableButton;
 import org.pattonvillerobotics.commoncode.robotclasses.gamepad.ListenableGamepad;
-import org.pattonvillerobotics.robotClasses.HookLiftingMechanism;
 
-@TeleOp (name = "TestTeleop", group = OpModeGroups.TESTING)
-public class TestTeleop extends LinearOpMode {
+@TeleOp(name = "MainTeleOp", group = OpModeGroups.MAIN)
+public class MainTeleOp extends LinearOpMode {
 
     public SimpleDrive drive;
     public ListenableGamepad gamepad;
-    public org.pattonvillerobotics.OpModes.autonomous.robotclasses.HookLiftingMechanism hookLiftingMechanism;
-
 
     @Override
     public void runOpMode() {
@@ -33,13 +31,13 @@ public class TestTeleop extends LinearOpMode {
 
     public void initialize() {
         gamepad = new ListenableGamepad();
-        //gamepad.addButtonListener(GamepadData.Button.A, ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
 
-//            @Override
-//so                telemetry
-//
-//            }
-//        });
-//        drive = new SimpleDrive(this, hardwareMap);
+        gamepad.addButtonListener(GamepadData.Button.A, ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
+            @Override
+            public void run() {
+                // do stuff when the A button is just pressed
+            }
+        });
+        drive = new SimpleDrive(this, hardwareMap);
     }
 }
