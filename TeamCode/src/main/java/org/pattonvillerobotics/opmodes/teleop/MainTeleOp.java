@@ -8,12 +8,14 @@ import org.pattonvillerobotics.commoncode.robotclasses.drive.SimpleDrive;
 import org.pattonvillerobotics.commoncode.robotclasses.gamepad.GamepadData;
 import org.pattonvillerobotics.commoncode.robotclasses.gamepad.ListenableButton;
 import org.pattonvillerobotics.commoncode.robotclasses.gamepad.ListenableGamepad;
+import org.pattonvillerobotics.robotclasses.mechanisms.HookLiftingMechanism;
 
 @TeleOp(name = "MainTeleOp", group = OpModeGroups.MAIN)
 public class MainTeleOp extends LinearOpMode {
 
     public SimpleDrive drive;
     public ListenableGamepad gamepad;
+    public HookLiftingMechanism hookLifter;
 
     @Override
     public void runOpMode() {
@@ -35,7 +37,19 @@ public class MainTeleOp extends LinearOpMode {
         gamepad.addButtonListener(GamepadData.Button.A, ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
             @Override
             public void run() {
-                // do stuff when the A button is just pressed
+                //do something
+            }
+        });
+        gamepad.addButtonListener(GamepadData.Button.RIGHT_BUMPER, ListenableButton.ButtonState.BEING_PRESSED, new ListenableButton.ButtonListener() {
+            @Override
+            public void run() {
+                hookLifter.raise(0.5);
+            }
+        });
+        gamepad.addButtonListener(GamepadData.Button.LEFT_BUMPER, ListenableButton.ButtonState.BEING_PRESSED, new ListenableButton.ButtonListener() {
+            @Override
+            public void run() {
+                hookLifter.lower(0.5);
             }
         });
         drive = new SimpleDrive(this, hardwareMap);

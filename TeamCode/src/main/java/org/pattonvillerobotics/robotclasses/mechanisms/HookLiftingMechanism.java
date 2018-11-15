@@ -20,11 +20,31 @@ public class HookLiftingMechanism extends AbstractMechanism{
 
         motorSuper.setPower(power);
 
+
+    }
+    public void lower(double power) {
+        motorSuper.setTargetPosition(motorSuper.getCurrentPosition()+ (1440*6));
+        while (Math.abs(motorSuper.getCurrentPosition()-motorSuper.getTargetPosition() ) > 16)  {
+            motorSuper.setPower(0.5) ;
+        }
+        motorSuper.setPower(power);
+
+
+
+
+    }
+
+    public void raise(double power) {
+        motorSuper.setTargetPosition(motorSuper.getCurrentPosition() - (1440*6));
+        while (Math.abs(motorSuper.getCurrentPosition()-motorSuper.getTargetPosition() ) > 16)  {
+            motorSuper.setPower(0.5);
+        }
+         motorSuper.setPower(power);
     }
 
     public String getPosition() {
 
         return motorSuper.getCurrentPosition() + "";
+    }
 
     }
-}

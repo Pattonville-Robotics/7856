@@ -3,6 +3,7 @@ package org.pattonvillerobotics.opmodes.autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
+import org.pattonvillerobotics.commoncode.enums.Direction;
 import org.pattonvillerobotics.commoncode.opmodes.OpModeGroups;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.EncoderDrive;
 import org.pattonvillerobotics.robotclasses.mechanisms.HookLiftingMechanism;
@@ -25,10 +26,14 @@ public class GoldAutonomous extends LinearOpMode {
         waitForStart();
 
         telemetry.addData("hook position", hookLifter.getPosition());
+        hookLifter.raise(0.3);
+        hookLifter.lower(0.5);
+        drive.rotateDegrees(Direction.RIGHT, 45, 0.3);
+        drive.moveInches(Direction.FORWARD, 36, 0.5);
+        idle();
 
-        /*
-        Write the autonomous code here!
-        */
+
+
 
     }
     public void initialize() {
