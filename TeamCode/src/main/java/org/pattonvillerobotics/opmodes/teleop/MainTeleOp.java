@@ -20,18 +20,21 @@ public class MainTeleOp extends LinearOpMode {
     @Override
     public void runOpMode() {
         initialize();
-
         waitForStart();
-
         while (opModeIsActive()) {
             gamepad.update(new GamepadData(gamepad1));
+            hardwareMap.servo.get("base").setPosition(hardwareMap.servo.get("base").getPosition());
+            hardwareMap.servo.get("shoulder").setPosition(hardwareMap.servo.get("shoulder").getPosition());
+            hardwareMap.servo.get("wrist").setPosition(hardwareMap.servo.get("wrist").getPosition());
             drive.moveFreely(gamepad1.left_stick_y, gamepad1.right_stick_y);
-            telemetry.addData("ToggleableGamePad x:", gamepad1.left_stick_y);
-            telemetry.addData("ToggleableGamePad y:", gamepad1.right_stick_y);
+            telemetry.log().add("ToggleableGamePad x:", gamepad1.left_stick_y);
+            telemetry.log().add("ToggleableGamePad y:", gamepad1.right_stick_y);
+
         }
     }
 
     public void initialize() {
+        hookLifter = new HookLiftingMechanism(hardwareMap, this);
         gamepad = new ListenableGamepad();
 
         gamepad.addButtonListener(GamepadData.Button.A, ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {

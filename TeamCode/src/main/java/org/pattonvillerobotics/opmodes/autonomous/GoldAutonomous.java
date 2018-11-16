@@ -6,6 +6,8 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import org.pattonvillerobotics.commoncode.enums.Direction;
 import org.pattonvillerobotics.commoncode.opmodes.OpModeGroups;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.EncoderDrive;
+import org.pattonvillerobotics.commoncode.robotclasses.opencv.roverruckus.minerals.MineralDetector;
+import org.pattonvillerobotics.commoncode.robotclasses.vuforia.VuforiaNavigation;
 import org.pattonvillerobotics.robotclasses.mechanisms.HookLiftingMechanism;
 import org.pattonvillerobotics.robotclasses.misc.CustomizedRobotParameters;
 
@@ -16,7 +18,8 @@ public class GoldAutonomous extends LinearOpMode {
 
     public EncoderDrive drive;
     public HookLiftingMechanism hookLifter;
-
+    public VuforiaNavigation vuforia;
+    public MineralDetector mineralDetector;
 
 
     @Override
@@ -24,6 +27,8 @@ public class GoldAutonomous extends LinearOpMode {
         initialize();
 
         waitForStart();
+
+        //vuforia for jewels here
 
         telemetry.addData("hook position", hookLifter.getPosition());
         hookLifter.raise(0.3);
