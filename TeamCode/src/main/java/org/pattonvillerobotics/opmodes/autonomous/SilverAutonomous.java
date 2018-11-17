@@ -27,10 +27,10 @@ public class SilverAutonomous extends LinearOpMode {
 
         telemetry.addData("hook position", hookLifter.getPosition());
 
-        hookLifter.raise(0.4);
+        hookLifter.raise(0.3);
         hookLifter.lower(0.5);
         drive.moveInches(Direction.LEFT,7,0.5);
-        drive.rotateDegrees(Direction.FORWARD,21,0.5);
+        drive.rotateDegrees(Direction.FORWARD,30,0.5);
 
         drive.moveInches(Direction.BACKWARD,21,0.5);
         drive.moveInches(Direction.BACKWARD,2,0.2);
