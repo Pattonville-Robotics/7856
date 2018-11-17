@@ -28,8 +28,20 @@ public class GoldAutonomous extends LinearOpMode {
         telemetry.addData("hook position", hookLifter.getPosition());
         hookLifter.raise(0.3);
         hookLifter.lower(0.5);
-        drive.rotateDegrees(Direction.RIGHT, 45, 0.3);
-        drive.moveInches(Direction.FORWARD, 36, 0.5);
+        drive.moveInches(Direction.BACKWARD,14,0.5);
+        drive.rotateDegrees(Direction.LEFT, 90, 0.5);
+
+        drive.moveInches(Direction.BACKWARD,12,0.7);
+        drive.rotateDegrees(Direction.RIGHT, 43, 0.5);
+
+        drive.rotateDegrees(Direction.FORWARD,35,0.5);
+        drive.moveInches(Direction.BACKWARD,11,0.7);
+
+        drive.rotateDegrees(Direction.FORWARD,45,0.7);
+        drive.moveInches(Direction.RIGHT,15,0.5);
+        //parking in the crater
+        drive.moveInches(Direction.FORWARD, 66, 0.5);
+        drive.moveInches(Direction.BACKWARD,35,0.6);
         idle();
 
 
