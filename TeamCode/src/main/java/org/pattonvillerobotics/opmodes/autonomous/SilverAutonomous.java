@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.pattonvillerobotics.commoncode.opmodes.OpModeGroups;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.MecanumEncoderDrive;
+import org.pattonvillerobotics.commoncode.robotclasses.opencv.ImageProcessor;
 import org.pattonvillerobotics.commoncode.robotclasses.opencv.roverruckus.minerals.MineralDetector;
 import org.pattonvillerobotics.commoncode.robotclasses.vuforia.VuforiaNavigation;
 import org.pattonvillerobotics.robotclasses.mechanisms.HookLiftingMechanism;
@@ -58,6 +59,7 @@ public class SilverAutonomous extends LinearOpMode {
         hookLifter = new HookLiftingMechanism(this, hardwareMap);
         mineralDetector = new MineralDetector(CustomizedRobotParameters.PHONE_ORIENTATION, true);
         vuforia = new VuforiaNavigation(CustomizedRobotParameters.VUFORIA_PARAMETERS);
+        ImageProcessor.initOpenCV(hardwareMap, this);
         teamMarker = new TeamMarkerMechanism(hardwareMap, this);
         runner = new CommonMethods(hardwareMap, this, drive, hookLifter, imu, mineralDetector, vuforia, teamMarker);
         runner.initAutonomous();
