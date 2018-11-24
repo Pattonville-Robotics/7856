@@ -1,79 +1,67 @@
 package org.pattonvillerobotics.opmodes.teleop;
 
+import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.pattonvillerobotics.commoncode.enums.Direction;
+import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+import org.firstinspires.ftc.robotcore.external.navigation.Position;
+import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 import org.pattonvillerobotics.commoncode.opmodes.OpModeGroups;
-import org.pattonvillerobotics.commoncode.robotclasses.drive.SimpleDrive;
+import org.pattonvillerobotics.commoncode.robotclasses.drive.MecanumEncoderDrive;
+import org.pattonvillerobotics.commoncode.robotclasses.drive.SimpleMecanumDrive;
 import org.pattonvillerobotics.commoncode.robotclasses.gamepad.GamepadData;
 import org.pattonvillerobotics.commoncode.robotclasses.gamepad.ListenableButton;
 import org.pattonvillerobotics.commoncode.robotclasses.gamepad.ListenableGamepad;
-//import org.pattonvillerobotics.robotclasses.mechanisms.ShovelMechanism;
-import org.pattonvillerobotics.robotclasses.mechanisms.LinearSlideStackMechanism;
+import org.pattonvillerobotics.robotclasses.mechanisms.HookLiftingMechanism;
+import org.pattonvillerobotics.robotclasses.misc.CommonMethods;
 import org.pattonvillerobotics.robotclasses.misc.CustomizedRobotParameters;
 
 @TeleOp(name = "MainTeleOp", group = OpModeGroups.MAIN)
 public class MainTeleOp extends LinearOpMode {
 
-    private SimpleDrive drive;
+    private MecanumEncoderDrive drive;
     private ListenableGamepad driveGamepad, armGamepad;
-    private LinearSlideStackMechanism liftingMechanism;
-    //public ShovelMechanism shovelArm;
+    private HookLiftingMechanism hookLiftingMechanism;
+    private BNO055IMU imu;
+    private boolean orientedDriveMode;
+    private CommonMethods runner;
 
     @Override
     public void runOpMode() {
+        Vector2D polarCoordinates;
+        Orientation angles;
+
         initialize();
         waitForStart();
+
+        imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
+
         while (opModeIsActive()) {
+            polarCoordinates = SimpleMecanumDrive.toPolar(gamepad1.left_stick_x, -gamepad1.left_stick_y);
+            angles = imu.getAngularOrientation(AxesReference.EXTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS);
 
             driveGamepad.update(new GamepadData(gamepad1));
             armGamepad.update(new GamepadData(gamepad2));
-            drive.moveFreely(gamepad1.right_stick_y, gamepad1.left_stick_y);
-            //shovelArm.getClass(gamepad2.right_stick_x, gamepad2.left_stick_x);
-            liftingMechanism.moveFreely(gamepad2.left_trigger-gamepad2.right_trigger, false);
+
+            drive.moveFreely(polarCoordinates.getY() - (orientedDriveMode ? angles.secondAngle + (Math.PI / 2.) : 0), polarCoordinates.getX(), -gamepad1.right_stick_x);
+
+            hookLiftingMechanism.move(gamepad1.right_trigger - gamepad1.left_trigger);
         }
     }
 
     private void initialize() {
-        liftingMechanism = new LinearSlideStackMechanism(10, hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS, false);
+        drive = new MecanumEncoderDrive(hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS);
+        imu = hardwareMap.get(BNO055IMU.class, "imu");
+        hookLiftingMechanism = new HookLiftingMechanism(this, hardwareMap);
         driveGamepad = new ListenableGamepad();
         armGamepad = new ListenableGamepad();
-
-        armGamepad.addButtonListener(GamepadData.Button.Y, ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
-            @Override
-            public void run() {
-                liftingMechanism.moveFully(Direction.FORWARD, 0.6, false);
-            }
-        });
-
-        armGamepad.addButtonListener(GamepadData.Button.B, ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
-            @Override
-            public void run() {
-                liftingMechanism.moveFully(Direction.BACKWARD, 0.6, false);
-            }
-        });
-/*
-        armGamepad.addButtonListener(GamepadData.Button.A, ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
-            @Override
-            public void run() {
-                shovelArm.base_servo.setPosition(0.5);
-                shovelArm.elbow_servo.setPosition(0.5);
-                shovelArm.wrist_servo.setPosition(0.5);
-
-            }
-        });
-        armGamepad.addButtonListener(GamepadData.Button.Y, ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
-            @Override
-            public void run() {
-                shovelArm.base_servo.setPosition(0);
-                shovelArm.elbow_servo.setPosition(0);
-                shovelArm.wrist_servo.setPosition(0);
-
-            }
-        });
-        */
-
-        drive = new SimpleDrive(this, hardwareMap);
+        driveGamepad.addButtonListener(GamepadData.Button.STICK_BUTTON_LEFT, ListenableButton.ButtonState.JUST_PRESSED, () -> orientedDriveMode = !orientedDriveMode);
+        runner = new CommonMethods(hardwareMap, this, drive, hookLiftingMechanism, imu);
+        runner.initTeleop();
     }
 }

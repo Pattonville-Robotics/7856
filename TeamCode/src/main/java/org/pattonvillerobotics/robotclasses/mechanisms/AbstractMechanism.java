@@ -8,9 +8,9 @@ public class AbstractMechanism {
     protected final HardwareMap hardwareMap;
     protected final LinearOpMode LinearOpmode;
 
-    public AbstractMechanism(HardwareMap hardwareMap, LinearOpMode linearOpMode) {
-        this.hardwareMap = hardwareMap;
+    public AbstractMechanism(LinearOpMode linearOpMode, HardwareMap hardwareMap) {
         this.LinearOpmode = linearOpMode;
+        this.hardwareMap = hardwareMap;
     }
 
 }
