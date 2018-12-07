@@ -30,7 +30,7 @@ public class SilverAutonomous extends LinearOpMode {
     private boolean orientedDriveMode;
     private CommonMethods runner;
     private TeamMarkerMechanism getTeamMarker;
-    LinearOpMode linearOpMode;
+
 
     @Override
     public void runOpMode() {
@@ -39,17 +39,20 @@ public class SilverAutonomous extends LinearOpMode {
         waitForStart();
 
         waitForStart();
-        hookLifter.move(0.5);
-        //runner.dropFromLander();
-        linearOpMode.sleep(3000);
-        drive.moveInches(Direction.RIGHT, 5, 0.5);
         hookLifter.move(-0.5);
-        linearOpMode.sleep(5000);
+        //runner.dropFromLander();
+        this.sleep(9000);
+        hookLifter.move(0);
+        drive.moveInches(Direction.LEFT, 5, 0.5);
+        drive.moveInches(Direction.FORWARD, 2, 0.01);
+        this.sleep(250);
+        hookLifter.move(-0.5);
+        this.sleep(2000);
         drive.moveInches(Direction.FORWARD, 14, 0.5);
         drive.rotateDegrees(Direction.RIGHT, 90, 0.5);
         drive.moveInches(Direction.FORWARD, 38, 0.5);
-        getTeamMarker.moveTeamMarker(0.5);
-        linearOpMode.sleep(500);
+        //getTeamMarker.moveTeamMarker(0.5);
+        this.sleep(500);
         getTeamMarker.stopTeamMarker(0);
         //drive.rotateDegrees(Direction.RIGHT, 45, 0.5);
         //drive.moveInches(Direction.FORWARD, 98, 0.5);
