@@ -32,7 +32,7 @@ public class GoldAutonomous extends LinearOpMode {
     private CommonMethods runner;
     private TeamMarkerMechanism getTeamMarker;
     LinearOpMode linearOpMode;
-
+//    private ArmMechanism armMechansim;
     @Override
     public void runOpMode() {
         initialize();
@@ -44,7 +44,7 @@ public class GoldAutonomous extends LinearOpMode {
        drive.moveInches(Direction.FORWARD, 48, 0.5);
        //getTeamMarker.moveTeamMarker(0.5);
        linearOpMode.sleep(5000);
-       getTeamMarker.stopTeamMarker(0);
+       getTeamMarker.move(0);
        drive.rotateDegrees(Direction.LEFT, 45, 0.5);
        drive.moveInches(Direction.FORWARD, 80, 0.5);
         //drive.rotateDegrees(Direction.RIGHT, 45, 0.5);

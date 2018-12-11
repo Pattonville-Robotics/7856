@@ -3,6 +3,9 @@ package org.pattonvillerobotics.opmodes.autonomous;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.pattonvillerobotics.commoncode.enums.Direction;
 import org.pattonvillerobotics.commoncode.opmodes.OpModeGroups;
@@ -17,6 +20,9 @@ import org.pattonvillerobotics.robotclasses.misc.CustomizedRobotParameters;
 import org.pattonvillerobotics.commoncode.robotclasses.opencv.ImageProcessor;
 import org.pattonvillerobotics.commoncode.robotclasses.opencv.roverruckus.minerals.MineralDetector;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 
 @Autonomous (name = "SilverAutonomous", group = OpModeGroups.MAIN)
 public class SilverAutonomous extends LinearOpMode {
@@ -30,20 +36,54 @@ public class SilverAutonomous extends LinearOpMode {
     private boolean orientedDriveMode;
     private CommonMethods runner;
     private TeamMarkerMechanism getTeamMarker;
+    private Timer timer;
 
 
     @Override
     public void runOpMode() {
         initialize();
-
         waitForStart();
 
-        waitForStart();
-        hookLifter.move(-0.5);
-        //runner.dropFromLander();
-        this.sleep(9000);
+        hookLifter.move(-0.8);
+        sleep(9100);
         hookLifter.move(0);
-        drive.moveInches(Direction.LEFT, 5, 0.5);
+        sleep(100);
+        drive.move(Direction.RIGHT, 0.5);
+        sleep(1250);
+        hookLifter.move(0.8);
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                hookLifter.move(0);
+            }
+        }, 5000);
+        drive.move(Direction.FORWARD, 0);
+        sleep(100);
+        drive.move(Direction.FORWARD, 0.5);
+        sleep(2500);
+        drive.move(Direction.FORWARD, 0);
+        drive.moveFreely(0, 0.8, 10);
+        sleep(2500);
+        drive.move(Direction.FORWARD, 0);
+        teamMarker.servo.setDirection(Servo.Direction.FORWARD);
+        teamMarker.move(1);
+        sleep(100);
+        teamMarker.move(0);
+        idle();
+        /*
+        sleep(100);
+        drive.move(Direction.LEFT, 0.5);
+        sleep(2150);
+        drive.move(Direction.FORWARD, 0);
+        sleep(100);
+        drive.move(Direction.BACKWARD, 0.8);
+        sleep(5350);
+        drive.move(Direction.FORWARD,0);
+        teamMarker.move(1);
+        sleep(200);
+        teamMarker.move(0);
+        idle();
+        /*
         drive.moveInches(Direction.FORWARD, 2, 0.01);
         this.sleep(250);
         hookLifter.move(-0.5);
@@ -78,6 +118,7 @@ public class SilverAutonomous extends LinearOpMode {
     }
 
     public void initialize() {
+        timer = new Timer();
         ImageProcessor.initOpenCV(hardwareMap, this);
         drive = new MecanumEncoderDrive(hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS);
         imu = hardwareMap.get(BNO055IMU.class, "imu");
