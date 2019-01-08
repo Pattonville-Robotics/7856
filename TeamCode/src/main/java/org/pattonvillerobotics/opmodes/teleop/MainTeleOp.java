@@ -62,7 +62,7 @@ public class MainTeleOp extends LinearOpMode {
             armGamepad.update(gamepad2);
 
             if(!slowDrive) {
-                drive.moveFreely(polarCoordinates.getY() - (orientedDriveMode ? angles.secondAngle + (Math.PI / 2.) : 0), polarCoordinates.getX()/1, -gamepad1.right_stick_x);
+                drive.moveFreely(polarCoordinates.getY() - (orientedDriveMode ? angles.secondAngle + (Math.PI / 2.) : 0), polarCoordinates.getX()*3, -gamepad1.right_stick_x);
             } else {
                 drive.moveFreely(polarCoordinates.getY() - (orientedDriveMode ? angles.secondAngle + (Math.PI / 2.) : 0), polarCoordinates.getX()/2, -gamepad1.right_stick_x);
             }
