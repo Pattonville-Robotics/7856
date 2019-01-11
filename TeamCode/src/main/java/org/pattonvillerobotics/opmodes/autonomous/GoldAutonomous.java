@@ -37,36 +37,13 @@ public class GoldAutonomous extends LinearOpMode {
     public void runOpMode() {
         initialize();
 
-       hookLifter.move(0.5);
-       linearOpMode.sleep(7000);
-       hookLifter.move(-0.5);
-       linearOpMode.sleep(11000);
-       drive.moveInches(Direction.FORWARD, 48, 0.5);
-       //getTeamMarker.moveTeamMarker(0.5);
-       linearOpMode.sleep(5000);
-       getTeamMarker.move(0);
-       drive.rotateDegrees(Direction.LEFT, 45, 0.5);
-       drive.moveInches(Direction.FORWARD, 80, 0.5);
-        //drive.rotateDegrees(Direction.RIGHT, 45, 0.5);
-        //drive.moveInches(Direction.FORWARD, 98, 0.5);
+        runner.dropFromLander();
+        drive.moveInches(Direction.FORWARD, 35, 0.5);
+        teamMarker.move(0.5);
+        sleep(10000);
 
-        /* Write your autonomous here:
 
-            You should check the CommonMethods.java class in
-            pattonvillerobotics/robotclasses/misc for useful
-            methods. There should be a few methods there to
-            help with sensing the mineral color, automatically
-            dropping from the lander (this may need revision),
-            and other stuff.
 
-            To use these methods, say
-
-            runner.<whatever method you're using here>(<whatever parameters it takes>);
-            For example:
-                runner.dropFromLander();
-                runner.senseMineral();
-
-         */
 
         idle();
     }

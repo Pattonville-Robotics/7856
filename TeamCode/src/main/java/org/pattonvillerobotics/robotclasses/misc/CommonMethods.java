@@ -84,6 +84,7 @@ public class CommonMethods {
         parameters.loggingTag = "IMU";
         parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
         imu.initialize(parameters);
+
     }
 
     public void dropFromLander() {
@@ -124,7 +125,7 @@ public class CommonMethods {
     }
 
     /*To be used with senseMineral, like so:
-            runner.dropMarker(senseMineral());
+        runner.dropMarker(senseMineral());
      */
     public void dropMarker(int placementValue) {
         switch(placementValue) {
