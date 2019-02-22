@@ -89,14 +89,12 @@ public class CommonMethods {
 
     public void dropFromLander() {
         hookLiftingMechanism.move(-.5);
-        sleep(5000);
+        sleep(6000);
         hookLiftingMechanism.move(0);
         sleep(100);
-        drive.moveInches(Direction.RIGHT, 2, 0.4);
-        sleep(100);
-        drive.moveInches(Direction.FORWARD, 5, 0.4);
-        sleep(100);
-        drive.moveInches(Direction.LEFT, 2, 0.4);
+//        drive.moveInches(Direction.RIGHT, 2, 0.4);
+//        drive.moveInches(Direction.FORWARD, 5, 0.4);
+//        drive.moveInches(Direction.LEFT, 2, 0.4);
     }
 
     public int senseMineral() {
