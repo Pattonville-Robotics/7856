@@ -16,7 +16,7 @@ public class ArmMechanism extends AbstractMechanism {
     public ArmMechanism(LinearOpMode linearOpMode, HardwareMap hardwareMap) {
         super(linearOpMode, hardwareMap);
 
-        ArmMotor = hardwareMap.dcMotor.get("arm_Base");
+        ArmMotor = hardwareMap.dcMotor.get("ArmMotor");
         ArmMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         ArmMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
