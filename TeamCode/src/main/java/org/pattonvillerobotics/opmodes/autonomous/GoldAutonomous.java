@@ -15,8 +15,6 @@ import org.pattonvillerobotics.robotclasses.mechanisms.HookLiftingMechanism;
 import org.pattonvillerobotics.robotclasses.mechanisms.TeamMarkerMechanism;
 import org.pattonvillerobotics.robotclasses.misc.CommonMethods;
 import org.pattonvillerobotics.robotclasses.misc.CustomizedRobotParameters;
-import org.pattonvillerobotics.commoncode.robotclasses.opencv.ImageProcessor;
-import org.pattonvillerobotics.commoncode.robotclasses.opencv.roverruckus.minerals.MineralDetector;
 
 
 @Autonomous (name = "GoldAutonomous", group = OpModeGroups.MAIN)
@@ -72,7 +70,6 @@ public class GoldAutonomous extends LinearOpMode {
     }
 
     public void initialize() {
-        ImageProcessor.initOpenCV(hardwareMap, this);
         drive = new MecanumEncoderDrive(hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS);
         imu = hardwareMap.get(BNO055IMU.class, "imu");
         hookLifter = new HookLiftingMechanism(this, hardwareMap);
