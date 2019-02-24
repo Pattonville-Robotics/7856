@@ -42,7 +42,7 @@ public class GoldAutonomous extends LinearOpMode {
        hookLifter.move(-0.5);
        linearOpMode.sleep(11000);
        drive.moveInches(Direction.FORWARD, 48, 0.5);
-       //getTeamMarker.moveTeamMarker(0.5);
+       getTeamMarker.moveTeamMarker(0.5);
        linearOpMode.sleep(5000);
        getTeamMarker.stopTeamMarker(0);
        drive.rotateDegrees(Direction.LEFT, 45, 0.5);
