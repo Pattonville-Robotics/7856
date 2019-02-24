@@ -18,7 +18,6 @@ import org.pattonvillerobotics.commoncode.robotclasses.gamepad.GamepadData;
 import org.pattonvillerobotics.commoncode.robotclasses.gamepad.ListenableButton;
 import org.pattonvillerobotics.commoncode.robotclasses.gamepad.ListenableGamepad;
 import org.pattonvillerobotics.robotclasses.mechanisms.HookLiftingMechanism;
-import org.pattonvillerobotics.robotclasses.mechanisms.ShovelMechanism;
 import org.pattonvillerobotics.robotclasses.misc.CommonMethods;
 import org.pattonvillerobotics.robotclasses.misc.CustomizedRobotParameters;
 
@@ -31,7 +30,6 @@ public class MainTeleOp extends LinearOpMode {
     private BNO055IMU imu;
     private boolean orientedDriveMode;
     private CommonMethods runner;
-    private ShovelMechanism shovelArm;
 
     @Override
     public void runOpMode() {
@@ -50,23 +48,11 @@ public class MainTeleOp extends LinearOpMode {
             driveGamepad.update(new GamepadData(gamepad1));
             armGamepad.update(new GamepadData(gamepad2));
 
-
             drive.moveFreely(polarCoordinates.getY() - (orientedDriveMode ? angles.secondAngle + (Math.PI / 2.) : 0), polarCoordinates.getX(), -gamepad1.right_stick_x);
 
             hookLiftingMechanism.move(gamepad1.right_trigger - gamepad1.left_trigger);
         }
-        armGamepad.addButtonListener(GamepadData.Button.STICK_BUTTON_LEFT, ListenableButton.ButtonState.BEING_PRESSED, new ListenableButton.ButtonListener() {
-            @Override
-            public void run() {
-                shovelArm.moveBaseArm(0.5);
-                shovelArm.moveElbow_servo(0.5);
-                shovelArm.moveWrist_servo(0.5);
-
-            }
-        });
-
     }
-
 
     private void initialize() {
         drive = new MecanumEncoderDrive(hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS);
@@ -77,11 +63,5 @@ public class MainTeleOp extends LinearOpMode {
         driveGamepad.addButtonListener(GamepadData.Button.STICK_BUTTON_LEFT, ListenableButton.ButtonState.JUST_PRESSED, () -> orientedDriveMode = !orientedDriveMode);
         runner = new CommonMethods(hardwareMap, this, drive, hookLiftingMechanism, imu);
         runner.initTeleop();
-
-
     }
-
-
-
-
 }

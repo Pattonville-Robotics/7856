@@ -4,7 +4,6 @@ import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.pattonvillerobotics.commoncode.enums.Direction;
 import org.pattonvillerobotics.commoncode.opmodes.OpModeGroups;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.MecanumEncoderDrive;
 import org.pattonvillerobotics.commoncode.robotclasses.opencv.ImageProcessor;
@@ -27,8 +26,6 @@ public class SilverAutonomous extends LinearOpMode {
     private BNO055IMU imu;
     private boolean orientedDriveMode;
     private CommonMethods runner;
-    private TeamMarkerMechanism getTeamMarker;
-    LinearOpMode linearOpMode;
 
     @Override
     public void runOpMode() {
@@ -36,21 +33,6 @@ public class SilverAutonomous extends LinearOpMode {
 
         waitForStart();
 
-        waitForStart();
-        hookLifter.move(0.5);
-        //runner.dropFromLander();
-        linearOpMode.sleep(3000);
-        drive.moveInches(Direction.RIGHT, 5, 0.5);
-        hookLifter.move(-0.5);
-        linearOpMode.sleep(5000);
-        drive.moveInches(Direction.FORWARD, 14, 0.5);
-        drive.rotateDegrees(Direction.RIGHT, 90, 0.5);
-        drive.moveInches(Direction.FORWARD, 38, 0.5);
-        getTeamMarker.moveTeamMarker(0.5);
-        linearOpMode.sleep(500);
-        getTeamMarker.stopTeamMarker(0);
-        //drive.rotateDegrees(Direction.RIGHT, 45, 0.5);
-        //drive.moveInches(Direction.FORWARD, 98, 0.5);
         /* Write your autonomous here:
 
             You should check the CommonMethods.java class in
@@ -69,7 +51,6 @@ public class SilverAutonomous extends LinearOpMode {
          */
 
         idle();
-
     }
 
     public void initialize() {
