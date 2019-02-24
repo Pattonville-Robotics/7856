@@ -18,11 +18,11 @@ public class CustomizedRobotParameters {
         PHONE_ORIENTATION = PhoneOrientation.PORTRAIT_INVERSE;
 
         ROBOT_PARAMETERS = new RobotParameters.Builder()
-                .wheelBaseRadius(8)
+                .wheelBaseRadius(15)
                 .encodersEnabled(true)
                 .wheelRadius(2)
                 .gyroEnabled(true)
-                .driveGearRatio(1)
+                .driveGearRatio(2)
                 .build();
 
         VUFORIA_PARAMETERS = new VuforiaParameters.Builder()
