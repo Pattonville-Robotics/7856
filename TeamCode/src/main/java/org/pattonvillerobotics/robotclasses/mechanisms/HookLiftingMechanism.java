@@ -20,7 +20,7 @@ public class HookLiftingMechanism extends AbstractMechanism {
     }
 
     public String getPosition() {
-        return motorSuper.getCurrentPosition() + "";
+        return "Hook Lifter: " + motorSuper.getCurrentPosition();
     }
 
 }

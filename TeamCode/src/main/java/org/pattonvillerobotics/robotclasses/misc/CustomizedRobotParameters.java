@@ -18,7 +18,7 @@ public class CustomizedRobotParameters {
         PHONE_ORIENTATION = PhoneOrientation.PORTRAIT_INVERSE;
 
         ROBOT_PARAMETERS = new RobotParameters.Builder()
-                .wheelBaseRadius(15)
+                .wheelBaseRadius(11.25)
                 .encodersEnabled(true)
                 .wheelRadius(2)
                 .gyroEnabled(true)

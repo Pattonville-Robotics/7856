@@ -4,6 +4,7 @@ import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
+import org.pattonvillerobotics.commoncode.enums.Direction;
 import org.pattonvillerobotics.commoncode.opmodes.OpModeGroups;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.MecanumEncoderDrive;
 import org.pattonvillerobotics.commoncode.robotclasses.opencv.ImageProcessor;
@@ -50,10 +51,13 @@ public class SilverAutonomous extends LinearOpMode {
                 runner.senseMineral();
          */
 
+        drive.moveInches(Direction.FORWARD, 1, 0.5);
+
         idle();
     }
 
-    public void initialize() {
+
+    private void initialize() {
         drive = new MecanumEncoderDrive(hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS);
         imu = hardwareMap.get(BNO055IMU.class, "imu");
         hookLifter = new HookLiftingMechanism(this, hardwareMap);

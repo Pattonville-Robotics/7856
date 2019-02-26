@@ -28,7 +28,7 @@ public class MainTeleOp extends LinearOpMode {
     private ListenableGamepad driveGamepad, armGamepad;
     private HookLiftingMechanism hookLiftingMechanism;
     private BNO055IMU imu;
-    private boolean orientedDriveMode;
+    private boolean orientedDriveMode, slowDrive = false;
     private CommonMethods runner;
 
     @Override
@@ -63,5 +63,7 @@ public class MainTeleOp extends LinearOpMode {
         driveGamepad.addButtonListener(GamepadData.Button.STICK_BUTTON_LEFT, ListenableButton.ButtonState.JUST_PRESSED, () -> orientedDriveMode = !orientedDriveMode);
         runner = new CommonMethods(hardwareMap, this, drive, hookLiftingMechanism, imu);
         runner.initTeleop();
+
+        driveGamepad.addButtonListener(GamepadData.Button.Y, ListenableButton.ButtonState.JUST_PRESSED, () -> slowDrive = !slowDrive);
     }
 }

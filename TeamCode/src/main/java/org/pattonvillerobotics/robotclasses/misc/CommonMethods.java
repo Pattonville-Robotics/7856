@@ -91,11 +91,11 @@ public class CommonMethods {
         sleep(5000);
         hookLiftingMechanism.move(0);
         sleep(100);
-        drive.moveInches(Direction.RIGHT, 2, 0.4);
-        sleep(100);
-        drive.moveInches(Direction.FORWARD, 5, 0.4);
-        sleep(100);
-        drive.moveInches(Direction.LEFT, 2, 0.4);
+//        drive.moveInches(Direction.RIGHT, 2, 0.4);
+//        sleep(100);
+//        drive.moveInches(Direction.FORWARD, 5, 0.4);
+//        sleep(100);
+//        drive.moveInches(Direction.LEFT, 2, 0.4);
     }
 
     public int senseMineral() {
@@ -112,7 +112,7 @@ public class CommonMethods {
         }
     }
 
-    public int sense(int inches) {
+    private int sense(int inches) {
         mineralDetector.process(vuforia.getImage());
         if(mineralDetector.getAnalysis() == ColorSensorColor.YELLOW) {
             drive.moveInches(Direction.FORWARD, inches, 0.5);
