@@ -37,13 +37,13 @@ public class MainTeleOp extends LinearOpMode {
 
     private SimpleMecanumDrive drive;
     private ListenableGamepad driveGamepad, armGamepad;
-    private HookLiftingMechanism hookLiftingMechanism;
+//    private HookLiftingMechanism hookLiftingMechanism;
     private BNO055IMU imu;
     private boolean orientedDriveMode = false, slowDrive = false;
-    private CommonMethods runner;
-    private ShovelMechanism shovelArm;
     private RobotParameters robotParameters = CustomizedRobotParameters.ROBOT_PARAMETERS;
-    private TeamMarkerMechanism teamMarkerMechanism;
+    private CommonMethods runner;
+//    private ShovelMechanism shovelArm;
+//    private TeamMarkerMechanism teamMarkerMechanism;
 
     @Override
     public void runOpMode() {
@@ -59,15 +59,15 @@ public class MainTeleOp extends LinearOpMode {
             polarCoordinates = SimpleMecanumDrive.toPolar(-gamepad1.left_stick_x, gamepad1.left_stick_y);
             angles = imu.getAngularOrientation(AxesReference.EXTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS);
             driveGamepad.update(gamepad1);
-            armGamepad.update(gamepad2);
+//            armGamepad.update(gamepad2);
 
             if(!slowDrive) {
-                drive.moveFreely(polarCoordinates.getY() - (orientedDriveMode ? angles.secondAngle + (Math.PI / 2.) : 0), polarCoordinates.getX()*3, -gamepad1.right_stick_x);
+                drive.moveFreely(polarCoordinates.getY() - (orientedDriveMode ? angles.secondAngle + (Math.PI / 2.) : 0), -polarCoordinates.getX()*3, -gamepad1.right_stick_x);
             } else {
-                drive.moveFreely(polarCoordinates.getY() - (orientedDriveMode ? angles.secondAngle + (Math.PI / 2.) : 0), polarCoordinates.getX()/2, -gamepad1.right_stick_x);
+                drive.moveFreely(polarCoordinates.getY() - (orientedDriveMode ? angles.secondAngle + (Math.PI / 2.) : 0), -polarCoordinates.getX()/2, -gamepad1.right_stick_x);
             }
-            hookLiftingMechanism.move(gamepad2.right_trigger - gamepad2.left_trigger);
-            telemetry.update();
+//            hookLiftingMechanism.move(gamepad2.right_trigger - gamepad2.left_trigger);
+//            telemetry.update();
         }
     }
 
@@ -83,14 +83,14 @@ public class MainTeleOp extends LinearOpMode {
         parameters.loggingTag = "IMU";
         parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
         imu.initialize(parameters);
-        hookLiftingMechanism = new HookLiftingMechanism(this, hardwareMap);
+//        hookLiftingMechanism = new HookLiftingMechanism(this, hardwareMap);
         driveGamepad = new ListenableGamepad();
         armGamepad = new ListenableGamepad();
         drive.leftRearMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         drive.rightRearMotor.setDirection(DcMotorSimple.Direction.FORWARD);
         drive.leftDriveMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         drive.rightDriveMotor.setDirection(DcMotorSimple.Direction.FORWARD);
-        teamMarkerMechanism = new TeamMarkerMechanism(hardwareMap, this);
+//        teamMarkerMechanism = new TeamMarkerMechanism(hardwareMap, this);
         driveGamepad.addButtonListener(GamepadData.Button.Y, ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
             @Override
             public void run() {
@@ -103,34 +103,34 @@ public class MainTeleOp extends LinearOpMode {
                 }
             }
         });
-        armGamepad.addButtonListener(GamepadData.Button.STICK_BUTTON_LEFT, ListenableButton.ButtonState.BEING_PRESSED, new ListenableButton.ButtonListener() {
-            @Override
-            public void run() {
-                shovelArm.moveBaseArm(0.5);
-                shovelArm.moveElbow_servo(0.5);
-
-            }
-        });
-        armGamepad.addButtonListener(GamepadData.Button.STICK_BUTTON_RIGHT, ListenableButton.ButtonState.BEING_PRESSED, new ListenableButton.ButtonListener() {
-            @Override
-            public void run() {
-                shovelArm.moveWrist_servo(0.5);
-            }
-        });
-        driveGamepad.addButtonListener(GamepadData.Button.DPAD_UP, ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
-            @Override
-            public void run() {
-                teamMarkerMechanism.move(teamMarkerMechanism.servo.getPosition()+0.1);
-                telemetry.addData("Teleop: ", teamMarkerMechanism.servo.getPosition() + "");
-            }
-        });
-        driveGamepad.addButtonListener(GamepadData.Button.DPAD_UP, ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
-            @Override
-            public void run() {
-                teamMarkerMechanism.move(teamMarkerMechanism.servo.getPosition()-0.1);
-                telemetry.addData("Teleop: ", teamMarkerMechanism.servo.getPosition() + "");
-            }
-        });
+//        armGamepad.addButtonListener(GamepadData.Button.STICK_BUTTON_LEFT, ListenableButton.ButtonState.BEING_PRESSED, new ListenableButton.ButtonListener() {
+//            @Override
+//            public void run() {
+////                shovelArm.moveBaseArm(0.5);
+////                shovelArm.moveElbow_servo(0.5);
+//
+//            }
+//        });
+//        armGamepad.addButtonListener(GamepadData.Button.STICK_BUTTON_RIGHT, ListenableButton.ButtonState.BEING_PRESSED, new ListenableButton.ButtonListener() {
+//            @Override
+//            public void run() {
+//                shovelArm.moveWrist_servo(0.5);
+//            }
+//        });
+//        driveGamepad.addButtonListener(GamepadData.Button.DPAD_UP, ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
+//            @Override
+//            public void run() {
+//                teamMarkerMechanism.move(teamMarkerMechanism.servo.getPosition()+0.1);
+//                telemetry.addData("Teleop: ", teamMarkerMechanism.servo.getPosition() + "");
+//            }
+//        });
+//        driveGamepad.addButtonListener(GamepadData.Button.DPAD_UP, ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
+//            @Override
+//            public void run() {
+//                teamMarkerMechanism.move(teamMarkerMechanism.servo.getPosition()-0.1);
+//                telemetry.addData("Teleop: ", teamMarkerMechanism.servo.getPosition() + "");
+//            }
+//        });
     }
 
 

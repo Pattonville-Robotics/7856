@@ -88,7 +88,7 @@ public class CommonMethods {
     }
 
     public void dropFromLander() {
-        hookLiftingMechanism.move(-.5);
+        hookLiftingMechanism.move(-.9);
         sleep(5000);
         hookLiftingMechanism.move(0);
         sleep(100);

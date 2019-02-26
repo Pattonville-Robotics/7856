@@ -36,15 +36,17 @@ public class GoldAutonomous extends LinearOpMode {
     @Override
     public void runOpMode() {
         initialize();
-
-        runner.dropFromLander();
-        drive.moveInches(Direction.FORWARD, 35, 0.5);
-        teamMarker.move(0.5);
-        sleep(10000);
-
-
-
-
+        waitForStart();
+//        runner.dropFromLander();
+//        drive.moveInches(Direction.FORWARD, 35, 0.5);
+//        teamMarker.move(0.5);
+        drive.moveInches(Direction.BACKWARD, 19, 0.8);
+        sleep(100);
+        drive.rotateDegrees(Direction.CLOCKWISE, 150, 1);
+        drive.moveInches(Direction.BACKWARD, 30,0.8);
+        drive.rotateDegrees(Direction.CLOCKWISE, 150, 1);
+        drive.moveInches(Direction.BACKWARD, 60,0.8);
+        telemetry.addData("Would have dropped off team marker", "");
         idle();
     }
 
