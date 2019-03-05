@@ -2,6 +2,7 @@ package org.pattonvillerobotics.robotclasses.mechanisms;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 /**
@@ -11,23 +12,30 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
  */
 public class ArmMechanism extends AbstractMechanism {
 
-    public DcMotor ArmMotor;
+    private DcMotor BaseMotor, Spool;
 
     public ArmMechanism(LinearOpMode linearOpMode, HardwareMap hardwareMap) {
         super(linearOpMode, hardwareMap);
 
-        ArmMotor = hardwareMap.dcMotor.get("ArmMotor");
-        ArmMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        ArmMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        BaseMotor = hardwareMap.dcMotor.get("base_motor");
+        BaseMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        BaseMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-
+        Spool = hardwareMap.dcMotor.get("spool_motor");
+        Spool.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        Spool.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
-    public void moveArm(double power) {
-        ArmMotor.setPower(power);
+    public void move(double power) {
+        if(power < 0){
+            BaseMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        } else {
+            BaseMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+        }
+        BaseMotor.setPower(power);
     }
 
-    public String getPosition() {
-        return ArmMotor.getCurrentPosition() + "ArmMotor";
+    public int getPosition() {
+        return BaseMotor.getCurrentPosition();
     }
 }

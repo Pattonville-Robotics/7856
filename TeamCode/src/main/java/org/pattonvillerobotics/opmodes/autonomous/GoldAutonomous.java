@@ -3,64 +3,83 @@ package org.pattonvillerobotics.opmodes.autonomous;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.pattonvillerobotics.commoncode.enums.Direction;
 import org.pattonvillerobotics.commoncode.opmodes.OpModeGroups;
-import org.pattonvillerobotics.commoncode.robotclasses.drive.Drive;
 import org.pattonvillerobotics.commoncode.robotclasses.drive.MecanumEncoderDrive;
 import org.pattonvillerobotics.commoncode.robotclasses.opencv.ImageProcessor;
 import org.pattonvillerobotics.commoncode.robotclasses.opencv.roverruckus.minerals.MineralDetector;
 import org.pattonvillerobotics.commoncode.robotclasses.vuforia.VuforiaNavigation;
+import org.pattonvillerobotics.robotclasses.mechanisms.ArmMechanism;
 import org.pattonvillerobotics.robotclasses.mechanisms.HookLiftingMechanism;
-import org.pattonvillerobotics.robotclasses.mechanisms.TeamMarkerMechanism;
 import org.pattonvillerobotics.robotclasses.misc.CommonMethods;
 import org.pattonvillerobotics.robotclasses.misc.CustomizedRobotParameters;
-import org.pattonvillerobotics.commoncode.robotclasses.opencv.ImageProcessor;
-import org.pattonvillerobotics.commoncode.robotclasses.opencv.roverruckus.minerals.MineralDetector;
 
 
-@Autonomous (name = "GoldAutonomous", group = OpModeGroups.MAIN)
+@Autonomous (name = "Gold Side Autonomous - Center", group = OpModeGroups.MAIN)
 public class GoldAutonomous extends LinearOpMode {
 
     private MecanumEncoderDrive drive;
     private HookLiftingMechanism hookLifter;
     private VuforiaNavigation vuforia;
     private MineralDetector mineralDetector;
-    private TeamMarkerMechanism teamMarker;
+    private ArmMechanism armMechanism;
     private BNO055IMU imu;
-    private boolean orientedDriveMode;
     private CommonMethods runner;
-    private TeamMarkerMechanism getTeamMarker;
-    LinearOpMode linearOpMode;
-//    private ArmMechanism armMechansim;
+
     @Override
     public void runOpMode() {
         initialize();
         waitForStart();
-//        runner.dropFromLander();
-//        drive.moveInches(Direction.FORWARD, 35, 0.5);
-//        teamMarker.move(0.5);
-        drive.moveInches(Direction.BACKWARD, 19, 0.8);
-        sleep(100);
-        drive.rotateDegrees(Direction.CLOCKWISE, 150, 1);
-        drive.moveInches(Direction.BACKWARD, 30,0.8);
-        drive.rotateDegrees(Direction.CLOCKWISE, 150, 1);
-        drive.moveInches(Direction.BACKWARD, 60,0.8);
-        telemetry.addData("Would have dropped off team marker", "");
+
+        double speed = 3.0;
+        int numberOfPicsToTake = 7;
+
+        hookLifter.move(-3);
+        sleep(9000);
+        hookLifter.move(0);
+
+        drive.moveInches(Direction.RIGHT, 2, 1);
+        drive.moveInches(Direction.BACKWARD, 5, 1);
+        drive.moveInches(Direction.LEFT, 2, 1);
+
+        for(int i = 0; i != numberOfPicsToTake; i++){
+            mineralDetector.process(vuforia.getImage());
+        }
+
+
+        drive.moveInches(Direction.BACKWARD, 20, speed);
+        drive.moveInches(Direction.FORWARD, 5.5, speed);
+
         idle();
     }
 
-    public void initialize() {
+    private void initialize() {
         ImageProcessor.initOpenCV(hardwareMap, this);
-        drive = new MecanumEncoderDrive(hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS);
-        imu = hardwareMap.get(BNO055IMU.class, "imu");
-        hookLifter = new HookLiftingMechanism(this, hardwareMap);
-        mineralDetector = new MineralDetector(CustomizedRobotParameters.PHONE_ORIENTATION, true);
+
+        mineralDetector = new MineralDetector(CustomizedRobotParameters.PHONE_ORIENTATION, false);
+
         vuforia = new VuforiaNavigation(CustomizedRobotParameters.VUFORIA_PARAMETERS);
-        ImageProcessor.initOpenCV(hardwareMap, this);
-        teamMarker = new TeamMarkerMechanism(hardwareMap, this);
-        runner = new CommonMethods(hardwareMap, this, drive, hookLifter, imu, mineralDetector, vuforia, teamMarker);
-        runner.initAutonomous();
+
+        drive = new MecanumEncoderDrive(hardwareMap, this, CustomizedRobotParameters.ROBOT_PARAMETERS);
+
+        hookLifter = new HookLiftingMechanism(this, hardwareMap);
+
+        armMechanism = new ArmMechanism(this, hardwareMap);
+
+        drive.leftRearMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+        drive.rightRearMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        drive.leftDriveMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+        drive.rightDriveMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        drive.leftRearMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        drive.leftDriveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        drive.rightRearMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        drive.rightDriveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+
+
     }
 
 

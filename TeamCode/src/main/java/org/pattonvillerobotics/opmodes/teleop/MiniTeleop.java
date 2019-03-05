@@ -54,11 +54,6 @@ public class MiniTeleop  extends LinearOpMode {
         gamepad = new ListenableGamepad();
         drive.leftDriveMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         drive.rightDriveMotor.setDirection(DcMotorSimple.Direction.FORWARD);
-        gamepad.addButtonListener(GamepadData.Button.Y, ListenableButton.ButtonState.JUST_PRESSED, new ListenableButton.ButtonListener() {
-            @Override
-            public void run() {
-                spin = !spin;
-            }
-        });
+        gamepad.addButtonListener(GamepadData.Button.Y, ListenableButton.ButtonState.JUST_PRESSED, () -> spin = !spin);
     }
 }

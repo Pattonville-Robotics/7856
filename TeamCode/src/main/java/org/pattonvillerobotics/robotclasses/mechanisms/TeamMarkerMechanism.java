@@ -12,17 +12,15 @@ import com.qualcomm.robotcore.hardware.Servo;
  */
 
 public class TeamMarkerMechanism extends AbstractMechanism {
-    public Servo servo;
-    LinearOpMode linearOpMode;
 
+    private Servo servo;
 
     public TeamMarkerMechanism(HardwareMap hardwareMap, LinearOpMode linearOpMode) {
         super(linearOpMode, hardwareMap);
-        servo = hardwareMap.servo.get("servo");
-        this.linearOpMode = linearOpMode;
+        servo = hardwareMap.servo.get("team_marker_servo");
     }
 
-    public void move (double position){
-        servo.setPosition(position);
+    public void move(double position){
+        servo.setPosition(servo.getPosition() + position);
     }
 }

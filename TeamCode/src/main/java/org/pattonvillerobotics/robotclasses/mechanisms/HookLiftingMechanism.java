@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class HookLiftingMechanism extends AbstractMechanism {
 
-    public DcMotor motorSuper;
+    private DcMotor motorSuper;
 
     public HookLiftingMechanism(LinearOpMode linearOpMode, HardwareMap hardwareMap) {
         super(linearOpMode, hardwareMap);
@@ -19,8 +19,8 @@ public class HookLiftingMechanism extends AbstractMechanism {
         motorSuper.setPower(power);
     }
 
-    public String getPosition() {
-        return motorSuper.getCurrentPosition() + "hook_lifter";
+    public int getPosition() {
+        return motorSuper.getCurrentPosition();
     }
 
 }
